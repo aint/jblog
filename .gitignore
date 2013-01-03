@@ -1,0 +1,4 @@
+# Always ignore these directories/files
+target
+logs
+test-output

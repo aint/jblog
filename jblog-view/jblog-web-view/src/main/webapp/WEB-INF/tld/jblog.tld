@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright (C) 2012-2013  Olexandr Tyshkovets
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+-->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+
+  <tlib-version>1.1</tlib-version>
+  <short-name>jblog</short-name>
+
+  <tag>
+    <name>showArticleVote</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.ShowArticleVote</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>article</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>com.github.aint.jblog.model.entity.Article</type>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>showCommentVote</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.ShowCommentVote</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>comment</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>com.github.aint.jblog.model.entity.Comment</type>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>ifAuth</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.IfAuth</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>roles</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>ifCanEditArticle</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.IfCanEditArticle</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>article</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>com.github.aint.jblog.model.entity.Article</type>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>printValidationErrorMsg</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.PrintErrorValidationMsg</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <name>fieldName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>errorMsgMap</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.util.Map</type>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>ifBanned</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.IfBanned</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>user</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>com.github.aint.jblog.model.entity.User</type>
+    </attribute>
+  </tag>
+
+  <tag-file>
+    <name>printKeywords</name>
+    <path>/WEB-INF/tags/printKeywords.tag</path>
+  </tag-file>
+
+  <tag-file>
+    <name>printRating</name>
+    <path>/WEB-INF/tags/printRating.tag</path>
+  </tag-file>
+
+</taglib>

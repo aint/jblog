@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2012-2013  Olexandr Tyshkovets
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+-->
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost/jblog_test</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.autocommit">true</property>
+    <property name="connection.useUnicode">true</property>
+    <property name="connection.characterEncoding">UTF-8</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.hbm2ddl.auto">create</property>
+    <property name="show_sql">false</property>
+
+    <mapping class="com.github.aint.jblog.model.entity.Article" />
+    <mapping class="com.github.aint.jblog.model.entity.Comment" />
+    <mapping class="com.github.aint.jblog.model.entity.News" />
+    <mapping class="com.github.aint.jblog.model.entity.PublicMessage" />
+    <mapping class="com.github.aint.jblog.model.entity.User" />
+    <mapping class="com.github.aint.jblog.model.entity.VoiceForArticle" />
+    <mapping class="com.github.aint.jblog.model.entity.VoiceForComment" />
+  </session-factory>
+</hibernate-configuration>
