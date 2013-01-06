@@ -43,7 +43,8 @@ If you're familiar with git and GitHub, here's the short version of what you nee
 ### Code Convention ###
 
 #### General ####
- * Unix linefeeds (LF) for all files.
+ * Unix (LF) line endings for all files.
+ * Eliminate all trailing whitespace.
  * The [GNU Lesser General Public License version 2.1](http://www.gnu.org/licenses/lgpl-2.1.html) **MUST** be  placed at the top of each and every file.
  * One blank line should always be used at end all files.
  * Make is as simple as possible, but no simpler.
