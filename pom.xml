@@ -8,13 +8,13 @@
   <artifactId>jblog</artifactId>
   <version>0.11</version>
   <packaging>pom</packaging>
-  
+
   <modules>
     <module>jblog-model</module>
     <module>jblog-service</module>
     <module>jblog-view</module>
   </modules>
-	
+
   <repositories>
     <!-- only for kaptcha -->
     <repository>
