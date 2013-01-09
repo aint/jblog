@@ -8,13 +8,13 @@
   <artifactId>jblog</artifactId>
   <version>0.11</version>
   <packaging>pom</packaging>
-  
+
   <modules>
     <module>jblog-model</module>
     <module>jblog-service</module>
     <module>jblog-view</module>
   </modules>
-	
+
   <repositories>
     <!-- only for kaptcha -->
     <repository>
@@ -70,6 +70,17 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>1.1.1</version>
+      </dependency>
+      <!-- JSR-303 Bean Validation -->
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>1.0.0.GA</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>4.3.0.Final</version>
       </dependency>
       <!-- logging -->
       <dependency>
