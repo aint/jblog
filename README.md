@@ -1,3 +1,12 @@
+## FAQ ##
+ * `Why not Spring?`
+ 
+The first reason is that it is a simple project for beginners. Secondly, the performance is very important, because jblog running on a free Java hosting.
+
+ * `What if my question isn't answered here?`
+ 
+You can get answers to your questions by this email: [olexandr.tyshkovets@gmail.com](mailto:olexandr.tyshkovets@gmail.com)
+
 ## Stack of Technologies ##
  * JDK 1.6 (in code not using JDK 7 features)
  * Git
