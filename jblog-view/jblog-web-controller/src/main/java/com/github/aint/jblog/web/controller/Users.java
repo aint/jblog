@@ -42,10 +42,10 @@ import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.util.impl.UserComparatorFactory;
 import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.BanUserDto;
 import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.BanUserDto;
 
 /**
  * This servlet displays all users.

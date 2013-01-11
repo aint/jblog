@@ -15,27 +15,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.github.aint.jblog.model.entity.User;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 
 /**
  * DTO for a {@link User} entity. Used for validation of a {@link User}'s data at ban operation.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
 public class BanUserDto {
-    @ValidField(length = @Length(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH), regex = "[а-яА-Я\\w]")
+    @NotNull(message = "")
+    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "")
+    @Pattern(regexp = "[а-яА-Я\\w]*", message = "")
     private String userName;
-    @ValidField(regex = "[1-9]|[1-9][0-9]")
+    @NotNull(message = "")
+    @Pattern(regexp = "[1-9]|[1-9][0-9]", message = "")
     private String banLength;
-    @ValidField(length = @Length(min = 3, max = 70))
+    @NotNull(message = "")
+    @Size(min = 3, max = 70, message = "")
     private String banReason;
 
     /**

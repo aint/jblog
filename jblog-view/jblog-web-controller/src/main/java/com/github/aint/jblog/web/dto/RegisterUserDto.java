@@ -15,46 +15,57 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.Calendar;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.model.entity.User;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.annotation.FieldMatch;
+import com.github.aint.jblog.service.validation.annotation.Unique;
 
 /**
  * DTO for a {@link User} entity. Used for validation of a {@link User}'s data at register operation.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
+ * @see FieldMatch
+ * @see Unique
  */
+@FieldMatch(field = "password", matchField = "rePassword", message = "")
 public class RegisterUserDto {
-    @ValidField(length = @Length(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH),
-            regex = "[а-яА-Я\\w]", fieldName = "user name")
+    @NotNull(message = "")
+    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "")
+    @Pattern(regexp = "[а-яА-Я\\w]*", message = "")
+    @Unique(entity = User.class, field = "userName", message = "")
     private final String userName;
-    @ValidField(length = @Length(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MAX_LENGTH),
-            regex = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]", fieldName = "first name")
+    @NotNull(message = "")
+    @Size(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MIN_LENGTH, message = "")
+    @Pattern(regexp = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]*", message = "")
     private final String firstName;
-    @ValidField(length = @Length(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH),
-            regex = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]", fieldName = "last name")
+    @NotNull(message = "")
+    @Size(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH, message = "")
+    @Pattern(regexp = "[[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]]*", message = "")
     private final String lastName;
-    @ValidField(regex = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}")
+    @NotNull(message = "")
+    @Pattern(regexp = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}", message = "")
+    @Unique(entity = User.class, field = "email", message = "")
     private final String email;
-    @ValidField(length = @Length(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH),
-            fieldName = "user password")
+    @NotNull(message = "")
+    @Size(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH, message = "")
     private final String password;
-    @ValidField(mustMatch = "password", fieldName = "re password")
     private final String rePassword;
-    @ValidField(regex = "([1-9]|[12][0-9]|3[01])")
+    @NotNull(message = "")
+    @Pattern(regexp = "[1-9]|[12][0-9]|3[01]", message = "")
     private final String day;
-    @ValidField(regex = "[1-9]|1[012]")
+    @NotNull(message = "")
+    @Pattern(regexp = "[1-9]|1[012]", message = "")
     private final String month;
-    @ValidField(regex = "(19|20)\\d\\d")
+    @NotNull(message = "")
+    @Pattern(regexp = "(19|20)\\d\\d", message = "")
     private final String year;
     // yes, this field isn't annotated
     private final Language language;

@@ -41,10 +41,10 @@ import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.ArticleDto;
 import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.ArticleDto;
 
 /**
  * This servlet adds an article.

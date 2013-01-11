@@ -15,32 +15,31 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.github.aint.jblog.model.entity.PublicMessage;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 
 /**
  * DTO for a {@link PublicMessage} entity. Used for validation of a {@link PublicMessage}'s data.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
 public class PublicMessageDto {
-    @ValidField(length = @Length(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH),
-            regex = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]", fieldName = "author name")
+    @NotNull(message = "")
+    @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "")
+    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "")
     private String authorName;
-    @ValidField(length = @Length(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH,
-            max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH))
+    @NotNull(message = "")
+    @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "")
     private String body;
 
     /**

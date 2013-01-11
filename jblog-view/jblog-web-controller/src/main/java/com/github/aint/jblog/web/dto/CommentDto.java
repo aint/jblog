@@ -15,29 +15,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.github.aint.jblog.model.entity.Comment;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 
 /**
  * DTO for a {@link Comment} entity. Used for validation of a {@link Comment}'s data.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
 public class CommentDto {
-    @ValidField(length = @Length(min = Comment.COMMENT_BODY_MIN_LENGTH,
-            max = Comment.COMMENT_BODY_MAX_LENGTH))
+    @NotNull(message = "")
+    @Size(min = Comment.COMMENT_BODY_MIN_LENGTH, max = Comment.COMMENT_BODY_MAX_LENGTH, message = "")
     private final String body;
 
     /**

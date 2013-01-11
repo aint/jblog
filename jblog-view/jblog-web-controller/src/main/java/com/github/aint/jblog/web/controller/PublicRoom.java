@@ -36,9 +36,9 @@ import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
 import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.PublicMessageDto;
 import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
+import com.github.aint.jblog.web.dto.PublicMessageDto;
 import com.google.code.kaptcha.Constants;
 
 /**
