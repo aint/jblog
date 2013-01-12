@@ -34,17 +34,17 @@ import com.github.aint.jblog.service.util.StringUtil;
  * @author Olexandr Tyshkovets
  */
 public class ArticleDto {
-    @NotNull(message = "")
-    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "")
+    @NotNull(message = "article.title.not_null")
+    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "article.title.length")
     private String title;
-    @NotNull(message = "")
-    @Size(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MIN_LENGTH, message = "")
+    @NotNull(message = "article.preview.not_null")
+    @Size(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MIN_LENGTH, message = "article.preview.length")
     private String preview;
-    @NotNull(message = "")
-    @Size(min = Article.ARTICLE_BODY_MIN_LENGTH, max = Article.ARTICLE_BODY_MAX_LENGTH, message = "")
+    @NotNull(message = "article.body.not_null")
+    @Size(min = Article.ARTICLE_BODY_MIN_LENGTH, max = Article.ARTICLE_BODY_MAX_LENGTH, message = "article.body.length")
     private String body;
-    @NotNull(message = "")
-    @Size(min = Article.ARTICLE_KEYWORDS_MIN_LENGTH, max = Article.ARTICLE_KEYWORDS_MAX_LENGTH, message = "")
+    @NotNull(message = "article.keywords.not_null")
+    @Size(min = Article.ARTICLE_KEYWORDS_MIN_LENGTH, max = Article.ARTICLE_KEYWORDS_MAX_LENGTH, message = "article.keywords.length")
     private String keywords;
 
     /**
