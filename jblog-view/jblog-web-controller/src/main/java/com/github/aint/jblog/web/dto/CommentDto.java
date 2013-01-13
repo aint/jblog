@@ -33,8 +33,8 @@ import com.github.aint.jblog.service.util.StringUtil;
  * @author Olexandr Tyshkovets
  */
 public class CommentDto {
-    @NotNull(message = "comment.body.not_null")
-    @Size(min = Comment.COMMENT_BODY_MIN_LENGTH, max = Comment.COMMENT_BODY_MAX_LENGTH, message = "comment.body.length")
+    @NotNull(message = "{comment.body.not_null}")
+    @Size(min = Comment.COMMENT_BODY_MIN_LENGTH, max = Comment.COMMENT_BODY_MAX_LENGTH, message = "{comment.body.length}")
     private final String body;
 
     /**

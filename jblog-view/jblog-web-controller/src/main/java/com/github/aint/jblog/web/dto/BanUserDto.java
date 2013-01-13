@@ -29,14 +29,14 @@ import com.github.aint.jblog.model.entity.User;
  * @author Olexandr Tyshkovets
  */
 public class BanUserDto {
-    @NotNull(message = "ban_user.username.not_null")
-    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "ban_user.username.length")
-    @Pattern(regexp = "[а-яА-Я\\w]*", message = "ban_user.username.pattern")
+    @NotNull(message = "{ban_user.username.not_null}")
+    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "{ban_user.username.length}")
+    @Pattern(regexp = "[а-яА-Я\\w]*", message = "{ban_user.username.pattern}")
     private String userName;
-    @Pattern(regexp = "[1-9]|[1-9][0-9]", message = "ban_user.ban_length.pattern")
+    @Pattern(regexp = "[1-9]|[1-9][0-9]", message = "{ban_user.ban_length.pattern}")
     private String banLength;
-    @NotNull(message = "ban_user.ban_reason.not_null")
-    @Size(min = 3, max = 70, message = "ban_user.ban_reason.length")
+    @NotNull(message = "{ban_user.ban_reason.not_null}")
+    @Size(min = 3, max = 70, message = "{ban_user.ban_reason.length}")
     private String banReason;
 
     /**

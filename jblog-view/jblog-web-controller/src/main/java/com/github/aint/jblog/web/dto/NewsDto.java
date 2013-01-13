@@ -36,13 +36,13 @@ import com.github.aint.jblog.service.util.StringUtil;
  * @author Olexandr Tyshkovets
  */
 public class NewsDto {
-    @NotNull(message = "news.title.not_null")
-    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "news.title.length")
+    @NotNull(message = "{news.title.not_null}")
+    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "{news.title.length}")
     private String title;
-    @NotNull(message = "news.body.not_null")
-    @Size(min = News.NEWS_BODY_MIN_LENGTH, max = News.NEWS_BODY_MAX_LENGTH, message = "news.body.length")
+    @NotNull(message = "{news.body.not_null}")
+    @Size(min = News.NEWS_BODY_MIN_LENGTH, max = News.NEWS_BODY_MAX_LENGTH, message = "{news.body.length}")
     private String body;
-    @Pattern(regexp = "(minor|intermediate|major)", message = "news.importance.pattern")
+    @Pattern(regexp = "(minor|intermediate|major)", message = "{news.importance.pattern}")
     private String importance;
 
     /**
