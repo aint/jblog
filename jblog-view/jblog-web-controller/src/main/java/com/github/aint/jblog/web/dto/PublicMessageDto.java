@@ -34,12 +34,12 @@ import com.github.aint.jblog.service.util.StringUtil;
  * @author Olexandr Tyshkovets
  */
 public class PublicMessageDto {
-    @NotNull(message = "")
-    @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "")
-    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "")
+    @NotNull(message = "{public_message.author.not_null}")
+    @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "{public_message.author.length}")
+    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{public_message.author.pattern}")
     private String authorName;
-    @NotNull(message = "")
-    @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "")
+    @NotNull(message = "{public_message.body.not_null}")
+    @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "{public_message.body.length}")
     private String body;
 
     /**

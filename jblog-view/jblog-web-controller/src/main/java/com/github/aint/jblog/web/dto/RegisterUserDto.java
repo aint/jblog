@@ -35,37 +35,32 @@ import com.github.aint.jblog.service.validation.annotation.Unique;
  * @see FieldMatch
  * @see Unique
  */
-@FieldMatch(field = "password", matchField = "rePassword", message = "")
+@FieldMatch(field = "password", matchField = "rePassword", message = "{register_user.password.confirmation}")
 public class RegisterUserDto {
-    @NotNull(message = "")
-    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "")
-    @Pattern(regexp = "[а-яА-Я\\w]*", message = "")
-    @Unique(entity = User.class, field = "userName", message = "")
+    @NotNull(message = "{register_user.username.not_null}")
+    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "{register_user.username.length}")
+    @Pattern(regexp = "[а-яА-Я\\w]*", message = "{register_user.username.pattern}")
+    @Unique(entity = User.class, field = "userName", message = "{register_user.username.duplicate}")
     private final String userName;
-    @NotNull(message = "")
-    @Size(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MIN_LENGTH, message = "")
-    @Pattern(regexp = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]*", message = "")
+    @NotNull(message = "{register_user.first_name.not_null}")
+    @Size(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MIN_LENGTH, message = "{register_user.first_name.length}")
+    @Pattern(regexp = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]*", message = "{register_user.first_name.pattern}")
     private final String firstName;
-    @NotNull(message = "")
-    @Size(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH, message = "")
-    @Pattern(regexp = "[[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]]*", message = "")
+    @NotNull(message = "{register_user.last_name.not_null}")
+    @Size(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH, message = "{register_user.last_name.length}")
+    @Pattern(regexp = "[[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]]*", message = "{register_user.last_name.pattern}")
     private final String lastName;
-    @NotNull(message = "")
-    @Pattern(regexp = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}", message = "")
-    @Unique(entity = User.class, field = "email", message = "")
+    @Pattern(regexp = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}", message = "{register_user.email.pattern}")
+    @Unique(entity = User.class, field = "email", message = "{register_user.email.duplicate}")
     private final String email;
-    @NotNull(message = "")
-    @Size(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH, message = "")
+    @Size(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH, message = "{register_user.password.length}")
     private final String password;
     private final String rePassword;
-    @NotNull(message = "")
-    @Pattern(regexp = "[1-9]|[12][0-9]|3[01]", message = "")
+    @Pattern(regexp = "[1-9]|[12][0-9]|3[01]", message = "{register_user.day.pattern}")
     private final String day;
-    @NotNull(message = "")
-    @Pattern(regexp = "[1-9]|1[012]", message = "")
+    @Pattern(regexp = "[1-9]|1[012]", message = "{register_user.month.pattern}")
     private final String month;
-    @NotNull(message = "")
-    @Pattern(regexp = "(19|20)\\d\\d", message = "")
+    @Pattern(regexp = "(19|20)\\d\\d", message = "{register_user.year.pattern}")
     private final String year;
     // yes, this field isn't annotated
     private final Language language;
