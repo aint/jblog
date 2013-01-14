@@ -67,7 +67,8 @@ public class PublicRoom extends HttpServlet {
             String messageBody = request.getParameter(MESSAGE_BODY_FIELD);
             String captchaAnswer = request.getParameter(CAPTCHA_ANSWER_FIELD);
 
-            PublicMessageDto messageDto = new PublicMessageDto(authorName, messageBody);
+            PublicMessageDto messageDto = new PublicMessageDto(authorName, messageBody, captchaAnswer,
+                    (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY));
             Validator messageValidator = new AnnotationBasedValidator();
             Map<String, String> errorMsgMap = new HashMap<String, String>();
             try {

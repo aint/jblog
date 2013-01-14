@@ -27,12 +27,14 @@ import javax.validation.constraints.Size;
 import com.github.aint.jblog.model.entity.PublicMessage;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
+import com.github.aint.jblog.service.validation.annotation.FieldMatch;
 
 /**
  * DTO for a {@link PublicMessage} entity. Used for validation of a {@link PublicMessage}'s data.
  * 
  * @author Olexandr Tyshkovets
  */
+@FieldMatch(field = "captcha", matchField = "correctCaptcha", message = "{public_message.captcha.wrong}")
 public class PublicMessageDto {
     @NotNull(message = "{public_message.author.not_null}")
     @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "{public_message.author.length}")
@@ -41,6 +43,8 @@ public class PublicMessageDto {
     @NotNull(message = "{public_message.body.not_null}")
     @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "{public_message.body.length}")
     private String body;
+    private String captcha;
+    private String correctCaptcha;
 
     /**
      * Constructs a {@code PublicMessageDto} with the given parameters. Trims all not-null fields.
@@ -49,10 +53,16 @@ public class PublicMessageDto {
      *            the publicMessage's authorName
      * @param body
      *            the publicMessage's body
+     * @param captcha
+     *            the CAPTCHA answer
+     * @param correctCaptcha
+     *            the correct CAPTCHA answer
      */
-    public PublicMessageDto(String authorName, String body) {
+    public PublicMessageDto(String authorName, String body, String captcha, String correctCaptcha) {
         this.authorName = authorName == null ? null : authorName.trim();
         this.body = body == null ? null : body.trim();
+        this.captcha = captcha == null ? null : captcha.trim();
+        this.correctCaptcha = correctCaptcha == null ? null : correctCaptcha.trim();
     }
 
     /**
@@ -86,6 +96,20 @@ public class PublicMessageDto {
      */
     public String getBody() {
         return body;
+    }
+
+    /**
+     * @return the captcha
+     */
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    /**
+     * @return the correctCaptcha
+     */
+    public String getCorrectCaptcha() {
+        return correctCaptcha;
     }
 
 }
