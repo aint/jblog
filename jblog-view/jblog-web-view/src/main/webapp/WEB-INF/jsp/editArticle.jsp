@@ -49,16 +49,12 @@
             <h3 align="center"><c:out value="${article.title}"/></h3>
             <form action="${pageContext.request.contextPath}/edit-article?articleId=${article.id}" method="post" name="addStoryForm">
                 <p>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="title" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="title" /></span><br>
                     <b><fmt:message key="add_article.label.title" /></b><br>
                     <input type="text" size="40" value="${article.title}" name="articleTitleField"><br>
                     <span style="font-size: 60%; color: grey;">length: 5-75</span><br>
                     
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="preview" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="preview" /></span><br>
                     <b><fmt:message key="add_article.label.preview" /></b> (<fmt:message key="add_article.hint.preview" />)<br>
                     <textarea rows="5" cols="85" name="articlePreviewField"><c:out value="${article.preview}"/></textarea><br>
                     <span style="font-size: 60%; color: grey;">length: 100-750</span><br><br>
@@ -70,16 +66,12 @@
                         <input type="button" id="tag_link" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;" onclick="edInsertLink(articleBodyField, 3);" value="link">
                         <input type="button" id="tag_block" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;" onclick="edInsertTag(articleBodyField, 4);" value="b-quote">
                     </span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="body" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
                     <b><fmt:message key="add_article.label.body" /></b><br>
                     <textarea rows="33" cols="85" name="articleBodyField"><c:out value="${articleBody}" escapeXml="false"/></textarea><br>
                     <span style="font-size: 60%; color: grey;">min length: 1500</span><br>
                     
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="keywords" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="keywords" /></span><br>
                     <b><fmt:message key="add_article.label.keywords" /></b> (<fmt:message key="add_article.hint.keywords" />)<br>
                     <textarea rows="3" cols="85" name="articleKeywords"><c:out value="${article.keywords}"/></textarea><br>
                     <span style="font-size: 60%; color: grey;">length: 5-115</span><br>

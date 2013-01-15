@@ -18,8 +18,7 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,6 +26,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +45,7 @@ import com.github.aint.jblog.service.data.impl.CommentServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.CommentDto;
@@ -111,19 +110,11 @@ public class AddComment extends HttpServlet {
 
         String commentBody = request.getParameter(COMMENT_BODY_FIELD);
         CommentDto commentDto = new CommentDto(commentBody);
-        Validator commentValidator = new AnnotationBasedValidator();
-        Map<String, String> errorMsgMap = new HashMap<String, String>();
-        try {
-            errorMsgMap.putAll(commentValidator.validate(commentDto));
-        } catch (ValidationException e) {
-            logger.error("Some error occured in validation", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
-
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The comment's validation error messages: {}", errorMsgMap);
-            request.getSession().setAttribute("errorMsgMap", errorMsgMap);
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<CommentDto>> validationErrors = validator.validate(commentDto);
+        if (!validationErrors.isEmpty()) {
+            logger.debug("The comment's validation error messages: {}", validationErrors);
+            request.getSession().setAttribute("validationErrors", validationErrors);
             request.getSession().setAttribute(COMMENT_BODY_FIELD, commentBody);
             response.sendRedirect(DISPLAY_ARTICLE_URL_PATTERN + "/" + articleId);
             return;

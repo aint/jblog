@@ -74,9 +74,7 @@
                 <hr>
                 <h4 align="center"><img src="${pageContext.request.contextPath}/resources/images/comment2-icon.png" height="12" width="26"><fmt:message key="public_room.label.messages" />(${fn:length(requestScope.MESSAGES)})</h4>
                 <p>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="authorName" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="authorName" /></span><br>
                     <fmt:message key="public_room.label.author_name" /><br>
                     <input type="text" value="<c:out value="${requestScope.messageAuthorField}" default="${sessionScope.userName}" />" name="messageAuthorField"><br>
                     <span style="font-size: 60%; color: grey;">a-Z, а-Я, 0-9, _, length: 3-20</span><br><br>
@@ -88,17 +86,13 @@
                         <input type="button" id="tag_link" onclick="edInsertLink(messageBodyField, 3);" value="link" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                         <input type="button" id="tag_block" onclick="edInsertTag(messageBodyField, 4);" value="b-quote" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                     </span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="body" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
                     <fmt:message key="public_room.label.message" /><br>
                     <textarea cols="55" rows="15" name="messageBodyField"><c:out value="${requestScope.messageBodyField}" /></textarea><br>
                     <span style="font-size: 60%; color: grey;">length: 2-5000</span><br>
                     <br>
-                    
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="captcha" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+
+                    <span style="color: red;"><jblog:printValidationErrors property="captcha" /></span><br>
                     <fmt:message key="public_room.label.captcha" /><br>
                     <img src="${pageContext.request.contextPath}/kaptcha.png"><br>
                     <input type="text" name="captchaAnswerField"><br>

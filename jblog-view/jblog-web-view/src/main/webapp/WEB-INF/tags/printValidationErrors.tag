@@ -23,6 +23,6 @@
 <%@ attribute name="property" required="true" rtexprvalue="true" type="java.lang.String" %>
 <%@ tag body-content="empty" %>
 
-<c:forEach var="constraint" items="${requestScope.errorMsgMap}">
+<c:forEach var="constraint" items="${requestScope.validationErrors}">
     <c:if test="${constraint.propertyPath eq property}">${constraint.message}</c:if>
 </c:forEach>

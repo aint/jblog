@@ -18,8 +18,7 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,6 +26,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +40,7 @@ import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.ArticleDto;
@@ -89,20 +88,11 @@ public class AddArticle extends HttpServlet {
         String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
 
         ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords);
-
-        Validator articleValidator = new AnnotationBasedValidator();
-        Map<String, String> errorMsgMap = new HashMap<String, String>();
-        try {
-            errorMsgMap.putAll(articleValidator.validate(articleDto));
-        } catch (ValidationException e) {
-            logger.error("Some error occured in validation", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
-
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The article's validation error messages: {}", errorMsgMap);
-            request.setAttribute("errorMsgMap", errorMsgMap);
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
+        if (!validationErrors.isEmpty()) {
+            logger.debug("The article's validation error messages: {}", validationErrors);
+            request.setAttribute("validationErrors", validationErrors);
             request.setAttribute(ARTICLE_TITLE_FIELD, articleTitle);
             request.setAttribute(ARTICLE_PREVIEW_FIELD, articlePreview);
             request.setAttribute(ARTICLE_BODY_FIELD, articleBody);
