@@ -97,8 +97,8 @@ public class Registration extends HttpServlet {
         String day = request.getParameter(DAY_FIELD);
 
         RegisterUserDto userDto = new RegisterUserDto(userName, firstName, lastName, userEmail, userPassword,
-                userRePassword, day, month, year, (Language) request.getSession(true).getAttribute(
-                        SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
+                userRePassword, day, month, year, request.getParameter(LICENSE_FIELD),
+                (Language) request.getSession(true).getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
 
         Validator userValidator = new AnnotationBasedValidator();
         Map<String, String> errorMsgMap = new HashMap<String, String>();

@@ -34,17 +34,21 @@ import com.github.aint.jblog.service.validation.annotation.FieldMatch;
  * 
  * @author Olexandr Tyshkovets
  */
-@FieldMatch(field = "captcha", matchField = "correctCaptcha", message = "{public_message.captcha.wrong}")
+@FieldMatch(field = "captchaAnswer", matchField = "captcha", message = "{public_message.captcha.wrong}")
 public class PublicMessageDto {
+
     @NotNull(message = "{public_message.author.not_null}")
     @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "{public_message.author.length}")
     @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{public_message.author.pattern}")
     private String authorName;
+
     @NotNull(message = "{public_message.body.not_null}")
     @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "{public_message.body.length}")
     private String body;
+
+    private String captchaAnswer;
+
     private String captcha;
-    private String correctCaptcha;
 
     /**
      * Constructs a {@code PublicMessageDto} with the given parameters. Trims all not-null fields.
@@ -53,16 +57,16 @@ public class PublicMessageDto {
      *            the publicMessage's authorName
      * @param body
      *            the publicMessage's body
-     * @param captcha
+     * @param captchaAnswer
      *            the CAPTCHA answer
-     * @param correctCaptcha
+     * @param captcha
      *            the correct CAPTCHA answer
      */
-    public PublicMessageDto(String authorName, String body, String captcha, String correctCaptcha) {
+    public PublicMessageDto(String authorName, String body, String captchaAnswer, String captcha) {
         this.authorName = authorName == null ? null : authorName.trim();
         this.body = body == null ? null : body.trim();
+        this.captchaAnswer = captchaAnswer == null ? null : captchaAnswer.trim();
         this.captcha = captcha == null ? null : captcha.trim();
-        this.correctCaptcha = correctCaptcha == null ? null : correctCaptcha.trim();
     }
 
     /**
@@ -99,17 +103,17 @@ public class PublicMessageDto {
     }
 
     /**
+     * @return the captchaAnswer
+     */
+    public String getCaptchaAnswer() {
+        return captchaAnswer;
+    }
+
+    /**
      * @return the captcha
      */
     public String getCaptcha() {
         return captcha;
-    }
-
-    /**
-     * @return the correctCaptcha
-     */
-    public String getCorrectCaptcha() {
-        return correctCaptcha;
     }
 
 }
