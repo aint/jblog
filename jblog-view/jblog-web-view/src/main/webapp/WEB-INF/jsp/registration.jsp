@@ -51,47 +51,35 @@
             <p>
                 <span style="color: red;"><c:out value="${requestScope.error_msg}"/></span>
             </p>
-            <div align="center">	
+            <div align="center">
                 <form action="${pageContext.request.contextPath}/registration" method="post" >
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="firstName" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="firstName" /></span><br>
                     <fmt:message key="registration.label.first_name" />:<br>
                     <input type="text" value="<c:out value="${requestScope.firstNameField}" />" name="firstNameField"><br>
                     <span style="font-size: 60%; color: grey;">a-Z, а-Я, length: 2-30</span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="lastName" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="lastName" /></span><br>
                     <fmt:message key="registration.label.last_name" />:<br>
                     <input type="text" value="<c:out value="${requestScope.lastNameField}" />" name="lastNameField"><br>
                     <span style="font-size: 60%; color: grey;">a-Z, а-Я, length: 2-30</span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="userName" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="userName" /></span><br>
                     <fmt:message key="registration.label.username" />:<br>
                     <input type="text" value="<c:out value="${requestScope.userNameField}" />" name="userNameField"><br>
                     <span style="font-size: 60%; color: grey;">a-Z, а-Я, 0-9, _, length: 3-20</span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="email" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="email" /></span><br>
                     <fmt:message key="registration.label.email" />:<br>
                     <input type="text" value="<c:out value="${requestScope.emailField}" />" name="emailField"><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="password" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="password" /></span><br>
                     <fmt:message key="registration.label.password" />:<br>
                     <input type="password" name="passwordField"><br>
                     <span style="font-size: 60%; color: grey;">length: 4-50</span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="rePassword" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="rePassword" /></span><br>
                     <fmt:message key="registration.label.re_password" />:<br>
                     <input type="password" name="rePasswordField"><br>
                     <fmt:message key="registration.label.birthday" />:<br>
                     <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="year" errorMsgMap="${requestScope.errorMsgMap}" /><br>
-                        <jblog:printValidationErrorMsg fieldName="month" errorMsgMap="${requestScope.errorMsgMap}" /><br>
-                        <jblog:printValidationErrorMsg fieldName="day" errorMsgMap="${requestScope.errorMsgMap}" />
+                        <jblog:printValidationErrors property="year" /><br>
+                        <jblog:printValidationErrors property="month" /><br>
+                        <jblog:printValidationErrors property="day" />
                     </span><br>
                     <select id="yearField" size="1" name="yearField"></select>
                     <select id="monthField" size="1" name="monthField"></select>
@@ -102,9 +90,7 @@
                             <fmt:message key="registration.label.tos_text" />
                         </div>
                     </fieldset>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="license" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="license" /></span><br>
                     <fmt:message key="registration.label.accept_the_terms" /> <input name="acceptLicenseField" type="checkbox"><br>
                     <input type="submit" value="<fmt:message key="registration.button.sign_up" />" name="registrationButton">
                 </form>

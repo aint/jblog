@@ -15,49 +15,68 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.Calendar;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.model.entity.User;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.annotation.FieldMatch;
+import com.github.aint.jblog.service.validation.annotation.Unique;
 
 /**
  * DTO for a {@link User} entity. Used for validation of a {@link User}'s data at register operation.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
+ * @see FieldMatch
+ * @see Unique
  */
+@FieldMatch(field = "password", matchField = "rePassword", message = "{register_user.password.confirmation}")
 public class RegisterUserDto {
-    @ValidField(length = @Length(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH),
-            regex = "[а-яА-Я\\w]", fieldName = "user name")
+
+    @NotNull(message = "{register_user.username.not_null}")
+    @Size(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH, message = "{register_user.username.length}")
+    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{register_user.username.pattern}")
+    @Unique(entity = User.class, field = "userName", message = "{register_user.username.duplicate}")
     private final String userName;
-    @ValidField(length = @Length(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MAX_LENGTH),
-            regex = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]", fieldName = "first name")
+
+    @NotNull(message = "{register_user.first_name.not_null}")
+    @Size(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MAX_LENGTH, message = "{register_user.first_name.length}")
+    @Pattern(regexp = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]*", message = "{register_user.first_name.pattern}")
     private final String firstName;
-    @ValidField(length = @Length(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH),
-            regex = "[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]", fieldName = "last name")
+
+    @NotNull(message = "{register_user.last_name.not_null}")
+    @Size(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH, message = "{register_user.last_name.length}")
+    @Pattern(regexp = "[[a-zA-Zа-яґєіїёА-ЯҐЄІЇЁ]]*", message = "{register_user.last_name.pattern}")
     private final String lastName;
-    @ValidField(regex = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}")
+
+    @Pattern(regexp = "[\\w-\\.]{4,25}@([a-zA-Z]{1,20}\\.){1,2}[a-z]{2,3}", message = "{register_user.email.pattern}")
+    @Unique(entity = User.class, field = "email", message = "{register_user.email.duplicate}")
     private final String email;
-    @ValidField(length = @Length(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH),
-            fieldName = "user password")
+
+    @NotNull(message = "register_user.password.not_null")
+    @Size(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH, message = "{register_user.password.length}")
     private final String password;
-    @ValidField(mustMatch = "password", fieldName = "re password")
+
     private final String rePassword;
-    @ValidField(regex = "([1-9]|[12][0-9]|3[01])")
+
+    @Pattern(regexp = "[1-9]|[12][0-9]|3[01]", message = "{register_user.day.pattern}")
     private final String day;
-    @ValidField(regex = "[1-9]|1[012]")
+
+    @Pattern(regexp = "[1-9]|1[012]", message = "{register_user.month.pattern}")
     private final String month;
-    @ValidField(regex = "(19|20)\\d\\d")
+
+    @Pattern(regexp = "(19|20)\\d\\d", message = "{register_user.year.pattern}")
     private final String year;
-    // yes, this field isn't annotated
-    private final Language language;
+
+    @NotNull(message = "{register_user.license.not_accepted}")
+    private String license;
+
+    private Language language;
 
     /**
      * Constructs a {@code RegisterUserDto} with the given parameters. Trims all not-null fields.
@@ -85,7 +104,7 @@ public class RegisterUserDto {
      * @see User
      */
     public RegisterUserDto(String userName, String firstName, String lastName, String email, String password,
-            String rePassword, String day, String month, String year, Language language) {
+            String rePassword, String day, String month, String year, String license, Language language) {
         this.userName = userName == null ? null : userName.trim();
         this.firstName = firstName == null ? null : firstName.trim();
         this.lastName = lastName == null ? null : lastName.trim();
@@ -96,6 +115,7 @@ public class RegisterUserDto {
         this.month = month == null ? null : month.trim();
         this.year = year == null ? null : year.trim();
         this.language = language;
+        this.license = license;
     }
 
     /**
@@ -176,6 +196,13 @@ public class RegisterUserDto {
      */
     public String getYear() {
         return year;
+    }
+
+    /**
+     * @return the license
+     */
+    public String isLicense() {
+        return license;
     }
 
     /**

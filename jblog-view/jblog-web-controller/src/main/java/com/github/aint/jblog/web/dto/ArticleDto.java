@@ -15,35 +15,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.github.aint.jblog.model.entity.AbstractArticle;
 import com.github.aint.jblog.model.entity.Article;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 
 /**
  * DTO for a {@link Article} entity. Used for validation of a {@link Article}'s data.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
 public class ArticleDto {
-    @ValidField(length = @Length(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH))
+
+    @NotNull(message = "{article.title.not_null}")
+    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "{article.title.length}")
     private String title;
-    @ValidField(length = @Length(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MAX_LENGTH))
+
+    @NotNull(message = "{article.preview.not_null}")
+    @Size(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MAX_LENGTH, message = "{article.preview.length}")
     private String preview;
-    @ValidField(length = @Length(min = Article.ARTICLE_BODY_MIN_LENGTH, max = Article.ARTICLE_BODY_MAX_LENGTH))
+
+    @NotNull(message = "{article.body.not_null}")
+    @Size(min = Article.ARTICLE_BODY_MIN_LENGTH, max = Article.ARTICLE_BODY_MAX_LENGTH, message = "{article.body.length}")
     private String body;
-    @ValidField(length = @Length(min = Article.ARTICLE_KEYWORDS_MIN_LENGTH, max = Article.ARTICLE_KEYWORDS_MAX_LENGTH))
+
+    @NotNull(message = "{article.keywords.not_null}")
+    @Size(min = Article.ARTICLE_KEYWORDS_MIN_LENGTH, max = Article.ARTICLE_KEYWORDS_MAX_LENGTH, message = "{article.keywords.length}")
     private String keywords;
 
     /**

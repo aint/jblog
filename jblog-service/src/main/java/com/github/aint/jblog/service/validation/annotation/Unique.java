@@ -23,33 +23,49 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import com.github.aint.jblog.model.entity.Entity;
+import com.github.aint.jblog.service.validation.validator.UniqueValidator;
+
 /**
- * This annotation used for setting the minimal and maximal length of the marking field.
+ * This annotation marks the field to check it's value for the uniqueness in a data source. Applies only to string
+ * variables.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
+ * @see UniqueValidator
  */
-@Target(value = ElementType.ANNOTATION_TYPE)
-@Retention(value = RetentionPolicy.RUNTIME)
+@Target(value = ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Length {
+@Constraint(validatedBy = UniqueValidator.class)
+public @interface Unique {
     /**
-     * The default value for the {@code min} field.
+     * The resource bundle code for error message.
      */
-    public static final int DEFAULT_MIN_LENGTH = Integer.MIN_VALUE;
+    String message();
 
     /**
-     * The default value for the {@code max} field.
+     * Sets the field name that will be checked.
      */
-    public static final int DEFAULT_MAX_LENGTH = Integer.MAX_VALUE;
+    String field();
 
     /**
-     * Sets the minimal length of the marked field.
+     * Specifies the processing groups with which the constraint declaration is associated.
      */
-    int min();
+    Class<?>[] groups() default {};
 
     /**
-     * Sets the maximal length of the marked field.
+     * Specifies the payload with which the the constraint declaration is associated. No used.
      */
-    int max();
+    Class<? extends Payload>[] payload() default {};
+
+    /**
+     * The entity which field will be checked.
+     * 
+     * @see Entity
+     */
+    Class<? extends Entity> entity();
+
 }

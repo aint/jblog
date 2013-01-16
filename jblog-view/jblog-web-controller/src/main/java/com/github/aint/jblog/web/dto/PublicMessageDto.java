@@ -15,33 +15,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.github.aint.jblog.model.entity.PublicMessage;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.annotation.FieldMatch;
 
 /**
  * DTO for a {@link PublicMessage} entity. Used for validation of a {@link PublicMessage}'s data.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
+@FieldMatch(field = "captchaAnswer", matchField = "captcha", message = "{public_message.captcha.wrong}")
 public class PublicMessageDto {
-    @ValidField(length = @Length(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH),
-            regex = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]", fieldName = "author name")
+
+    @NotNull(message = "{public_message.author.not_null}")
+    @Size(min = PublicMessage.AUTHOR_NAME_MIN_LENGTH, max = PublicMessage.AUTHOR_NAME_MAX_LENGTH, message = "{public_message.author.length}")
+    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{public_message.author.pattern}")
     private String authorName;
-    @ValidField(length = @Length(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH,
-            max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH))
+
+    @NotNull(message = "{public_message.body.not_null}")
+    @Size(min = PublicMessage.PUBLIC_MESSAGE_BODY_MIN_LENGTH, max = PublicMessage.PUBLIC_MESSAGE_BODY_MAX_LENGTH, message = "{public_message.body.length}")
     private String body;
+
+    private String captchaAnswer;
+
+    private String captcha;
 
     /**
      * Constructs a {@code PublicMessageDto} with the given parameters. Trims all not-null fields.
@@ -50,10 +57,16 @@ public class PublicMessageDto {
      *            the publicMessage's authorName
      * @param body
      *            the publicMessage's body
+     * @param captchaAnswer
+     *            the CAPTCHA answer
+     * @param captcha
+     *            the correct CAPTCHA answer
      */
-    public PublicMessageDto(String authorName, String body) {
+    public PublicMessageDto(String authorName, String body, String captchaAnswer, String captcha) {
         this.authorName = authorName == null ? null : authorName.trim();
         this.body = body == null ? null : body.trim();
+        this.captchaAnswer = captchaAnswer == null ? null : captchaAnswer.trim();
+        this.captcha = captcha == null ? null : captcha.trim();
     }
 
     /**
@@ -87,6 +100,20 @@ public class PublicMessageDto {
      */
     public String getBody() {
         return body;
+    }
+
+    /**
+     * @return the captchaAnswer
+     */
+    public String getCaptchaAnswer() {
+        return captchaAnswer;
+    }
+
+    /**
+     * @return the captcha
+     */
+    public String getCaptcha() {
+        return captcha;
     }
 
 }

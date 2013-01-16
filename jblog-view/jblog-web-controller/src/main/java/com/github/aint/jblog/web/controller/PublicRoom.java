@@ -18,14 +18,16 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +35,9 @@ import org.slf4j.LoggerFactory;
 import com.github.aint.jblog.model.dao.hibernate.PublicMessageHibernateDao;
 import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.PublicMessageDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 import com.github.aint.jblog.web.constant.ConstantHolder;
+import com.github.aint.jblog.web.dto.PublicMessageDto;
 import com.google.code.kaptcha.Constants;
 
 /**
@@ -67,25 +66,13 @@ public class PublicRoom extends HttpServlet {
             String messageBody = request.getParameter(MESSAGE_BODY_FIELD);
             String captchaAnswer = request.getParameter(CAPTCHA_ANSWER_FIELD);
 
-            PublicMessageDto messageDto = new PublicMessageDto(authorName, messageBody);
-            Validator messageValidator = new AnnotationBasedValidator();
-            Map<String, String> errorMsgMap = new HashMap<String, String>();
-            try {
-                errorMsgMap.putAll(messageValidator.validate(messageDto));
-            } catch (ValidationException e) {
-                logger.error("Some error occured in validation", e);
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
-            }
-
-            String kaptchaExpected = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-            if (captchaAnswer == null || !captchaAnswer.equalsIgnoreCase(kaptchaExpected)) {
-                errorMsgMap.put("captcha", "Wrong captcha");
-            }
-
-            if (!errorMsgMap.isEmpty()) {
-                logger.debug("The public message's validation error messages: {}", errorMsgMap);
-                request.setAttribute("errorMsgMap", errorMsgMap);
+            PublicMessageDto messageDto = new PublicMessageDto(authorName, messageBody, captchaAnswer,
+                    (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY));
+            Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+            Set<ConstraintViolation<PublicMessageDto>> validationErrors = validator.validate(messageDto);
+            if (!validationErrors.isEmpty()) {
+                logger.debug("The public message's validation error messages: {}", validationErrors);
+                request.setAttribute("validationErrors", validationErrors);
                 request.setAttribute(MESSAGE_AUTHOR_FIELD, authorName);
                 request.setAttribute(MESSAGE_BODY_FIELD, messageBody);
             } else {

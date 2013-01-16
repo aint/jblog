@@ -15,34 +15,37 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation.dto;
+package com.github.aint.jblog.web.dto;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.github.aint.jblog.model.entity.AbstractArticle;
 import com.github.aint.jblog.model.entity.News;
 import com.github.aint.jblog.model.entity.NewsImportance;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.annotation.Length;
-import com.github.aint.jblog.service.validation.annotation.ValidField;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
 
 /**
  * DTO for a {@link News} entity. Used for validation of a {@link News}'s data.
  * 
  * @author Olexandr Tyshkovets
- * @see ValidField
- * @see Length
- * @see AnnotationBasedValidator
  */
 public class NewsDto {
-    @ValidField(length = @Length(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH))
+
+    @NotNull(message = "{news.title.not_null}")
+    @Size(min = AbstractArticle.TITLE_MIN_LENGTH, max = AbstractArticle.TITLE_MAX_LENGTH, message = "{news.title.length}")
     private String title;
-    @ValidField(length = @Length(min = News.NEWS_BODY_MIN_LENGTH, max = News.NEWS_BODY_MAX_LENGTH))
+
+    @NotNull(message = "{news.body.not_null}")
+    @Size(min = News.NEWS_BODY_MIN_LENGTH, max = News.NEWS_BODY_MAX_LENGTH, message = "{news.body.length}")
     private String body;
-    @ValidField(regex = "(minor|intermediate|major)")
+
+    @Pattern(regexp = "(minor|intermediate|major)", message = "{news.importance.pattern}")
     private String importance;
 
     /**

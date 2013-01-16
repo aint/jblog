@@ -121,9 +121,7 @@
                     <input type="button" id="tag_link" onclick="edInsertLink(commentBodyField, 3);" value="link" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                     <input type="button" id="tag_block" onclick="edInsertTag(commentBodyField, 4);" value="b-quote" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                 </span><br>
-                <span style="color: red;">
-                    <jblog:printValidationErrorMsg fieldName="body" errorMsgMap="${requestScope.errorMsgMap}" />
-                </span><br>
+                <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
                 <fmt:message key="display_article.label.comment" /><br>
                 <textarea cols="55" rows="15" name="commentBodyField"><c:out value="${requestScope.commentBodyField}" /></textarea><br>
                 <span style="font-size: 60%; color: grey;">length: 2-5000</span><br>

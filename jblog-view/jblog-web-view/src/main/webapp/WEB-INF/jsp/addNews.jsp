@@ -47,16 +47,12 @@
             <h3 align="center"><fmt:message key="add_news.title" /></h3>
             <form action="${pageContext.request.contextPath}/add-news" method="post" name="addNewsForm">
                 <p>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="title" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="title" /></span><br>
                     <b><fmt:message key="add_news.label.title" /></b><br>
                     <input type="text" size="80" value="<c:out value="${requestScope.newsTitleField}" />" name="newsTitleField"><br>
                     <span style="font-size: 60%; color: grey;">length: 5-75</span><br>
                     
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="importance" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="importance" /></span><br>
                     <b><fmt:message key="add_news.label.news_importance" /></b><br>
                     <select name="newsImportanceField">
                         <option value="minor"><fmt:message key="add_news.label.news_importance.minor" /></option>
@@ -71,9 +67,7 @@
                         <input type="button" id="tag_link" onclick="edInsertLink(newsBodyField, 3);" value="link" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                         <input type="button" id="tag_block" onclick="edInsertTag(newsBodyField, 4);" value="b-quote" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                     </span><br>
-                    <span style="color: red;">
-                        <jblog:printValidationErrorMsg fieldName="body" errorMsgMap="${requestScope.errorMsgMap}" />
-                    </span><br>
+                    <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
                     <b><fmt:message key="add_news.label.body" /></b><br>
                     <textarea rows="33" cols="85" name="newsBodyField"><c:out value="${requestScope.newsBodyField}" /></textarea><br>
                     <span style="font-size: 60%; color: grey;">min length: 10, max length: 2000</span><br>

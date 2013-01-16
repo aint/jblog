@@ -15,30 +15,28 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.github.aint.jblog.service.validation;
+package com.github.aint.jblog.model.dao;
 
-import java.util.Map;
-
-import com.github.aint.jblog.service.exception.validator.ValidationException;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.model.entity.Entity;
 
 /**
- * This interface represents a factory method to validate an object.
+ * This interface represents the method to check the existence of objects in a data source.
  * 
  * @author Olexandr Tyshkovets
- * @see AnnotationBasedValidator
  */
-public interface Validator {
+public interface ValidatorDao {
     /**
-     * This method validates the given {@code object}.
+     * Checks whether exists the {@code entity} with the given {@code value} of the {@code field}.
      * 
-     * @param object
-     *            an object for validation
-     * @return an unmodifiable view of a {@link Map} of error messages or an empty {@code Map} if there's none. The
-     *         {@code Map}'s keys - names of the {@code object}'s fields
-     * @throws ValidationException
-     *             if an error has occurred while performing a validate operation
+     * @param entity
+     *            the entity which will be checked
+     * @param field
+     *            the field which will be checked
+     * @param value
+     *            the value which will be checked
+     * @return {@code true} if the {@code entity} with the given {@code value} of the {@code field} exists;
+     *         {@code false} otherwise
      */
-    <T> Map<String, String> validate(T object) throws ValidationException;
+    <T> boolean isExist(Class<? extends Entity> entity, String field, T value);
 
 }
