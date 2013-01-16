@@ -77,8 +77,8 @@
                     <span style="color: red;"><jblog:printValidationErrors property="authorName" /></span><br>
                     <fmt:message key="public_room.label.author_name" /><br>
                     <input type="text" value="<c:out value="${requestScope.messageAuthorField}" default="${sessionScope.userName}" />" name="messageAuthorField"><br>
-                    <span style="font-size: 60%; color: grey;">a-Z, а-Я, 0-9, _, length: 3-20</span><br><br>
-                    
+                    <span style="font-size: 60%; color: grey;">a-Z, а-Я, 0-9, _, length: 1-20</span><br><br>
+
                     <span id="tag_toolbar">
                         <input type="button" id="tag_bold" onclick="edInsertTag(messageBodyField, 0);" value="b" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                         <input type="button" id="tag_italic" onclick="edInsertTag(messageBodyField, 1);" value="i" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">

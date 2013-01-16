@@ -40,7 +40,7 @@ public class ArticleDto {
     private String title;
 
     @NotNull(message = "{article.preview.not_null}")
-    @Size(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MIN_LENGTH, message = "{article.preview.length}")
+    @Size(min = Article.ARTICLE_PREVIEW_MIN_LENGTH, max = Article.ARTICLE_PREVIEW_MAX_LENGTH, message = "{article.preview.length}")
     private String preview;
 
     @NotNull(message = "{article.body.not_null}")
