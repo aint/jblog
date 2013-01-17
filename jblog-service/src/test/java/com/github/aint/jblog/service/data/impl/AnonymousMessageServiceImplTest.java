@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.github.aint.jblog.model.dao.PublicMessageDao;
+import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
@@ -45,7 +45,7 @@ public class AnonymousMessageServiceImplTest {
     private static final Long ANONYMOUS_MESSAGE_ID = 1L;
     private PublicMessageService publicMessageService;
     @Mock
-    private PublicMessageDao publicMessageDao;
+    private AnonymousMessageDao publicMessageDao;
 
     @BeforeMethod
     public void beforeMethod() {

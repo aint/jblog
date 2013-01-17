@@ -29,7 +29,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.github.aint.jblog.model.dao.PublicMessageDao;
+import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.model.util.EntityFactory;
 import com.github.aint.jblog.model.util.HibernateUtil;
@@ -38,13 +38,13 @@ import com.github.aint.jblog.model.util.HibernateUtil;
  * @author Olexandr Tyshkovets
  */
 public class AnonymousMessageHibernateDaoTest {
-    private PublicMessageDao publicMessageDao;
+    private AnonymousMessageDao anonymousMessageDao;
     private Session session;
 
     @BeforeClass
     public void beforeClass() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        publicMessageDao = new PublicMessageHibernateDao(sessionFactory);
+        anonymousMessageDao = new AnonymousMessageHibernateDao(sessionFactory);
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
     }
@@ -59,7 +59,7 @@ public class AnonymousMessageHibernateDaoTest {
     @Test
     public void create() {
         final AnonymousMessage am = getAnonymousMessage(1).get(0);
-        publicMessageDao.save(am);
+        anonymousMessageDao.save(am);
         session.evict(am);
 
         assertEquals(session.get(AnonymousMessage.class, am.getId()), am);
@@ -70,12 +70,12 @@ public class AnonymousMessageHibernateDaoTest {
         final AnonymousMessage am = getAnonymousMessage(1).get(0);
         session.save(am);
 
-        assertEquals(publicMessageDao.get(am.getId()), am);
+        assertEquals(anonymousMessageDao.get(am.getId()), am);
     }
 
     @Test
     public void getNotFound() {
-        assertNull(publicMessageDao.get(-10000L));
+        assertNull(anonymousMessageDao.get(-10000L));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class AnonymousMessageHibernateDaoTest {
             session.save(am);
         }
 
-        assertEquals(publicMessageDao.getAll(), messages);
+        assertEquals(anonymousMessageDao.getAll(), messages);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class AnonymousMessageHibernateDaoTest {
             session.save(am);
         }
 
-        assertEquals(publicMessageDao.getAllOnPage(1, 3, true), messages.subList(0, 3));
+        assertEquals(anonymousMessageDao.getAllOnPage(1, 3, true), messages.subList(0, 3));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class AnonymousMessageHibernateDaoTest {
             session.save(am);
         }
 
-        assertEquals(publicMessageDao.getCount(), Long.valueOf(messages.size()));
+        assertEquals(anonymousMessageDao.getCount(), Long.valueOf(messages.size()));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class AnonymousMessageHibernateDaoTest {
         session.save(am);
         session.evict(am);
 
-        publicMessageDao.delete(am.getId());
+        anonymousMessageDao.delete(am.getId());
         assertNull(session.get(AnonymousMessage.class, am.getId()));
     }
 
@@ -124,7 +124,7 @@ public class AnonymousMessageHibernateDaoTest {
         session.save(am);
         session.evict(am);
 
-        publicMessageDao.delete(am);
+        anonymousMessageDao.delete(am);
         assertNull(session.get(AnonymousMessage.class, am.getId()));
     }
 

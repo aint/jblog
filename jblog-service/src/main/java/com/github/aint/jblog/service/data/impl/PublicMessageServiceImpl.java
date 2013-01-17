@@ -20,7 +20,7 @@ package com.github.aint.jblog.service.data.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.github.aint.jblog.model.dao.PublicMessageDao;
+import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundException;
@@ -32,16 +32,16 @@ import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundExce
  * @see PublicMessageService
  */
 public class PublicMessageServiceImpl implements PublicMessageService {
-    private final PublicMessageDao publicMessageDao;
+    private final AnonymousMessageDao publicMessageDao;
 
     /**
      * Constructs a {@code PublicMessageServiceImpl} with the given {@code publicMessageDao}.
      * 
      * @param publicMessageDao
      *            the object, which necessary for operations with a data source
-     * @see PublicMessageDao
+     * @see AnonymousMessageDao
      */
-    public PublicMessageServiceImpl(PublicMessageDao publicMessageDao) {
+    public PublicMessageServiceImpl(AnonymousMessageDao publicMessageDao) {
         this.publicMessageDao = publicMessageDao;
     }
 

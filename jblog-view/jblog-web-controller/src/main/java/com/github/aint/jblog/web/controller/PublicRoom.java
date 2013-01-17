@@ -32,7 +32,7 @@ import javax.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.aint.jblog.model.dao.hibernate.PublicMessageHibernateDao;
+import com.github.aint.jblog.model.dao.hibernate.AnonymousMessageHibernateDao;
 import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
 import com.github.aint.jblog.service.util.HibernateUtil;
@@ -77,12 +77,12 @@ public class PublicRoom extends HttpServlet {
                 request.setAttribute(MESSAGE_BODY_FIELD, messageBody);
             } else {
                 PublicMessageService messageService = new PublicMessageServiceImpl(
-                        new PublicMessageHibernateDao(HibernateUtil.getSessionFactory()));
+                        new AnonymousMessageHibernateDao(HibernateUtil.getSessionFactory()));
                 messageService.add(messageDto.createAnonymousMessage());
             }
         }
 
-        PublicMessageService messageService = new PublicMessageServiceImpl(new PublicMessageHibernateDao(
+        PublicMessageService messageService = new PublicMessageServiceImpl(new AnonymousMessageHibernateDao(
                 HibernateUtil.getSessionFactory()));
         request.setAttribute("MESSAGES", messageService.getAll());
 

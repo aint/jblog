@@ -22,25 +22,25 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.github.aint.jblog.model.dao.PublicMessageDao;
+import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
 
 /**
- * This class is hibernate implementation of the {@code PublicMessageDao} interface.
+ * This class is hibernate implementation of the {@code AnonymousMessageDao} interface.
  * 
  * @author Olexandr Tyshkovets
- * @see PublicMessageDao
+ * @see AnonymousMessageDao
  */
-public class PublicMessageHibernateDao implements PublicMessageDao {
+public class AnonymousMessageHibernateDao implements AnonymousMessageDao {
     private final SessionFactory sessionFactory;
 
     /**
-     * Constructs a {@code PublicMessageHibernateDao} with the given {@code sessionFactory}.
+     * Constructs a {@code AnonymousMessageHibernateDao} with the given {@code sessionFactory}.
      * 
      * @param sessionFactory
      *            hibernate SessionFactory
      */
-    public PublicMessageHibernateDao(SessionFactory sessionFactory) {
+    public AnonymousMessageHibernateDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
