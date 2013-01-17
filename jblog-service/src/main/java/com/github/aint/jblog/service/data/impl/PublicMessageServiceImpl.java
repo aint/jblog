@@ -21,9 +21,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.aint.jblog.model.dao.PublicMessageDao;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.data.PublicMessageService;
-import com.github.aint.jblog.service.exception.data.PublicMessageNotFoundException;
+import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundException;
 
 /**
  * This class implementing the {@code PublicMessageService} interface.
@@ -49,30 +49,31 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      * {@inheritDoc}
      */
     @Override
-    public PublicMessage add(PublicMessage publicMessage) {
-        publicMessage.setCreationDate(new Date());
-        publicMessageDao.save(publicMessage);
+    public AnonymousMessage add(AnonymousMessage anonymousMessage) {
+        anonymousMessage.setCreationDate(new Date());
+        publicMessageDao.save(anonymousMessage);
 
-        return publicMessage;
+        return anonymousMessage;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PublicMessage get(Long id) throws PublicMessageNotFoundException {
-        PublicMessage publicMessage = publicMessageDao.get(id);
-        if (publicMessage == null) {
-            throw new PublicMessageNotFoundException("The public message with the given id: " + id + " was not found");
+    public AnonymousMessage get(Long id) throws AnonymousMessageNotFoundException {
+        AnonymousMessage anonymousMessage = publicMessageDao.get(id);
+        if (anonymousMessage == null) {
+            throw new AnonymousMessageNotFoundException("The anonymous message with the given id: " + id
+                    + " was not found");
         }
-        return publicMessage;
+        return anonymousMessage;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<PublicMessage> getAll() {
+    public List<AnonymousMessage> getAll() {
         return publicMessageDao.getAll();
     }
 
@@ -80,7 +81,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      * {@inheritDoc}
      */
     @Override
-    public List<PublicMessage> getAllOnPage(int pageNumber, int pageSize, boolean head) {
+    public List<AnonymousMessage> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("pageNumber cant'be <= 0");
         }

@@ -37,7 +37,7 @@ import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.web.constant.ConstantHolder;
-import com.github.aint.jblog.web.dto.PublicMessageDto;
+import com.github.aint.jblog.web.dto.AnonymousMessageDto;
 import com.google.code.kaptcha.Constants;
 
 /**
@@ -66,19 +66,19 @@ public class PublicRoom extends HttpServlet {
             String messageBody = request.getParameter(MESSAGE_BODY_FIELD);
             String captchaAnswer = request.getParameter(CAPTCHA_ANSWER_FIELD);
 
-            PublicMessageDto messageDto = new PublicMessageDto(authorName, messageBody, captchaAnswer,
+            AnonymousMessageDto messageDto = new AnonymousMessageDto(authorName, messageBody, captchaAnswer,
                     (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY));
             Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-            Set<ConstraintViolation<PublicMessageDto>> validationErrors = validator.validate(messageDto);
+            Set<ConstraintViolation<AnonymousMessageDto>> validationErrors = validator.validate(messageDto);
             if (!validationErrors.isEmpty()) {
-                logger.debug("The public message's validation error messages: {}", validationErrors);
+                logger.debug("The anonymous message's validation error messages: {}", validationErrors);
                 request.setAttribute("validationErrors", validationErrors);
                 request.setAttribute(MESSAGE_AUTHOR_FIELD, authorName);
                 request.setAttribute(MESSAGE_BODY_FIELD, messageBody);
             } else {
                 PublicMessageService messageService = new PublicMessageServiceImpl(
                         new PublicMessageHibernateDao(HibernateUtil.getSessionFactory()));
-                messageService.add(messageDto.createPublicMessage());
+                messageService.add(messageDto.createAnonymousMessage());
             }
         }
 

@@ -23,7 +23,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.github.aint.jblog.model.dao.PublicMessageDao;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 
 /**
  * This class is hibernate implementation of the {@code PublicMessageDao} interface.
@@ -48,7 +48,7 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
      * {@inheritDoc}
      */
     @Override
-    public void save(PublicMessage entity) {
+    public void save(AnonymousMessage entity) {
         getSession().save(entity);
     }
 
@@ -56,8 +56,8 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
      * {@inheritDoc}
      */
     @Override
-    public PublicMessage get(Long id) {
-        return (PublicMessage) getSession().get(PublicMessage.class, id);
+    public AnonymousMessage get(Long id) {
+        return (AnonymousMessage) getSession().get(AnonymousMessage.class, id);
     }
 
     /**
@@ -65,8 +65,8 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<PublicMessage> getAll() {
-        return getSession().createQuery("from PublicMessage").list();
+    public List<AnonymousMessage> getAll() {
+        return getSession().createQuery("from AnonymousMessage").list();
     }
 
     /**
@@ -74,9 +74,9 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<PublicMessage> getAllOnPage(int pageNumber, int pageSize, boolean head) {
+    public List<AnonymousMessage> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from PublicMessage order by id " + (head == true ? "asc" : "desc"))
+                .createQuery("from AnonymousMessage order by id " + (head == true ? "asc" : "desc"))
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -88,7 +88,7 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from PublicMessage")
+                .createQuery("select count(*) from AnonymousMessage")
                 .iterate()
                 .next();
     }
@@ -99,7 +99,7 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
     @Override
     public void delete(Long id) {
         getSession()
-                .createQuery("delete PublicMessage where id = ?")
+                .createQuery("delete AnonymousMessage where id = ?")
                 .setLong(0, id)
                 .executeUpdate();
     }
@@ -108,7 +108,7 @@ public class PublicMessageHibernateDao implements PublicMessageDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(PublicMessage entity) {
+    public void delete(AnonymousMessage entity) {
         getSession().delete(entity);
     }
 

@@ -33,16 +33,16 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.github.aint.jblog.model.dao.PublicMessageDao;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.data.PublicMessageService;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
-import com.github.aint.jblog.service.exception.data.PublicMessageNotFoundException;
+import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundException;
 
 /**
  * @author Olexandr Tyshkovets
  */
-public class PublicMessageServiceImplTest {
-    private static final Long PUBLIC_MESSAGE_ID = 1L;
+public class AnonymousMessageServiceImplTest {
+    private static final Long ANONYMOUS_MESSAGE_ID = 1L;
     private PublicMessageService publicMessageService;
     @Mock
     private PublicMessageDao publicMessageDao;
@@ -57,37 +57,37 @@ public class PublicMessageServiceImplTest {
 
     @Test
     public void add() {
-        final PublicMessage pm = getPublicMessage();
-        publicMessageService.add(pm);
+        final AnonymousMessage am = getAnonymousMessage();
+        publicMessageService.add(am);
 
-        assertNotNull(pm.getCreationDate());
+        assertNotNull(am.getCreationDate());
 
-        verify(publicMessageDao).save(pm);
+        verify(publicMessageDao).save(am);
     }
 
     /* ===== common methods ===== */
 
     @Test
     public void get() throws EntityNotFoundException {
-        final PublicMessage expected = getPublicMessage();
-        when(publicMessageDao.get(PUBLIC_MESSAGE_ID)).thenReturn(expected);
+        final AnonymousMessage expected = getAnonymousMessage();
+        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(expected);
 
-        assertEquals(publicMessageService.get(PUBLIC_MESSAGE_ID), expected);
+        assertEquals(publicMessageService.get(ANONYMOUS_MESSAGE_ID), expected);
 
-        verify(publicMessageDao).get(PUBLIC_MESSAGE_ID);
+        verify(publicMessageDao).get(ANONYMOUS_MESSAGE_ID);
     }
 
-    @Test(expectedExceptions = PublicMessageNotFoundException.class)
+    @Test(expectedExceptions = AnonymousMessageNotFoundException.class)
     public void getNotFound() throws EntityNotFoundException {
-        when(publicMessageDao.get(PUBLIC_MESSAGE_ID)).thenReturn(null);
+        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
 
-        publicMessageService.get(PUBLIC_MESSAGE_ID);
+        publicMessageService.get(ANONYMOUS_MESSAGE_ID);
     }
 
     @Test
     public void getAll() {
-        final List<PublicMessage> expected = new ArrayList<PublicMessage>(Arrays.asList(getPublicMessage(),
-                getPublicMessage(), getPublicMessage()));
+        final List<AnonymousMessage> expected = new ArrayList<AnonymousMessage>(Arrays.asList(getAnonymousMessage(),
+                getAnonymousMessage(), getAnonymousMessage()));
         when(publicMessageDao.getAll()).thenReturn(expected);
 
         assertEquals(publicMessageService.getAll(), expected);
@@ -97,8 +97,8 @@ public class PublicMessageServiceImplTest {
 
     @Test
     public void getAllOnPage() {
-        final List<PublicMessage> expected = new ArrayList<PublicMessage>(Arrays.asList(getPublicMessage(),
-                getPublicMessage()));
+        final List<AnonymousMessage> expected = new ArrayList<AnonymousMessage>(Arrays.asList(getAnonymousMessage(),
+                getAnonymousMessage()));
         when(publicMessageDao.getAllOnPage(1, 5, true)).thenReturn(expected);
 
         assertEquals(publicMessageService.getAllOnPage(1, 5, true), expected);
@@ -118,16 +118,16 @@ public class PublicMessageServiceImplTest {
 
     @Test
     public void isExist() {
-        when(publicMessageDao.get(PUBLIC_MESSAGE_ID)).thenReturn(null);
+        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
 
-        assertEquals(publicMessageService.isExist(PUBLIC_MESSAGE_ID), false);
+        assertEquals(publicMessageService.isExist(ANONYMOUS_MESSAGE_ID), false);
     }
 
-    private PublicMessage getPublicMessage() {
-        PublicMessage pm = new PublicMessage("body", "authorName");
-        pm.setId(PUBLIC_MESSAGE_ID);
-        pm.setCreationDate(new Date());
-        return pm;
+    private AnonymousMessage getAnonymousMessage() {
+        AnonymousMessage am = new AnonymousMessage("body", "authorName");
+        am.setId(ANONYMOUS_MESSAGE_ID);
+        am.setCreationDate(new Date());
+        return am;
     }
 
 }

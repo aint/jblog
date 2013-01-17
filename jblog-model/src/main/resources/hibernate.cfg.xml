@@ -43,10 +43,10 @@
     <property name="hibernate.c3p0.idle_test_period">3000</property>
     <property name="hibernate.c3p0.validate">30</property>
 
+    <mapping class="com.github.aint.jblog.model.entity.AnonymousMessage" />
     <mapping class="com.github.aint.jblog.model.entity.Article" />
     <mapping class="com.github.aint.jblog.model.entity.Comment" />
     <mapping class="com.github.aint.jblog.model.entity.News" />
-    <mapping class="com.github.aint.jblog.model.entity.PublicMessage" />
     <mapping class="com.github.aint.jblog.model.entity.User" />
     <mapping class="com.github.aint.jblog.model.entity.VoiceForArticle" />
     <mapping class="com.github.aint.jblog.model.entity.VoiceForComment" />

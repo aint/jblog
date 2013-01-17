@@ -19,24 +19,24 @@ package com.github.aint.jblog.service.util.impl;
 
 import java.util.Comparator;
 
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.util.EntityComparatorFactory;
 
 /**
- * This class provides a {@link PublicMessage}'s comparators which sort by time and id.
+ * This class provides an {@link AnonymousMessage}'s comparators which sort by time and id.
  * 
  * @author Olexandr Tyshkovets
  * @see EntityComparatorFactory
  */
-public class PublicMessageComparatorFactory implements EntityComparatorFactory<PublicMessage> {
+public class PublicMessageComparatorFactory implements EntityComparatorFactory<AnonymousMessage> {
     /**
      * {@inheritDoc}
      */
     @Override
-    public Comparator<PublicMessage> getDateComparator() {
-        Comparator<PublicMessage> comparator = new Comparator<PublicMessage>() {
+    public Comparator<AnonymousMessage> getDateComparator() {
+        Comparator<AnonymousMessage> comparator = new Comparator<AnonymousMessage>() {
             @Override
-            public int compare(PublicMessage m1, PublicMessage m2) {
+            public int compare(AnonymousMessage m1, AnonymousMessage m2) {
                 return m1.getCreationDate().compareTo(m2.getCreationDate());
             }
         };
@@ -47,10 +47,10 @@ public class PublicMessageComparatorFactory implements EntityComparatorFactory<P
      * {@inheritDoc}
      */
     @Override
-    public Comparator<PublicMessage> getIdComparator() {
-        Comparator<PublicMessage> comparator = new Comparator<PublicMessage>() {
+    public Comparator<AnonymousMessage> getIdComparator() {
+        Comparator<AnonymousMessage> comparator = new Comparator<AnonymousMessage>() {
             @Override
-            public int compare(PublicMessage m1, PublicMessage m2) {
+            public int compare(AnonymousMessage m1, AnonymousMessage m2) {
                 return m1.getId().compareTo(m2.getId());
             }
         };
@@ -58,24 +58,24 @@ public class PublicMessageComparatorFactory implements EntityComparatorFactory<P
     }
 
     /**
-     * This method not implemented because a {@code PublicMessage} doesn't have the name.
+     * This method not implemented because an {@code AnonymousMessage} doesn't have the name.
      * 
      * @throws UnsupportedOperationException
      *             always
      */
     @Override
-    public Comparator<PublicMessage> getNameComparator() {
-        throw new UnsupportedOperationException("public message hasn't the name");
+    public Comparator<AnonymousMessage> getNameComparator() {
+        throw new UnsupportedOperationException("Anonymous message hasn't the name");
     }
 
     /**
-     * This method not implemented because a {@code PublicMessage} doesn't have the rating.
+     * This method not implemented because an {@code AnonymousMessage} doesn't have the rating.
      * 
      * @throws UnsupportedOperationException
      *             always
      */
     @Override
-    public Comparator<PublicMessage> getRatingComparator() {
-        throw new UnsupportedOperationException("public message hasn't the rating");
+    public Comparator<AnonymousMessage> getRatingComparator() {
+        throw new UnsupportedOperationException("Anonymous message hasn't the rating");
     }
 }
