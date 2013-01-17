@@ -22,7 +22,7 @@ import java.util.Date;
 import com.github.aint.jblog.model.entity.Article;
 import com.github.aint.jblog.model.entity.Comment;
 import com.github.aint.jblog.model.entity.News;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.model.entity.User;
 
 /**
@@ -58,10 +58,10 @@ public final class EntityFactory {
         return comment;
     }
 
-    public static PublicMessage getDefaultPublicMessage() {
-        PublicMessage pm = new PublicMessage("body", "authorName");
-        pm.setCreationDate(new Date());
-        return pm;
+    public static AnonymousMessage getDefaultAnonymousMessage() {
+        AnonymousMessage am = new AnonymousMessage("body", "authorName");
+        am.setCreationDate(new Date());
+        return am;
     }
 
     public static News getDefaultNews(User author) {

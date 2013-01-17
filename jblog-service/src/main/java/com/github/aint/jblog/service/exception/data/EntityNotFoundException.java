@@ -29,7 +29,7 @@ import com.github.aint.jblog.service.data.GenericEntityService;
  * @see ArticleNotFoundException
  * @see CommentNotFoundException
  * @see NewsNotFoundException
- * @see PublicMessageNotFoundException
+ * @see AnonymousMessageNotFoundException
  * @see UserNotFoundException
  * @see GenericEntityService#get(Long)
  */

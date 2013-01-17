@@ -28,7 +28,7 @@ import javax.persistence.MappedSuperclass;
  * @author Olexandr Tyshkovets
  * @see AbstractArticle
  * @see Comment
- * @see PublicMessage
+ * @see AnonymousMessage
  */
 @MappedSuperclass
 public abstract class AbstractTextEntity implements Entity {
