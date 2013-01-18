@@ -29,109 +29,109 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.github.aint.jblog.model.dao.PublicMessageDao;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.dao.AnonymousMessageDao;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.model.util.EntityFactory;
 import com.github.aint.jblog.model.util.HibernateUtil;
 
 /**
  * @author Olexandr Tyshkovets
  */
-public class PublicMessageHibernateDaoTest {
-    private PublicMessageDao publicMessageDao;
+public class AnonymousMessageHibernateDaoTest {
+    private AnonymousMessageDao anonymousMessageDao;
     private Session session;
 
     @BeforeClass
     public void beforeClass() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        publicMessageDao = new PublicMessageHibernateDao(sessionFactory);
+        anonymousMessageDao = new AnonymousMessageHibernateDao(sessionFactory);
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
     }
 
     @AfterMethod
     public void afterMethod() {
-        session.createQuery("DELETE PublicMessage").executeUpdate();
+        session.createQuery("DELETE AnonymousMessage").executeUpdate();
     }
 
     /* ----- common methods ----- */
 
     @Test
     public void create() {
-        final PublicMessage pm = getPublicMessage(1).get(0);
-        publicMessageDao.save(pm);
-        session.evict(pm);
+        final AnonymousMessage am = getAnonymousMessage(1).get(0);
+        anonymousMessageDao.save(am);
+        session.evict(am);
 
-        assertEquals(session.get(PublicMessage.class, pm.getId()), pm);
+        assertEquals(session.get(AnonymousMessage.class, am.getId()), am);
     }
 
     @Test
     public void get() {
-        final PublicMessage pm = getPublicMessage(1).get(0);
-        session.save(pm);
+        final AnonymousMessage am = getAnonymousMessage(1).get(0);
+        session.save(am);
 
-        assertEquals(publicMessageDao.get(pm.getId()), pm);
+        assertEquals(anonymousMessageDao.get(am.getId()), am);
     }
 
     @Test
     public void getNotFound() {
-        assertNull(publicMessageDao.get(-10000L));
+        assertNull(anonymousMessageDao.get(-10000L));
     }
 
     @Test
     public void getAll() {
-        final List<PublicMessage> pmList = getPublicMessage(5);
-        for (PublicMessage pm : pmList) {
-            session.save(pm);
+        final List<AnonymousMessage> messages = getAnonymousMessage(5);
+        for (AnonymousMessage am : messages) {
+            session.save(am);
         }
 
-        assertEquals(publicMessageDao.getAll(), pmList);
+        assertEquals(anonymousMessageDao.getAll(), messages);
     }
 
     @Test
     public void getAllOnPage() {
-        final List<PublicMessage> pmList = getPublicMessage(5);
-        for (PublicMessage pm : pmList) {
-            session.save(pm);
+        final List<AnonymousMessage> messages = getAnonymousMessage(5);
+        for (AnonymousMessage am : messages) {
+            session.save(am);
         }
 
-        assertEquals(publicMessageDao.getAllOnPage(1, 3, true), pmList.subList(0, 3));
+        assertEquals(anonymousMessageDao.getAllOnPage(1, 3, true), messages.subList(0, 3));
     }
 
     @Test
     public void getCount() {
-        final List<PublicMessage> pmList = getPublicMessage(5);
-        for (PublicMessage pm : pmList) {
-            session.save(pm);
+        final List<AnonymousMessage> messages = getAnonymousMessage(5);
+        for (AnonymousMessage am : messages) {
+            session.save(am);
         }
 
-        assertEquals(publicMessageDao.getCount(), Long.valueOf(pmList.size()));
+        assertEquals(anonymousMessageDao.getCount(), Long.valueOf(messages.size()));
     }
 
     @Test
     public void deleteById() {
-        final PublicMessage pm = getPublicMessage(1).get(0);
-        session.save(pm);
-        session.evict(pm);
+        final AnonymousMessage am = getAnonymousMessage(1).get(0);
+        session.save(am);
+        session.evict(am);
 
-        publicMessageDao.delete(pm.getId());
-        assertNull(session.get(PublicMessage.class, pm.getId()));
+        anonymousMessageDao.delete(am.getId());
+        assertNull(session.get(AnonymousMessage.class, am.getId()));
     }
 
     @Test
     public void deleteByObject() {
-        final PublicMessage pm = getPublicMessage(1).get(0);
-        session.save(pm);
-        session.evict(pm);
+        final AnonymousMessage am = getAnonymousMessage(1).get(0);
+        session.save(am);
+        session.evict(am);
 
-        publicMessageDao.delete(pm);
-        assertNull(session.get(PublicMessage.class, pm.getId()));
+        anonymousMessageDao.delete(am);
+        assertNull(session.get(AnonymousMessage.class, am.getId()));
     }
 
-    private List<PublicMessage> getPublicMessage(int count) {
-        List<PublicMessage> messages = new ArrayList<PublicMessage>();
+    private List<AnonymousMessage> getAnonymousMessage(int count) {
+        List<AnonymousMessage> messages = new ArrayList<AnonymousMessage>();
         for (int i = 0; i < count; i++) {
-            messages.add(EntityFactory.getDefaultPublicMessage());
+            messages.add(EntityFactory.getDefaultAnonymousMessage());
         }
 
         return messages;

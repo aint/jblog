@@ -17,15 +17,15 @@
  */
 package com.github.aint.jblog.model.dao;
 
-import com.github.aint.jblog.model.dao.hibernate.PublicMessageHibernateDao;
-import com.github.aint.jblog.model.entity.PublicMessage;
+import com.github.aint.jblog.model.dao.hibernate.AnonymousMessageHibernateDao;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 
 /**
- * This interface represents persistence methods for {@link PublicMessage} objects.
+ * This interface represents persistence methods for {@link AnonymousMessage} objects.
  * 
  * @author Olexandr Tyshkovets
  * @see GenericDao
- * @see PublicMessageHibernateDao
+ * @see AnonymousMessageHibernateDao
  */
-public interface PublicMessageDao extends GenericDao<PublicMessage> {
+public interface AnonymousMessageDao extends GenericDao<AnonymousMessage> {
 }

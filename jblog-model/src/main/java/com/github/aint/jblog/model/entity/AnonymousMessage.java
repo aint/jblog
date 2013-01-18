@@ -23,51 +23,51 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class stores the information about a public message.
+ * This class stores the information about an anonymous message.
  * 
  * @author Olexandr Tyshkovets
  * @see Entity
  * @see AbstractTextEntity
  */
 @javax.persistence.Entity
-@Table(name = "PUBLIC_MESSAGE")
-public class PublicMessage extends AbstractTextEntity implements Entity, Comparable<PublicMessage> {
+@Table(name = "ANONYMOUS_MESSAGE")
+public class AnonymousMessage extends AbstractTextEntity implements Entity, Comparable<AnonymousMessage> {
     private static final long serialVersionUID = -4838968789838901557L;
     private Long id;
     private String authorName;
 
     /**
-     * The minimum length of the public message's author's name.
+     * The minimum length of the anonymous message's author's name.
      */
     public static final int AUTHOR_NAME_MIN_LENGTH = 1;
     /**
-     * The maximum length of the public message's author's name.
+     * The maximum length of the anonymous message's author's name.
      */
     public static final int AUTHOR_NAME_MAX_LENGTH = 20;
     /**
-     * The minimum length of the public message's body.
+     * The minimum length of the anonymous message's body.
      */
-    public static final int PUBLIC_MESSAGE_BODY_MIN_LENGTH = 2;
+    public static final int ANONYMOUS_MESSAGE_BODY_MIN_LENGTH = 2;
     /**
-     * The maximum length of the public message's body.
+     * The maximum length of the anonymous message's body.
      */
-    public static final int PUBLIC_MESSAGE_BODY_MAX_LENGTH = 5000;
+    public static final int ANONYMOUS_MESSAGE_BODY_MAX_LENGTH = 5000;
 
     /**
      * Default constructor for hibernate.
      */
-    protected PublicMessage() {
+    protected AnonymousMessage() {
     }
 
     /**
-     * Constructs a {@code PublicMessage} with required fields.
+     * Constructs a {@code AnonymousMessage} with required fields.
      * 
      * @param body
-     *            the public message's body
+     *            the anonymous message's body
      * @param authorName
-     *            the public message's author's name
+     *            the anonymous message's author's name
      */
-    public PublicMessage(String body, String authorName) {
+    public AnonymousMessage(String body, String authorName) {
         this.body = body;
         this.authorName = authorName;
     }
@@ -78,7 +78,7 @@ public class PublicMessage extends AbstractTextEntity implements Entity, Compara
     @Override
     @Id
     @GeneratedValue
-    @Column(name = "PUBLIC_MESSAGE_ID")
+    @Column(name = "ANONYMOUS_MESSAGE_ID")
     public Long getId() {
         return id;
     }
@@ -108,17 +108,17 @@ public class PublicMessage extends AbstractTextEntity implements Entity, Compara
     }
 
     /**
-     * Compares two public messages for ordering. Compares by {@code body}, {@code author} and {@code creationDate}.
+     * Compares two anonymous messages for ordering. Compares by {@code body}, {@code author} and {@code creationDate}.
      * 
      * @param message
-     *            the public message to be compared
-     * @return a negative integer, zero, or a positive integer as this public message is less than, equal to, or greater
-     *         than the specified {@code message}
+     *            the anonymous message to be compared
+     * @return a negative integer, zero, or a positive integer as this anonymous message is less than, equal to, or
+     *         greater than the specified {@code message}
      * @throws NullPointerException
-     *             if the specified {@code message} is null
+     *             if the specified {@code message} is {@code null}
      */
     @Override
-    public int compareTo(PublicMessage message) {
+    public int compareTo(AnonymousMessage message) {
         int result = body.compareTo(message.body);
         if (result != 0) {
             return result;
@@ -135,23 +135,24 @@ public class PublicMessage extends AbstractTextEntity implements Entity, Compara
     }
 
     /**
-     * Compares two public messages for equality. Returns {@code true} if and only if the argument is not null and is a
-     * {@code PublicMessage} object that has same {@code body}, {@code author} and {@code creationDate}.
+     * Compares two anonymous messages for equality. Returns {@code true} if and only if the argument is not
+     * {@code null} and is a {@code AnonymousMessage} object that has same {@code body}, {@code author} and
+     * {@code creationDate}.
      * 
      * @param obj
      *            the reference object with which to compare
      * @return {@code true} if this object is the same as the {@code obj} argument; {@code false} otherwise
-     * @see PublicMessage#hashCode
+     * @see AnonymousMessage#hashCode
      */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof PublicMessage)) {
+        if (!(obj instanceof AnonymousMessage)) {
             return false;
         }
-        PublicMessage message = (PublicMessage) obj;
+        AnonymousMessage message = (AnonymousMessage) obj;
         return (body == null ? message.body == null : body.equals(message.body)) &&
                 (authorName == null ? message.authorName == null : authorName.equals(message.authorName)) &&
                 (creationDate == null ? message.creationDate == null : creationDate.equals(message.creationDate));
@@ -162,7 +163,7 @@ public class PublicMessage extends AbstractTextEntity implements Entity, Compara
      * {@code creationDate}.
      * 
      * @return a hash code value for this object
-     * @see PublicMessage#equals(Object)
+     * @see AnonymousMessage#equals(Object)
      */
     @Override
     public int hashCode() {
@@ -174,9 +175,9 @@ public class PublicMessage extends AbstractTextEntity implements Entity, Compara
     }
 
     /**
-     * Returns a string representation of this public message. This is just the string representation of all fields.
+     * Returns a string representation of this anonymous message. This is just the string representation of all fields.
      * 
-     * @return a string representation of this public message
+     * @return a string representation of this anonymous message
      */
     @Override
     public String toString() {

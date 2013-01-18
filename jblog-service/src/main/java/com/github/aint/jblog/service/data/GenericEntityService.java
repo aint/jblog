@@ -31,7 +31,7 @@ import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
  * @see Entity
  * @see ArticleService
  * @see CommentService
- * @see PublicMessageService
+ * @see AnonymousMessageService
  * @see UserService
  */
 public interface GenericEntityService<T extends Entity> {

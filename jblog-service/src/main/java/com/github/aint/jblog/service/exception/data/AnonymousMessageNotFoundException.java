@@ -17,32 +17,32 @@
  */
 package com.github.aint.jblog.service.exception.data;
 
-import com.github.aint.jblog.model.entity.PublicMessage;
-import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
+import com.github.aint.jblog.model.entity.AnonymousMessage;
+import com.github.aint.jblog.service.data.impl.AnonymousMessageServiceImpl;
 
 /**
- * This exception thrown when a {@link PublicMessage} can't be found.
+ * This exception thrown when an {@link AnonymousMessage} can't be found.
  * 
  * @author Olexandr Tyshkovets
  * @see EntityNotFoundException
- * @see PublicMessageServiceImpl
+ * @see AnonymousMessageServiceImpl
  */
-public class PublicMessageNotFoundException extends EntityNotFoundException {
+public class AnonymousMessageNotFoundException extends EntityNotFoundException {
     private static final long serialVersionUID = 6044190071356912365L;
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      */
-    public PublicMessageNotFoundException() {
+    public AnonymousMessageNotFoundException() {
     }
 
     /**
-     * Constructs a new exception with the specified {@link PublicMessage}.
+     * Constructs a new exception with the specified {@link AnonymousMessage}.
      * 
      * @param message
-     *            a {@link PublicMessage}, which was not found
+     *            an {@link AnonymousMessage}, which was not found
      */
-    public PublicMessageNotFoundException(PublicMessage message) {
+    public AnonymousMessageNotFoundException(AnonymousMessage message) {
         super("The message was not found: " + message);
     }
 
@@ -52,7 +52,7 @@ public class PublicMessageNotFoundException extends EntityNotFoundException {
      * @param message
      *            the detail message
      */
-    public PublicMessageNotFoundException(String message) {
+    public AnonymousMessageNotFoundException(String message) {
         super(message);
     }
 
@@ -64,7 +64,7 @@ public class PublicMessageNotFoundException extends EntityNotFoundException {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public PublicMessageNotFoundException(String message, Throwable cause) {
+    public AnonymousMessageNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -74,7 +74,7 @@ public class PublicMessageNotFoundException extends EntityNotFoundException {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public PublicMessageNotFoundException(Throwable cause) {
+    public AnonymousMessageNotFoundException(Throwable cause) {
         super(cause);
     }
 
