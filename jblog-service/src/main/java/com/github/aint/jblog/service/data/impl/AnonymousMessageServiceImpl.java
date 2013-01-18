@@ -22,27 +22,27 @@ import java.util.List;
 
 import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
-import com.github.aint.jblog.service.data.PublicMessageService;
+import com.github.aint.jblog.service.data.AnonymousMessageService;
 import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundException;
 
 /**
- * This class implementing the {@code PublicMessageService} interface.
+ * This class implementing the {@code AnonymousMessageService} interface.
  * 
  * @author Olexandr Tyshkovets
- * @see PublicMessageService
+ * @see AnonymousMessageService
  */
-public class PublicMessageServiceImpl implements PublicMessageService {
-    private final AnonymousMessageDao publicMessageDao;
+public class AnonymousMessageServiceImpl implements AnonymousMessageService {
+    private final AnonymousMessageDao anonymousMessageDao;
 
     /**
-     * Constructs a {@code PublicMessageServiceImpl} with the given {@code publicMessageDao}.
+     * Constructs a {@code AnonymousMessageServiceImpl} with the given {@code anonymousMessageDao}.
      * 
-     * @param publicMessageDao
+     * @param anonymousMessageDao
      *            the object, which necessary for operations with a data source
      * @see AnonymousMessageDao
      */
-    public PublicMessageServiceImpl(AnonymousMessageDao publicMessageDao) {
-        this.publicMessageDao = publicMessageDao;
+    public AnonymousMessageServiceImpl(AnonymousMessageDao anonymousMessageDao) {
+        this.anonymousMessageDao = anonymousMessageDao;
     }
 
     /**
@@ -51,7 +51,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
     @Override
     public AnonymousMessage add(AnonymousMessage anonymousMessage) {
         anonymousMessage.setCreationDate(new Date());
-        publicMessageDao.save(anonymousMessage);
+        anonymousMessageDao.save(anonymousMessage);
 
         return anonymousMessage;
     }
@@ -61,7 +61,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      */
     @Override
     public AnonymousMessage get(Long id) throws AnonymousMessageNotFoundException {
-        AnonymousMessage anonymousMessage = publicMessageDao.get(id);
+        AnonymousMessage anonymousMessage = anonymousMessageDao.get(id);
         if (anonymousMessage == null) {
             throw new AnonymousMessageNotFoundException("The anonymous message with the given id: " + id
                     + " was not found");
@@ -74,7 +74,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      */
     @Override
     public List<AnonymousMessage> getAll() {
-        return publicMessageDao.getAll();
+        return anonymousMessageDao.getAll();
     }
 
     /**
@@ -86,7 +86,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
             throw new IllegalArgumentException("pageNumber cant'be <= 0");
         }
 
-        return publicMessageDao.getAllOnPage(pageNumber, pageSize, head);
+        return anonymousMessageDao.getAllOnPage(pageNumber, pageSize, head);
     }
 
     /**
@@ -94,7 +94,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      */
     @Override
     public long getCount() {
-        return publicMessageDao.getCount();
+        return anonymousMessageDao.getCount();
     }
 
     /**
@@ -102,7 +102,7 @@ public class PublicMessageServiceImpl implements PublicMessageService {
      */
     @Override
     public boolean isExist(Long id) {
-        return publicMessageDao.get(id) != null;
+        return anonymousMessageDao.get(id) != null;
     }
 
 }

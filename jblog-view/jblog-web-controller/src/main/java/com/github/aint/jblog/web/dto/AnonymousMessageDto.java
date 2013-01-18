@@ -51,7 +51,7 @@ public class AnonymousMessageDto {
     private String captcha;
 
     /**
-     * Constructs a {@code PublicMessageDto} with the given parameters. Trims all not-null fields.
+     * Constructs a {@code AnonymousMessageDto} with the given parameters. Trims all not-null fields.
      * 
      * @param authorName
      *            the anonymousMessage's author's name

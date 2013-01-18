@@ -18,16 +18,16 @@
 package com.github.aint.jblog.service.data;
 
 import com.github.aint.jblog.model.entity.AnonymousMessage;
-import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
+import com.github.aint.jblog.service.data.impl.AnonymousMessageServiceImpl;
 
 /**
  * This interface represents methods to operate with an {@link AnonymousMessage}.
  * 
  * @author Olexandr Tyshkovets
  * @see GenericEntityService
- * @see PublicMessageServiceImpl
+ * @see AnonymousMessageServiceImpl
  */
-public interface PublicMessageService extends GenericEntityService<AnonymousMessage> {
+public interface AnonymousMessageService extends GenericEntityService<AnonymousMessage> {
     /**
      * Adds a new {@link AnonymousMessage}.
      * 

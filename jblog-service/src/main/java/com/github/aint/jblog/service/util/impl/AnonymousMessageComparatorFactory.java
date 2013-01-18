@@ -23,12 +23,12 @@ import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.service.util.EntityComparatorFactory;
 
 /**
- * This class provides an {@link AnonymousMessage}'s comparators which sort by time and id.
+ * This class provides {@link AnonymousMessage}'s comparators which sort by time and id.
  * 
  * @author Olexandr Tyshkovets
  * @see EntityComparatorFactory
  */
-public class PublicMessageComparatorFactory implements EntityComparatorFactory<AnonymousMessage> {
+public class AnonymousMessageComparatorFactory implements EntityComparatorFactory<AnonymousMessage> {
     /**
      * {@inheritDoc}
      */

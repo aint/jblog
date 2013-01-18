@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 import com.github.aint.jblog.model.dao.AnonymousMessageDao;
 import com.github.aint.jblog.model.entity.AnonymousMessage;
-import com.github.aint.jblog.service.data.PublicMessageService;
+import com.github.aint.jblog.service.data.AnonymousMessageService;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundException;
 
@@ -43,14 +43,14 @@ import com.github.aint.jblog.service.exception.data.AnonymousMessageNotFoundExce
  */
 public class AnonymousMessageServiceImplTest {
     private static final Long ANONYMOUS_MESSAGE_ID = 1L;
-    private PublicMessageService publicMessageService;
+    private AnonymousMessageService anonymousMessageService;
     @Mock
-    private AnonymousMessageDao publicMessageDao;
+    private AnonymousMessageDao anonymousMessageDao;
 
     @BeforeMethod
     public void beforeMethod() {
         initMocks(this);
-        publicMessageService = new PublicMessageServiceImpl(publicMessageDao);
+        anonymousMessageService = new AnonymousMessageServiceImpl(anonymousMessageDao);
     }
 
     /* ----- own methods ----- */
@@ -58,11 +58,11 @@ public class AnonymousMessageServiceImplTest {
     @Test
     public void add() {
         final AnonymousMessage am = getAnonymousMessage();
-        publicMessageService.add(am);
+        anonymousMessageService.add(am);
 
         assertNotNull(am.getCreationDate());
 
-        verify(publicMessageDao).save(am);
+        verify(anonymousMessageDao).save(am);
     }
 
     /* ===== common methods ===== */
@@ -70,57 +70,57 @@ public class AnonymousMessageServiceImplTest {
     @Test
     public void get() throws EntityNotFoundException {
         final AnonymousMessage expected = getAnonymousMessage();
-        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(expected);
+        when(anonymousMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(expected);
 
-        assertEquals(publicMessageService.get(ANONYMOUS_MESSAGE_ID), expected);
+        assertEquals(anonymousMessageService.get(ANONYMOUS_MESSAGE_ID), expected);
 
-        verify(publicMessageDao).get(ANONYMOUS_MESSAGE_ID);
+        verify(anonymousMessageDao).get(ANONYMOUS_MESSAGE_ID);
     }
 
     @Test(expectedExceptions = AnonymousMessageNotFoundException.class)
     public void getNotFound() throws EntityNotFoundException {
-        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
+        when(anonymousMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
 
-        publicMessageService.get(ANONYMOUS_MESSAGE_ID);
+        anonymousMessageService.get(ANONYMOUS_MESSAGE_ID);
     }
 
     @Test
     public void getAll() {
         final List<AnonymousMessage> expected = new ArrayList<AnonymousMessage>(Arrays.asList(getAnonymousMessage(),
                 getAnonymousMessage(), getAnonymousMessage()));
-        when(publicMessageDao.getAll()).thenReturn(expected);
+        when(anonymousMessageDao.getAll()).thenReturn(expected);
 
-        assertEquals(publicMessageService.getAll(), expected);
+        assertEquals(anonymousMessageService.getAll(), expected);
 
-        verify(publicMessageDao).getAll();
+        verify(anonymousMessageDao).getAll();
     }
 
     @Test
     public void getAllOnPage() {
         final List<AnonymousMessage> expected = new ArrayList<AnonymousMessage>(Arrays.asList(getAnonymousMessage(),
                 getAnonymousMessage()));
-        when(publicMessageDao.getAllOnPage(1, 5, true)).thenReturn(expected);
+        when(anonymousMessageDao.getAllOnPage(1, 5, true)).thenReturn(expected);
 
-        assertEquals(publicMessageService.getAllOnPage(1, 5, true), expected);
+        assertEquals(anonymousMessageService.getAllOnPage(1, 5, true), expected);
 
-        verify(publicMessageDao).getAllOnPage(1, 5, true);
+        verify(anonymousMessageDao).getAllOnPage(1, 5, true);
     }
 
     @Test
     public void getCount() {
         final long expected = 13L;
-        when(publicMessageDao.getCount()).thenReturn(expected);
+        when(anonymousMessageDao.getCount()).thenReturn(expected);
 
-        assertEquals(publicMessageService.getCount(), expected);
+        assertEquals(anonymousMessageService.getCount(), expected);
 
-        verify(publicMessageDao).getCount();
+        verify(anonymousMessageDao).getCount();
     }
 
     @Test
     public void isExist() {
-        when(publicMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
+        when(anonymousMessageDao.get(ANONYMOUS_MESSAGE_ID)).thenReturn(null);
 
-        assertEquals(publicMessageService.isExist(ANONYMOUS_MESSAGE_ID), false);
+        assertEquals(anonymousMessageService.isExist(ANONYMOUS_MESSAGE_ID), false);
     }
 
     private AnonymousMessage getAnonymousMessage() {

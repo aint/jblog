@@ -33,8 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.AnonymousMessageHibernateDao;
-import com.github.aint.jblog.service.data.PublicMessageService;
-import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
+import com.github.aint.jblog.service.data.AnonymousMessageService;
+import com.github.aint.jblog.service.data.impl.AnonymousMessageServiceImpl;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.dto.AnonymousMessageDto;
@@ -76,13 +76,13 @@ public class PublicRoom extends HttpServlet {
                 request.setAttribute(MESSAGE_AUTHOR_FIELD, authorName);
                 request.setAttribute(MESSAGE_BODY_FIELD, messageBody);
             } else {
-                PublicMessageService messageService = new PublicMessageServiceImpl(
+                AnonymousMessageService messageService = new AnonymousMessageServiceImpl(
                         new AnonymousMessageHibernateDao(HibernateUtil.getSessionFactory()));
                 messageService.add(messageDto.createAnonymousMessage());
             }
         }
 
-        PublicMessageService messageService = new PublicMessageServiceImpl(new AnonymousMessageHibernateDao(
+        AnonymousMessageService messageService = new AnonymousMessageServiceImpl(new AnonymousMessageHibernateDao(
                 HibernateUtil.getSessionFactory()));
         request.setAttribute("MESSAGES", messageService.getAll());
 

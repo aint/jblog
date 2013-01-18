@@ -18,14 +18,14 @@
 package com.github.aint.jblog.service.exception.data;
 
 import com.github.aint.jblog.model.entity.AnonymousMessage;
-import com.github.aint.jblog.service.data.impl.PublicMessageServiceImpl;
+import com.github.aint.jblog.service.data.impl.AnonymousMessageServiceImpl;
 
 /**
  * This exception thrown when an {@link AnonymousMessage} can't be found.
  * 
  * @author Olexandr Tyshkovets
  * @see EntityNotFoundException
- * @see PublicMessageServiceImpl
+ * @see AnonymousMessageServiceImpl
  */
 public class AnonymousMessageNotFoundException extends EntityNotFoundException {
     private static final long serialVersionUID = 6044190071356912365L;

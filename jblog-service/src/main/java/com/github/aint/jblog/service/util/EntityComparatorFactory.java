@@ -20,9 +20,9 @@ package com.github.aint.jblog.service.util;
 import java.util.Comparator;
 
 import com.github.aint.jblog.model.entity.Entity;
+import com.github.aint.jblog.service.util.impl.AnonymousMessageComparatorFactory;
 import com.github.aint.jblog.service.util.impl.ArticleComparatorFactory;
 import com.github.aint.jblog.service.util.impl.CommentComparatorFactory;
-import com.github.aint.jblog.service.util.impl.PublicMessageComparatorFactory;
 import com.github.aint.jblog.service.util.impl.UserComparatorFactory;
 
 /**
@@ -33,9 +33,9 @@ import com.github.aint.jblog.service.util.impl.UserComparatorFactory;
  * 
  * @author Olexandr Tyshkovets
  * @see Entity
+ * @see AnonymousMessageComparatorFactory
  * @see ArticleComparatorFactory
  * @see CommentComparatorFactory
- * @see PublicMessageComparatorFactory
  * @see UserComparatorFactory
  */
 public interface EntityComparatorFactory<T extends Entity> {
