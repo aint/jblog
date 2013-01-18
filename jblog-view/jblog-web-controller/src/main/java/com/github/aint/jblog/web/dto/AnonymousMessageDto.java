@@ -34,16 +34,16 @@ import com.github.aint.jblog.service.validation.annotation.FieldMatch;
  * 
  * @author Olexandr Tyshkovets
  */
-@FieldMatch(field = "captchaAnswer", matchField = "captcha", message = "{public_message.captcha.wrong}")
+@FieldMatch(field = "captchaAnswer", matchField = "captcha", message = "{anonymous_message.captcha.wrong}")
 public class AnonymousMessageDto {
 
-    @NotNull(message = "{public_message.author.not_null}")
-    @Size(min = AnonymousMessage.AUTHOR_NAME_MIN_LENGTH, max = AnonymousMessage.AUTHOR_NAME_MAX_LENGTH, message = "{public_message.author.length}")
-    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{public_message.author.pattern}")
+    @NotNull(message = "{anonymous_message.author.not_null}")
+    @Size(min = AnonymousMessage.AUTHOR_NAME_MIN_LENGTH, max = AnonymousMessage.AUTHOR_NAME_MAX_LENGTH, message = "{anonymous_message.author.length}")
+    @Pattern(regexp = "[а-яґєіїёА-ЯҐЄІЇЁ\\w]*", message = "{anonymous_message.author.pattern}")
     private String authorName;
 
-    @NotNull(message = "{public_message.body.not_null}")
-    @Size(min = AnonymousMessage.ANONYMOUS_MESSAGE_BODY_MIN_LENGTH, max = AnonymousMessage.ANONYMOUS_MESSAGE_BODY_MAX_LENGTH, message = "{public_message.body.length}")
+    @NotNull(message = "{anonymous_message.body.not_null}")
+    @Size(min = AnonymousMessage.ANONYMOUS_MESSAGE_BODY_MIN_LENGTH, max = AnonymousMessage.ANONYMOUS_MESSAGE_BODY_MAX_LENGTH, message = "{anonymous_message.body.length}")
     private String body;
 
     private String captchaAnswer;

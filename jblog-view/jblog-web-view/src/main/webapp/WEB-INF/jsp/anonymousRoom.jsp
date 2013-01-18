@@ -19,7 +19,7 @@
 --%>
 <%-- 
   - Author:      Olexandr Tyshkovets
-  - Description: This page displays all public messages.
+  - Description: This page displays all anonymous messages.
   --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -32,7 +32,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-     <title><fmt:message key="public_room.title" /></title>
+     <title><fmt:message key="anonymous_room.title" /></title>
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <script src="${pageContext.request.contextPath}/resources/js/dateFormat.js"></script>
@@ -45,7 +45,7 @@
         <jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp"/>
         <div class="content">
-            <h3 align="center"><fmt:message key="public_room.title" /></h3>
+            <h3 align="center"><fmt:message key="anonymous_room.title" /></h3>
             <c:choose>
                 <c:when test="${not empty requestScope.MESSAGES}">
                     <c:forEach items="${requestScope.MESSAGES}" var="message">
@@ -69,13 +69,13 @@
                         </p>
                 </c:otherwise>
             </c:choose>
-            <form action="${pageContext.request.contextPath}/public-room" method="post" name="addMessageForm">
+            <form action="${pageContext.request.contextPath}/anonymous-room" method="post" name="addMessageForm">
                 <br>
                 <hr>
-                <h4 align="center"><img src="${pageContext.request.contextPath}/resources/images/comment2-icon.png" height="12" width="26"><fmt:message key="public_room.label.messages" />(${fn:length(requestScope.MESSAGES)})</h4>
+                <h4 align="center"><img src="${pageContext.request.contextPath}/resources/images/comment2-icon.png" height="12" width="26"><fmt:message key="anonymous_room.label.messages" />(${fn:length(requestScope.MESSAGES)})</h4>
                 <p>
                     <span style="color: red;"><jblog:printValidationErrors property="authorName" /></span><br>
-                    <fmt:message key="public_room.label.author_name" /><br>
+                    <fmt:message key="anonymous_room.label.author_name" /><br>
                     <input type="text" value="<c:out value="${requestScope.messageAuthorField}" default="${sessionScope.userName}" />" name="messageAuthorField"><br>
                     <span style="font-size: 60%; color: grey;">a-Z, а-Я, 0-9, _, length: 1-20</span><br><br>
 
@@ -87,16 +87,16 @@
                         <input type="button" id="tag_block" onclick="edInsertTag(messageBodyField, 4);" value="b-quote" style="background: url('${pageContext.request.contextPath}/resources/images/tag-button.png') repeat-x 0 -2px;">
                     </span><br>
                     <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
-                    <fmt:message key="public_room.label.message" /><br>
+                    <fmt:message key="anonymous_room.label.message" /><br>
                     <textarea cols="55" rows="15" name="messageBodyField"><c:out value="${requestScope.messageBodyField}" /></textarea><br>
                     <span style="font-size: 60%; color: grey;">length: 2-5000</span><br>
                     <br>
 
                     <span style="color: red;"><jblog:printValidationErrors property="captcha" /></span><br>
-                    <fmt:message key="public_room.label.captcha" /><br>
+                    <fmt:message key="anonymous_room.label.captcha" /><br>
                     <img src="${pageContext.request.contextPath}/kaptcha.png"><br>
                     <input type="text" name="captchaAnswerField"><br>
-                    <input type="submit" value="<fmt:message key="public_room.label.leave_message" />" id="submit" name="leaveMessageButton">
+                    <input type="submit" value="<fmt:message key="anonymous_room.label.leave_message" />" id="submit" name="leaveMessageButton">
                 </p>
             </form>
         </div>

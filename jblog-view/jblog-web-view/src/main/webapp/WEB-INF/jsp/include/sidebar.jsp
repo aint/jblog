@@ -34,7 +34,7 @@
             <li><a href="${pageContext.request.contextPath}/add-news"><fmt:message key="siderbar.link.add_news" /></a></li>
         </jblog:ifAuth>
         <li><a href="${pageContext.request.contextPath}/users"><fmt:message key="siderbar.link.users" /></a></li>
-        <li><a href="${pageContext.request.contextPath}/public-room"><fmt:message key="siderbar.link.public_room" /></a></li>
+        <li><a href="${pageContext.request.contextPath}/anonymous-room"><fmt:message key="siderbar.link.anonymous_room" /></a></li>
     </ul>
   <br>
   <br>
