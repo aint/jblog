@@ -15,7 +15,8 @@ public class LocaleSpecificMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String message, Context context) {
-        return interpolator.interpolate(message, context, locale);
+        return locale == null ? interpolator.interpolate(message, context) :
+                interpolator.interpolate(message, context, locale);
     }
 
     @Override
