@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.slf4j.Logger;
@@ -35,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.NewsHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.NewsService;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.NewsServiceImpl;
@@ -42,6 +42,7 @@ import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.exception.security.AccessException;
 import com.github.aint.jblog.service.util.HibernateUtil;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.NewsDto;
@@ -89,7 +90,9 @@ public class AddNews extends HttpServlet {
         String newsImportance = request.getParameter(NEWS_IMPORTANCE_FIELD);
 
         NewsDto newsDto = new NewsDto(newsTitle, newsBody, newsImportance);
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
         Set<ConstraintViolation<NewsDto>> validationErrors = validator.validate(newsDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The news' validation error messages: {}", validationErrors);
