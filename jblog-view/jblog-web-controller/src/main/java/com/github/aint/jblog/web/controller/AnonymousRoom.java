@@ -26,17 +26,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.AnonymousMessageHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.AnonymousMessageService;
 import com.github.aint.jblog.service.data.impl.AnonymousMessageServiceImpl;
 import com.github.aint.jblog.service.util.HibernateUtil;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
+import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.AnonymousMessageDto;
 import com.google.code.kaptcha.Constants;
 
@@ -68,7 +70,9 @@ public class AnonymousRoom extends HttpServlet {
 
             AnonymousMessageDto messageDto = new AnonymousMessageDto(authorName, messageBody, captchaAnswer,
                     (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY));
-            Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+            Language language = (Language)
+                    request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+            Validator validator = Validation.getValidator(language.getLocale());
             Set<ConstraintViolation<AnonymousMessageDto>> validationErrors = validator.validate(messageDto);
             if (!validationErrors.isEmpty()) {
                 logger.debug("The anonymous message's validation error messages: {}", validationErrors);

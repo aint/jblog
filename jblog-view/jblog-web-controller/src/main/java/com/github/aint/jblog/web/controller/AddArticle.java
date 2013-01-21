@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.slf4j.Logger;
@@ -35,12 +34,14 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.util.HibernateUtil;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.ArticleDto;
@@ -88,7 +89,9 @@ public class AddArticle extends HttpServlet {
         String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
 
         ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords);
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
         Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The article's validation error messages: {}", validationErrors);

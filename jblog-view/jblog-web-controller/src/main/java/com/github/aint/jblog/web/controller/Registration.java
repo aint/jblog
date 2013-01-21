@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -44,6 +43,7 @@ import com.github.aint.jblog.service.mail.impl.JavaxMailSender;
 import com.github.aint.jblog.service.mail.impl.MailServiceImpl;
 import com.github.aint.jblog.service.mail.impl.PropertiesMailConfigurator;
 import com.github.aint.jblog.service.util.HibernateUtil;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
 import com.github.aint.jblog.web.dto.RegisterUserDto;
@@ -99,7 +99,9 @@ public class Registration extends HttpServlet {
                 day, month, year, request.getParameter(LICENSE_FIELD),
                 (Language) request.getSession(true).getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
 
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
         Set<ConstraintViolation<RegisterUserDto>> constraintViolations = validator.validate(userDto);
         if (!constraintViolations.isEmpty()) {
             logger.debug("The register user's validation error messages: {}", constraintViolations);
