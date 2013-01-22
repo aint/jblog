@@ -17,13 +17,38 @@
  */
 package com.github.aint.jblog.web.constant;
 
+import com.github.aint.jblog.model.entity.Language;
+import com.github.aint.jblog.model.entity.User;
+
 /**
+ * This class represents some constants for storing in cookies.
+ * 
  * @author Olexandr Tyshkovets
  */
 public final class CookieConstants {
+    /**
+     * Represents the lifetime of a cookie that stores the current user's {@code language} code.
+     * 
+     * @see Language
+     * @see User#getLanguage()
+     */
     public static final int USER_LANGUAGE_CODE_COOKIE_LIFETIME = 60 * 60 * 24 * 365 * 5;
+    /**
+     * Represents the cookie's name for storing the current user's {@code language} code.
+     * 
+     * @see Language
+     * @see User#getLanguage()
+     */
     public static final String USER_LANGUAGE_CODE_COOKIE_NAME = "userLanguageCode";
+    /**
+     * Represents the lifetime of an authentication cookie.
+     */
     public static final int AUTHENTICATION_COOKIE_LIFETIME = 60 * 60 * 24 * 365 * 5;
+    /**
+     * Represents the cookie's name for storing the current user's {@code username}.
+     * 
+     * @see User#getUserName()
+     */
     public static final String AUTHENTICATION_COOKIE_NAME = "authenticationUserName";
 
     private CookieConstants() {

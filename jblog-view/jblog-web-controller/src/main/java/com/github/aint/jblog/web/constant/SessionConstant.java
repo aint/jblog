@@ -17,11 +17,27 @@
  */
 package com.github.aint.jblog.web.constant;
 
+import com.github.aint.jblog.model.entity.Language;
+import com.github.aint.jblog.model.entity.User;
+
 /**
+ * This class represents some constants for storing in a HTTP session.
+ * 
  * @author Olexandr Tyshkovets
  */
 public final class SessionConstant {
+    /**
+     * Represents a {@code username} of the current user in a session.
+     * 
+     * @see User#getUserName()
+     */
     public static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
+    /**
+     * Represents a {@code language} of the current user in a session.
+     * 
+     * @see Language
+     * @see User#getLanguage()
+     */
     public static final String USER_LANGUAGE_SESSION_ATTRIBUTE = "userLanguage";
 
     private SessionConstant() {

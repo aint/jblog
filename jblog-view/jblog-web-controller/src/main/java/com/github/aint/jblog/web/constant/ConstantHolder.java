@@ -21,10 +21,20 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * This class represents {@code PATH} and {@code MAPPING} constants which store paths to {@code JSPs} and URL mapping of
+ * {@code JSPs}, respectively. These constants configured by {@code mapping.properties} and {@code path.properties},
+ * respectively.
+ * 
  * @author Olexandr Tyshkovets
  */
 public final class ConstantHolder {
+    /**
+     * This constant stores paths to {@code JSPs}.
+     */
     public static final Properties PATH;
+    /**
+     * This constant stores URL mapping of {@code JSPs}.
+     */
     public static final Properties MAPPING;
 
     static {
