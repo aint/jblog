@@ -41,13 +41,13 @@ import javax.persistence.Table;
 @javax.persistence.Entity
 @Table(name = "USER")
 @NamedQueries({
-        @NamedQuery(name = "User.getByUserName", query = "SELECT u FROM User u WHERE u.userName = ?"),
-        @NamedQuery(name = "User.getByUuid", query = "SELECT u FROM User u WHERE u.uuid = ?"),
-        @NamedQuery(name = "User.getByEmail", query = "SELECT u FROM User u WHERE u.email = ?"),
-        @NamedQuery(name = "User.getNonActivatedUsers", query = "SELECT u FROM User u WHERE u.activated = false"),
-        @NamedQuery(name = "User.getAll", query = "SELECT u FROM User u"),
-        @NamedQuery(name = "User.getAllOnPageOrderByAsc", query = "SELECT u FROM User u ORDER BY u.id ASC"),
-        @NamedQuery(name = "User.getAllOnPageOrderByDesc", query = "SELECT u FROM User u ORDER BY u.id DESC"),
+        @NamedQuery(name = "User.getByUserName", query = "FROM User u WHERE u.userName = ?"),
+        @NamedQuery(name = "User.getByUuid", query = "FROM User u WHERE u.uuid = ?"),
+        @NamedQuery(name = "User.getByEmail", query = "FROM User u WHERE u.email = ?"),
+        @NamedQuery(name = "User.getNonActivatedUsers", query = "FROM User u WHERE u.activated = false"),
+        @NamedQuery(name = "User.getAll", query = "FROM User "),
+        @NamedQuery(name = "User.getAllOnPageAsc", query = "FROM User u ORDER BY u.id ASC"),
+        @NamedQuery(name = "User.getAllOnPageDesc", query = "FROM User u ORDER BY u.id DESC"),
         @NamedQuery(name = "User.getCount", query = "SELECT COUNT(*) FROM User"),
         @NamedQuery(name = "User.deleteById", query = "DELETE User u WHERE u.id = ?"),
 })

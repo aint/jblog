@@ -23,6 +23,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,6 +36,14 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "ARTICLE")
+@NamedQueries({
+        @NamedQuery(name = "Article.getMostPopular", query = "FROM Article a WHERE a.rating >= ?"),
+        @NamedQuery(name = "Article.getAll", query = "FROM Article"),
+        @NamedQuery(name = "Article.getAllOnPageAsc", query = "FROM Article a ORDER BY a.id ASC"),
+        @NamedQuery(name = "Article.getAllOnPageDesc", query = "FROM Article a ORDER BY a.id DESC"),
+        @NamedQuery(name = "Article.getCount", query = "SELECT COUNT(*) FROM Article"),
+        @NamedQuery(name = "Article.deleteById", query = "DELETE Article a WHERE a.id = ?"),
+})
 public class Article extends AbstractArticle implements Comparable<Article> {
     private static final long serialVersionUID = -7631829435790815969L;
     private Long id;

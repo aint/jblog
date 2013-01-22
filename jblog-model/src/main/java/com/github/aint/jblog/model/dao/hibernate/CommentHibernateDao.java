@@ -66,7 +66,9 @@ public class CommentHibernateDao implements CommentDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Comment> getAll() {
-        return getSession().createQuery("from Comment").list();
+        return getSession()
+                .getNamedQuery("Comment.getAll")
+                .list();
     }
 
     /**
@@ -76,7 +78,7 @@ public class CommentHibernateDao implements CommentDao {
     @Override
     public List<Comment> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from Comment order by id " + (head == true ? "asc" : "desc"))
+                .getNamedQuery(head == true ? "Comment.getAllOnPageAsc" : "Comment.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -88,7 +90,7 @@ public class CommentHibernateDao implements CommentDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from Comment")
+                .getNamedQuery("Comment.getCount")
                 .iterate()
                 .next();
     }
@@ -98,7 +100,10 @@ public class CommentHibernateDao implements CommentDao {
      */
     @Override
     public void delete(Long id) {
-        getSession().createQuery("delete Comment where id = ?").setLong(0, id).executeUpdate();
+        getSession()
+                .getNamedQuery("Comment.deleteById")
+                .setLong(0, id)
+                .executeUpdate();
     }
 
     /**

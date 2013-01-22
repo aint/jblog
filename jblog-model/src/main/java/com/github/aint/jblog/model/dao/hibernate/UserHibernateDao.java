@@ -122,7 +122,7 @@ public class UserHibernateDao implements UserDao {
     @Override
     public List<User> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .getNamedQuery(head == true ? "User.getAllOnPageOrderByAsc" : "User.getAllOnPageOrderByDesc")
+                .getNamedQuery(head == true ? "User.getAllOnPageAsc" : "User.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();

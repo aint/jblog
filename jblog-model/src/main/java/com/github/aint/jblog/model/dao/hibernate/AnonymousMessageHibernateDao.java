@@ -66,7 +66,9 @@ public class AnonymousMessageHibernateDao implements AnonymousMessageDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<AnonymousMessage> getAll() {
-        return getSession().createQuery("from AnonymousMessage").list();
+        return getSession()
+                .getNamedQuery("AnonymousMessage.getAll")
+                .list();
     }
 
     /**
@@ -76,7 +78,7 @@ public class AnonymousMessageHibernateDao implements AnonymousMessageDao {
     @Override
     public List<AnonymousMessage> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from AnonymousMessage order by id " + (head == true ? "asc" : "desc"))
+                .getNamedQuery(head == true ? "AnonymousMessage.getAllOnPageAsc" : "AnonymousMessage.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -88,7 +90,7 @@ public class AnonymousMessageHibernateDao implements AnonymousMessageDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from AnonymousMessage")
+                .getNamedQuery("AnonymousMessage.getCount")
                 .iterate()
                 .next();
     }
@@ -99,7 +101,7 @@ public class AnonymousMessageHibernateDao implements AnonymousMessageDao {
     @Override
     public void delete(Long id) {
         getSession()
-                .createQuery("delete AnonymousMessage where id = ?")
+                .getNamedQuery("AnonymousMessage.deleteById")
                 .setLong(0, id)
                 .executeUpdate();
     }

@@ -20,6 +20,8 @@ package com.github.aint.jblog.model.entity;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -31,6 +33,13 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "ANONYMOUS_MESSAGE")
+@NamedQueries({
+        @NamedQuery(name = "AnonymousMessage.getAll", query = "FROM AnonymousMessage"),
+        @NamedQuery(name = "AnonymousMessage.getAllOnPageAsc", query = "FROM AnonymousMessage m ORDER BY m.id ASC"),
+        @NamedQuery(name = "AnonymousMessage.getAllOnPageDesc", query = "FROM AnonymousMessage m ORDER BY m.id DESC"),
+        @NamedQuery(name = "AnonymousMessage.getCount", query = "SELECT COUNT(*) FROM AnonymousMessage"),
+        @NamedQuery(name = "AnonymousMessage.deleteById", query = "DELETE AnonymousMessage m WHERE m.id = ?"),
+})
 public class AnonymousMessage extends AbstractTextEntity implements Entity, Comparable<AnonymousMessage> {
     private static final long serialVersionUID = -4838968789838901557L;
     private Long id;

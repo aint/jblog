@@ -22,6 +22,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -32,6 +34,14 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "NEWS")
+@NamedQueries({
+        @NamedQuery(name = "News.getCreatedSince", query = "FROM News n WHERE n.creationDate > ? ORDER BY n.creationDate DESC"),
+        @NamedQuery(name = "News.getAll", query = "FROM News"),
+        @NamedQuery(name = "News.getAllOnPageAsc", query = "FROM News n ORDER BY n.id ASC"),
+        @NamedQuery(name = "News.getAllOnPageDesc", query = "FROM News n ORDER BY n.id DESC"),
+        @NamedQuery(name = "News.getCount", query = "SELECT COUNT(*) FROM News"),
+        @NamedQuery(name = "News.deleteById", query = "DELETE News n WHERE n.id = ?"),
+})
 public class News extends AbstractArticle {
     private static final long serialVersionUID = -5769938854957361379L;
     private Long id;

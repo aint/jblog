@@ -56,22 +56,6 @@ public class VoiceForArticleHibernateDao implements VoiceForArticleDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(VoiceForArticle entity) {
-        getSession().delete(entity);
-    }
-
-    @Override
-    public void delete(Long id) {
-        getSession()
-                .createQuery("delete VoiceForArticle where id = ?")
-                .setLong(0, id)
-                .executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public VoiceForArticle get(Long id) {
         return (VoiceForArticle) getSession().get(VoiceForArticle.class, id);
     }
@@ -82,7 +66,9 @@ public class VoiceForArticleHibernateDao implements VoiceForArticleDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<VoiceForArticle> getAll() {
-        return getSession().createQuery("from VoiceForArticle").list();
+        return getSession()
+                .getNamedQuery("VoiceForArticle.getAll")
+                .list();
     }
 
     /**
@@ -92,7 +78,7 @@ public class VoiceForArticleHibernateDao implements VoiceForArticleDao {
     @Override
     public List<VoiceForArticle> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from VoiceForArticle order by id " + (head == true ? "asc" : "desc"))
+                .getNamedQuery(head == true ? "VoiceForArticle.getAllOnPageAsc" : "VoiceForArticle.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -104,9 +90,28 @@ public class VoiceForArticleHibernateDao implements VoiceForArticleDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from VoiceForArticle")
+                .getNamedQuery("VoiceForArticle.getCount")
                 .iterate()
                 .next();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Long id) {
+        getSession()
+                .getNamedQuery("VoiceForArticle.deleteById")
+                .setLong(0, id)
+                .executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(VoiceForArticle entity) {
+        getSession().delete(entity);
     }
 
     /**

@@ -25,6 +25,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,6 +39,13 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "COMMENT")
+@NamedQueries({
+        @NamedQuery(name = "Comment.getAll", query = "FROM Comment"),
+        @NamedQuery(name = "Comment.getAllOnPageAsc", query = "FROM Comment c ORDER BY c.id ASC"),
+        @NamedQuery(name = "Comment.getAllOnPageDesc", query = "FROM Comment c ORDER BY c.id DESC"),
+        @NamedQuery(name = "Comment.getCount", query = "SELECT COUNT(*) FROM Comment"),
+        @NamedQuery(name = "Comment.deleteById", query = "DELETE Comment c WHERE c.id = ?"),
+})
 public class Comment extends AbstractTextEntity implements Entity, Comparable<Comment> {
     private static final long serialVersionUID = 1652136605202413471L;
     private Long id;

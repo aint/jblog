@@ -52,7 +52,7 @@ public class NewsHibernateDao implements NewsDao {
     @Override
     public List<News> getNewsCreatedSince(Date createdSince) {
         return getSession()
-                .createQuery("FROM News WHERE creationDate > ? ORDER BY creationDate DESC")
+                .getNamedQuery("News.getCreatedSince")
                 .setDate(0, createdSince)
                 .list();
     }
@@ -79,7 +79,9 @@ public class NewsHibernateDao implements NewsDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<News> getAll() {
-        return getSession().createQuery("from News").list();
+        return getSession()
+                .getNamedQuery("News.getAll")
+                .list();
     }
 
     /**
@@ -89,7 +91,7 @@ public class NewsHibernateDao implements NewsDao {
     @Override
     public List<News> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from News order by id " + (head == true ? "asc" : "desc"))
+                .getNamedQuery(head == true ? "News.getAllOnPageAsc" : "News.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -101,7 +103,7 @@ public class NewsHibernateDao implements NewsDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from News")
+                .getNamedQuery("News.getCount")
                 .iterate()
                 .next();
     }
@@ -111,7 +113,10 @@ public class NewsHibernateDao implements NewsDao {
      */
     @Override
     public void delete(Long id) {
-        getSession().createQuery("delete News where id = ?").setLong(0, id).executeUpdate();
+        getSession()
+                .getNamedQuery("News.deleteById")
+                .setLong(0, id)
+                .executeUpdate();
     }
 
     /**

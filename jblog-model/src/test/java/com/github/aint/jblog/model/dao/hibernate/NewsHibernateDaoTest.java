@@ -138,7 +138,7 @@ public class NewsHibernateDaoTest {
         assertEquals(newsDao.getCount(), Long.valueOf(newsList.size()));
     }
 
-    @Test(enabled = false)
+    @Test
     public void deleteById() {
         final News news = getNews(1).get(0);
         session.save(news);
