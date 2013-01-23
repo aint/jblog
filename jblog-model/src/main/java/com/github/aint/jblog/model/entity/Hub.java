@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,6 +23,13 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "HUB")
+@NamedQueries({
+        @NamedQuery(name = "Hub.getAll", query = "FROM Hub"),
+        @NamedQuery(name = "Hub.getAllOnPageAsc", query = "FROM Hub h ORDER BY h.id ASC"),
+        @NamedQuery(name = "Hub.getAllOnPageDesc", query = "FROM Hub h ORDER BY h.id DESC"),
+        @NamedQuery(name = "Hub.getCount", query = "SELECT COUNT(*) FROM Hub"),
+        @NamedQuery(name = "Hub.deleteById", query = "DELETE Hub h WHERE h.id = ?"),
+})
 public class Hub implements Entity, Comparable<Hub> {
     private static final long serialVersionUID = 970204404158630774L;
     private Long id;

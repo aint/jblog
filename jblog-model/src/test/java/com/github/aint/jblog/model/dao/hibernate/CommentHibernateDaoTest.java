@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import com.github.aint.jblog.model.dao.CommentDao;
 import com.github.aint.jblog.model.entity.Article;
 import com.github.aint.jblog.model.entity.Comment;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.util.EntityFactory;
 import com.github.aint.jblog.model.util.HibernateUtil;
@@ -55,6 +56,7 @@ public class CommentHibernateDaoTest {
     public void afterMethod() {
         session.createQuery("DELETE Comment").executeUpdate();
         session.createQuery("DELETE Article").executeUpdate();
+        session.createQuery("DELETE Hub").executeUpdate();
         session.createQuery("DELETE User").executeUpdate();
     }
 
@@ -138,7 +140,9 @@ public class CommentHibernateDaoTest {
             User articleAuthor = EntityFactory.getDefaultUser("articleAuthor" + i, "articleAuthor" + i + "@gmail.com");
             session.save(articleAuthor);
 
-            Article article = EntityFactory.getDefaultArticle(articleAuthor);
+            Hub hub = EntityFactory.getDefaultHub("hub" + i, articleAuthor);
+            session.save(hub);
+            Article article = EntityFactory.getDefaultArticle(articleAuthor, hub);
             session.save(article);
 
             User commentAuthor = EntityFactory.getDefaultUser("commentAuthor" + i, "commentAuthor" + i + "@gmail.com");
