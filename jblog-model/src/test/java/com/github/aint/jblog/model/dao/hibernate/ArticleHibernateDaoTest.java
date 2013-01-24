@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import com.github.aint.jblog.model.dao.ArticleDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.util.EntityFactory;
 import com.github.aint.jblog.model.util.HibernateUtil;
@@ -53,6 +54,7 @@ public class ArticleHibernateDaoTest {
     @AfterMethod
     public void afterMethod() {
         session.createQuery("DELETE Article").executeUpdate();
+        session.createQuery("DELETE Hub").executeUpdate();
         session.createQuery("DELETE User").executeUpdate();
     }
 
@@ -147,10 +149,13 @@ public class ArticleHibernateDaoTest {
     public List<Article> getArticle(int count) {
         List<Article> articles = new ArrayList<Article>();
         for (int i = 0; i < count; i++) {
-            User articleAuthor = EntityFactory.getDefaultUser("articleAuthor" + i, "articleAuthor" + i + "@gmail.com");
-            session.save(articleAuthor);
+            User author = EntityFactory.getDefaultUser("author" + i, "email" + i + "@gmail.com");
+            session.save(author);
 
-            articles.add(EntityFactory.getDefaultArticle(articleAuthor));
+            Hub hub = EntityFactory.getDefaultHub("hub" + i, author);
+            session.save(hub);
+            articles.add(EntityFactory.getDefaultArticle(author, hub));
+
         }
 
         return articles;
