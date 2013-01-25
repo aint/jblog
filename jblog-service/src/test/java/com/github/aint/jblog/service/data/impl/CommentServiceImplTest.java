@@ -52,7 +52,7 @@ public class CommentServiceImplTest {
     private static final Long COMMENT_ID = 1L;
     private static final User COMMENT_AUTHOR = new User("userName", "user@gmail.com", "password");
     private static final int COMMENT_RATING = 0;
-    private static final Article COMMENT_ARTICLE = new Article("title", "preview", "body", "keywords", COMMENT_AUTHOR);
+    private static final Article ARTICLE = new Article("title", "preview", "body", "keywords", COMMENT_AUTHOR, null);
     private CommentService commentService;
     @Mock
     private CommentDao commentDao;
@@ -68,7 +68,7 @@ public class CommentServiceImplTest {
     @Test
     public void addComment() {
         final Comment comment = getComment();
-        commentService.addComment(comment, COMMENT_AUTHOR, COMMENT_ARTICLE);
+        commentService.addComment(comment, COMMENT_AUTHOR, ARTICLE);
 
         assertNotNull(comment.getAuthor(), "comment's author is null");
         assertNotNull(comment.getArticle(), "comment's article is null");
@@ -90,7 +90,7 @@ public class CommentServiceImplTest {
         verify(voiceDao).save(new VoiceForComment(voice, comment, COMMENT_AUTHOR));
     }
 
-    /* ===== common methods ===== */
+    /* ----- common methods ----- */
 
     @Test
     public void get() throws EntityNotFoundException {
@@ -147,7 +147,7 @@ public class CommentServiceImplTest {
     }
 
     private Comment getComment() {
-        Comment comment = new Comment("body", COMMENT_ARTICLE, COMMENT_AUTHOR);
+        Comment comment = new Comment("body", ARTICLE, COMMENT_AUTHOR);
         comment.setId(COMMENT_ID);
         comment.setCreationDate(new Date());
         comment.setRating(COMMENT_RATING);
