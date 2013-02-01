@@ -60,7 +60,18 @@ public class HubServiceImpl implements HubService {
         hubDao.save(hub);
 
         return hub;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Hub getByHubName(String name) throws HubNotFoundException {
+        Hub hub = hubDao.getByHubName(name);
+        if (hub == null) {
+            throw new HubNotFoundException("The hub with the specified name: " + name + " wasn't found");
+        }
+        return hub;
     }
 
     /**

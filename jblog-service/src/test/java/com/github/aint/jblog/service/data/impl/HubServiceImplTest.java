@@ -78,6 +78,24 @@ public class HubServiceImplTest {
         hubService.add(hub, HUB_AUTHOR);
     }
 
+    @Test
+    public void getByHubName() throws HubNotFoundException {
+        final Hub expected = getHub();
+        final String hubName = "hubName";
+        when(hubDao.getByHubName(hubName)).thenReturn(expected);
+
+        assertEquals(hubService.getByHubName(hubName), expected);
+        verify(hubDao).getByHubName(hubName);
+    }
+
+    @Test(expectedExceptions = HubNotFoundException.class)
+    public void getByHubNameNotFound() throws HubNotFoundException {
+        final String hubName = "hubName";
+        when(hubDao.getByHubName(hubName)).thenReturn(null);
+
+        hubService.getByHubName(hubName);
+    }
+
     /* ----- common methods ----- */
 
     @Test

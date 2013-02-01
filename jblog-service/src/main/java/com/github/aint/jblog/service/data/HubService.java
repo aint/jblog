@@ -21,6 +21,7 @@ import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
+import com.github.aint.jblog.service.exception.data.HubNotFoundException;
 
 /**
  * This interface represents methods to operate with a {@link Hub}.
@@ -43,5 +44,16 @@ public interface HubService extends GenericEntityService<Hub> {
      * @see User
      */
     Hub add(Hub hub, User author) throws DuplicateHubNameException;
+
+    /**
+     * Returns a {@link Hub} by the specified {@code name}.
+     * 
+     * @param name
+     *            the name of the requested hub
+     * @return the hub with the specified name
+     * @throws HubNotFoundException
+     *             if the hub with the given {@code name} doesn't exist
+     */
+    Hub getByHubName(String name) throws HubNotFoundException;
 
 }
