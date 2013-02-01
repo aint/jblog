@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import com.github.aint.jblog.model.dao.HubDao;
 import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.HubService;
+import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 import com.github.aint.jblog.service.exception.data.HubNotFoundException;
 
@@ -55,7 +57,28 @@ public class HubServiceImplTest {
         hubService = new HubServiceImpl(hubDao);
     }
 
-    /* ===== common methods ===== */
+    /* ----- own methods ----- */
+
+    @Test
+    public void add() throws DuplicateHubNameException {
+        final Hub hub = getHub();
+        hubService.add(hub, HUB_AUTHOR);
+
+        assertNotNull(hub.getAuthor(), "hub's author is null");
+        assertEquals(hub.getRating(), 0, "hub's rating isn't 0");
+
+        verify(hubDao).save(hub);
+    }
+
+    @Test(expectedExceptions = DuplicateHubNameException.class)
+    public void addWithDuplication() throws DuplicateHubNameException {
+        final Hub hub = getHub();
+        when(hubDao.getByHubName(hub.getName())).thenReturn(hub);
+
+        hubService.add(hub, HUB_AUTHOR);
+    }
+
+    /* ----- common methods ----- */
 
     @Test
     public void get() throws EntityNotFoundException {

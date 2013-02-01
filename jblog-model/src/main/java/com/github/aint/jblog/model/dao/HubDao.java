@@ -28,4 +28,13 @@ import com.github.aint.jblog.model.entity.Hub;
  * @see HubHibernateDao
  */
 public interface HubDao extends GenericDao<Hub> {
+    /**
+     * Returns a {@link Hub} by the given {@code hubName}.
+     * 
+     * @param hubName
+     *            the name of the requested hub
+     * @return a {@code Hub} or {@code null} if a hub with the given {@code hubName} not found
+     */
+    Hub getByHubName(String hubName);
+
 }

@@ -58,6 +58,21 @@ public class HubHibernateDaoTest {
         session.createQuery("DELETE User").executeUpdate();
     }
 
+    /* ----- own methods ----- */
+
+    @Test
+    public void getByHubName() {
+        final Hub hub = getHub(1).get(0);
+        session.save(hub);
+
+        assertEquals(hubDao.getByHubName(hub.getName()), hub);
+    }
+
+    @Test
+    public void getByHubNameNotFound() {
+        assertNull(hubDao.getByHubName(""));
+    }
+
     /* ----- common methods ----- */
 
     @Test

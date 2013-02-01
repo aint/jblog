@@ -21,7 +21,9 @@ import java.util.List;
 
 import com.github.aint.jblog.model.dao.HubDao;
 import com.github.aint.jblog.model.entity.Hub;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.HubService;
+import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.HubNotFoundException;
 
 /**
@@ -43,6 +45,22 @@ public class HubServiceImpl implements HubService {
      */
     public HubServiceImpl(HubDao hubDao) {
         this.hubDao = hubDao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Hub add(Hub hub, User author) throws DuplicateHubNameException {
+        if (hubDao.getByHubName(hub.getName()) != null) {
+            throw new DuplicateHubNameException(hub.getName());
+        }
+        hub.setRating(0);
+        hub.setAuthor(author);
+        hubDao.save(hub);
+
+        return hub;
+
     }
 
     /**

@@ -18,7 +18,9 @@
 package com.github.aint.jblog.service.data;
 
 import com.github.aint.jblog.model.entity.Hub;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
+import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 
 /**
  * This interface represents methods to operate with a {@link Hub}.
@@ -28,4 +30,18 @@ import com.github.aint.jblog.service.data.impl.HubServiceImpl;
  * @see HubServiceImpl
  */
 public interface HubService extends GenericEntityService<Hub> {
+    /**
+     * Adds a new {@link Hub}.
+     * 
+     * @param hub
+     *            a {@link Hub} which will be added
+     * @param author
+     *            the hub's author
+     * @return an added {@link Hub}
+     * @throws DuplicateHubNameException
+     *             if the hub's name already exists
+     * @see User
+     */
+    Hub add(Hub hub, User author) throws DuplicateHubNameException;
+
 }
