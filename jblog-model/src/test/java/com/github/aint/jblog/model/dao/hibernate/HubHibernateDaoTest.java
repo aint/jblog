@@ -58,6 +58,33 @@ public class HubHibernateDaoTest {
         session.createQuery("DELETE User").executeUpdate();
     }
 
+    /* ----- own methods ----- */
+
+    @Test
+    public void getByHubName() {
+        final Hub hub = getHub(1).get(0);
+        session.save(hub);
+
+        assertEquals(hubDao.getByHubName(hub.getName()), hub);
+    }
+
+    @Test
+    public void getByHubNameNotFound() {
+        assertNull(hubDao.getByHubName(""));
+    }
+
+    @Test
+    public void getAllPublicHub() {
+        final List<Hub> hubs = getHub(5);
+        for (int i = 0; i < hubs.size(); i++) {
+            Hub hub = hubs.get(i);
+            hub.setPersonal(i < 3 ? false : true);
+            session.save(hub);
+        }
+
+        assertEquals(hubDao.getAllPublicHubs(), hubs.subList(0, 3));
+    }
+
     /* ----- common methods ----- */
 
     @Test

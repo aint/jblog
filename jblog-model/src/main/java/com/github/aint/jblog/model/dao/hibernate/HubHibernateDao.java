@@ -48,6 +48,28 @@ public class HubHibernateDao implements HubDao {
      * {@inheritDoc}
      */
     @Override
+    public Hub getByHubName(String hubName) {
+        return (Hub) getSession()
+                .getNamedQuery("Hub.getByHubName")
+                .setString(0, hubName)
+                .uniqueResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Hub> getAllPublicHubs() {
+        return getSession()
+                .getNamedQuery("Hub.getAllPublicHubs")
+                .list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void save(Hub entity) {
         getSession().save(entity);
     }
