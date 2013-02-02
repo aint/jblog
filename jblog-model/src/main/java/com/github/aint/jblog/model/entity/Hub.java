@@ -60,9 +60,42 @@ public class Hub implements Entity, Comparable<Hub> {
     private Set<Article> articles = new HashSet<Article>();
 
     /**
+     * The minimum length of the hub's name.
+     */
+    public static final int NAME_MIN_LENGTH = 4;
+    /**
+     * The maximum length of the hub's name.
+     */
+    public static final int NAME_MAX_LENGTH = 55;
+    /**
+     * The minimum length of the hub's description.
+     */
+    public static final int DESCRIPTION_MIN_LENGTH = 10;
+    /**
+     * The maximum length of the hub's description.
+     */
+    public static final int DESCRIPTION_MAX_LENGTH = 300;
+
+    /**
      * The default constructor for hibernate.
      */
     protected Hub() {
+    }
+
+    /**
+     * Constructs a {@code Hub} with required fields.
+     * 
+     * @param name
+     *            the hub's name
+     * @param description
+     *            the hub's description
+     * @param personal
+     *            the hub's type
+     */
+    public Hub(String name, String description, boolean personal) {
+        this.name = name;
+        this.description = description;
+        this.personal = personal;
     }
 
     /**
