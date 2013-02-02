@@ -17,6 +17,8 @@
  */
 package com.github.aint.jblog.service.data;
 
+import java.util.List;
+
 import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
@@ -55,5 +57,12 @@ public interface HubService extends GenericEntityService<Hub> {
      *             if the hub with the given {@code name} doesn't exist
      */
     Hub getByHubName(String name) throws HubNotFoundException;
+
+    /**
+     * Returns names of all public hubs.
+     * 
+     * @return names of all public hubs
+     */
+    List<String> getNamesOfAllPublicHubs();
 
 }

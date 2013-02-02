@@ -42,6 +42,7 @@ import javax.persistence.Table;
 @Table(name = "HUB")
 @NamedQueries({
         @NamedQuery(name = "Hub.getByHubName", query = "FROM Hub h WHERE h.name = ?"),
+        @NamedQuery(name = "Hub.getAllPublicHubs", query = "FROM Hub h WHERE h.personal = FALSE"),
         @NamedQuery(name = "Hub.getAll", query = "FROM Hub"),
         @NamedQuery(name = "Hub.getAllOnPageAsc", query = "FROM Hub h ORDER BY h.id ASC"),
         @NamedQuery(name = "Hub.getAllOnPageDesc", query = "FROM Hub h ORDER BY h.id DESC"),

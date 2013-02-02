@@ -17,6 +17,8 @@
  */
 package com.github.aint.jblog.model.dao;
 
+import java.util.List;
+
 import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.entity.Hub;
 
@@ -36,5 +38,12 @@ public interface HubDao extends GenericDao<Hub> {
      * @return a {@code Hub} or {@code null} if a hub with the given {@code hubName} not found
      */
     Hub getByHubName(String hubName);
+
+    /**
+     * Returns all public hubs.
+     * 
+     * @return all public hubs
+     */
+    List<Hub> getAllPublicHubs();
 
 }

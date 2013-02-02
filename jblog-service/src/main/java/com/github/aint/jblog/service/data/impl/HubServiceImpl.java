@@ -17,6 +17,7 @@
  */
 package com.github.aint.jblog.service.data.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.aint.jblog.model.dao.HubDao;
@@ -72,6 +73,18 @@ public class HubServiceImpl implements HubService {
             throw new HubNotFoundException("The hub with the specified name: " + name + " wasn't found");
         }
         return hub;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getNamesOfAllPublicHubs() {
+        List<String> names = new ArrayList<String>();
+        for (Hub hub : hubDao.getAllPublicHubs()) {
+            names.add(hub.getName());
+        }
+        return names;
     }
 
     /**

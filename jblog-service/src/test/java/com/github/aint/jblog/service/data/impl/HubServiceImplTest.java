@@ -96,6 +96,22 @@ public class HubServiceImplTest {
         hubService.getByHubName(hubName);
     }
 
+    @Test
+    public void getNamesOfAllPublicHub() {
+        List<Hub> publicHubs = new ArrayList<Hub>();
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i < 5; i++) {
+            String name = "hubName" + i;
+            publicHubs.add(new Hub(name, "hubDescription", false, HUB_AUTHOR));
+            names.add(name);
+        }
+
+        when(hubDao.getAllPublicHubs()).thenReturn(publicHubs);
+
+        assertEquals(hubService.getNamesOfAllPublicHubs(), names);
+        verify(hubDao).getAllPublicHubs();
+    }
+
     /* ----- common methods ----- */
 
     @Test

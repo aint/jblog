@@ -73,6 +73,18 @@ public class HubHibernateDaoTest {
         assertNull(hubDao.getByHubName(""));
     }
 
+    @Test
+    public void getAllPublicHub() {
+        final List<Hub> hubs = getHub(5);
+        for (int i = 0; i < hubs.size(); i++) {
+            Hub hub = hubs.get(i);
+            hub.setPersonal(i < 3 ? false : true);
+            session.save(hub);
+        }
+
+        assertEquals(hubDao.getAllPublicHubs(), hubs.subList(0, 3));
+    }
+
     /* ----- common methods ----- */
 
     @Test
