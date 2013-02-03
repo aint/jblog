@@ -53,7 +53,7 @@
                     <span style="color: red;"><jblog:printValidationErrors property="type" /></span><br>
                     <b><fmt:message key="add_hub.label.hub_type" /></b> <i>(<fmt:message key="add_hub.hint.hub_type" />)</i> <br>
                     <input type="radio" value="public" name="hubTypeField"><fmt:message key="add_hub.label.public_type" />
-                    <input type="radio" value="personal" name="hubTypeField"><fmt:message key="add_hub.label.private_type" /><br>
+                    <input type="radio" value="personal" name="hubTypeField"><fmt:message key="add_hub.label.personal_type" /><br>
                     <span style="color: red;"><jblog:printValidationErrors property="description" /></span><br>
                     <b><fmt:message key="add_hub.label.hub_description" /></b><br>
                     <textarea cols="55" rows="15" name="hubDescriptionField"><c:out value="${requestScope.hubDescriptionField}" /></textarea><br>
