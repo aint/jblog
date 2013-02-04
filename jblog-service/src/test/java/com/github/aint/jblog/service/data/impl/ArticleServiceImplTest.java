@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import com.github.aint.jblog.model.dao.ArticleDao;
 import com.github.aint.jblog.model.dao.VoiceForArticleDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.entity.VoiceForArticle;
 import com.github.aint.jblog.model.entity.VoiceValue;
@@ -50,7 +51,6 @@ import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 public class ArticleServiceImplTest {
     private static final Long ARTICLE_ID = 1L;
     private static final int ARTICLE_RATING = 0;
-    private static final User ARTICLE_AUTHOR = new User("userName", "user@gmail.com", "password");
     private ArticleService articleService;
     @Mock
     private ArticleDao articleDao;
@@ -66,11 +66,13 @@ public class ArticleServiceImplTest {
     @Test
     public void add() {
         final Article article = getArticle();
-        articleService.add(article, ARTICLE_AUTHOR);
+        final User author = new User("userName", "user@gmail.com", "password");
+        articleService.add(article, author, new Hub("name", "description", false, author));
 
         assertEquals(article.getRating(), 0, "article's rating isn't 0");
         assertNotNull(article.getCreationDate(), "article's creationDate is null");
         assertNotNull(article.getAuthor(), "article's author is null");
+        assertNotNull(article.getHub(), "article's hub is null");
 
         verify(articleDao).save(article);
     }
@@ -93,15 +95,16 @@ public class ArticleServiceImplTest {
     public void voteForArticle() {
         final Article article = getArticle();
         final VoiceValue voice = VoiceValue.NEGATIVE;
+        final User author = new User("userName", "user@gmail.com", "password");
         VoiceForArticleDao voiceDao = mock(VoiceForArticleDao.class);
-        articleService.voteForArticle(article, ARTICLE_AUTHOR, voice, voiceDao);
+        articleService.voteForArticle(article, author, voice, voiceDao);
 
         assertEquals(article.getRating(), ARTICLE_RATING - 1);
 
-        verify(voiceDao).save(new VoiceForArticle(voice, article, ARTICLE_AUTHOR));
+        verify(voiceDao).save(new VoiceForArticle(voice, article, author));
     }
 
-    /* ===== common methods ===== */
+    /* ----- common methods ----- */
 
     @Test
     public void get() throws EntityNotFoundException {
@@ -162,7 +165,6 @@ public class ArticleServiceImplTest {
         article.setId(ARTICLE_ID);
         article.setCreationDate(new Date());
         article.setRating(ARTICLE_RATING);
-        article.setAuthor(ARTICLE_AUTHOR);
         return article;
     }
 

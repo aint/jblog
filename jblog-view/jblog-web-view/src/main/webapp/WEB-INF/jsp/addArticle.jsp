@@ -19,7 +19,7 @@
 --%>
 <%-- 
   - Author:      Olexandr Tyshkovets
-  - Description: This page displays a form for adding article.
+  - Description: This page displays a form for adding an article.
   --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -47,6 +47,16 @@
             <h3 align="center"><fmt:message key="add_article.title" /></h3>
             <form action="${pageContext.request.contextPath}/add-article" method="post" name="addStoryForm">
                 <p>
+                    <span style="color: red;"><jblog:printValidationErrors property="hubName" /></span><br>
+                    select a hub<br>
+                    <select size="1" name="articleHubField">
+                        <option>select ...</option>
+                        <c:forEach items="${requestScope.HUBS}" var="hub">
+                            <option value="${hub}">${hub}</option>
+                        </c:forEach>
+                    </select><br>
+                    or <a href="${pageContext.request.contextPath}/add-hub" >create new</a>.
+                    
                     <span style="color: red;"><jblog:printValidationErrors property="title" /></span><br>
                     <b><fmt:message key="add_article.label.title" /></b><br>
                     <input type="text" size="80" value="<c:out value="${requestScope.articleTitleField}" />" name="articleTitleField"><br>
