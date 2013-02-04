@@ -48,14 +48,13 @@
             <form action="${pageContext.request.contextPath}/add-article" method="post" name="addStoryForm">
                 <p>
                     <span style="color: red;"><jblog:printValidationErrors property="hubName" /></span><br>
-                    select a hub<br>
+                    <b><fmt:message key="add_article.label.select_hub" /></b><br>
                     <select size="1" name="articleHubField">
-                        <option>select ...</option>
                         <c:forEach items="${requestScope.HUBS}" var="hub">
                             <option value="${hub}">${hub}</option>
                         </c:forEach>
                     </select><br>
-                    or <a href="${pageContext.request.contextPath}/add-hub" >create new</a>.
+                    <span style="font-size: 60%; color: grey;"><a href="${pageContext.request.contextPath}/add-hub" ><fmt:message key="add_article.label.create_hub" /></a></span><br>
                     
                     <span style="color: red;"><jblog:printValidationErrors property="title" /></span><br>
                     <b><fmt:message key="add_article.label.title" /></b><br>
