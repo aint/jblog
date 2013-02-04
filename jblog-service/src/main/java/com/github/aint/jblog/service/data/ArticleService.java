@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.github.aint.jblog.model.dao.VoiceForArticleDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.entity.VoiceValue;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
@@ -40,10 +41,14 @@ public interface ArticleService extends GenericEntityService<Article> {
      *            an {@link Article} which will be added
      * @param author
      *            the author of the given {@code article}
+     * @param hub
+     *            the container for the given {@code article}
      * @return an added {@link Article}
+     * 
+     * @see Hub
      * @see User
      */
-    Article add(Article article, User author);
+    Article add(Article article, User author, Hub hub);
 
     /**
      * Votes for an {@link Article}.

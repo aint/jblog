@@ -95,7 +95,7 @@ public class EditArticle extends HttpServlet {
         String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
 
         if (request.getParameter(UPDATE_ARTICLE_BUTTON) != null) {
-            ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords);
+            ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords, null);
             Language language = (Language)
                     request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
             Validator validator = Validation.getValidator(language.getLocale());
