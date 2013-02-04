@@ -17,50 +17,34 @@
  */
 package com.github.aint.jblog.service.exception.data;
 
-import com.github.aint.jblog.model.entity.Entity;
-import com.github.aint.jblog.service.data.GenericEntityService;
+import com.github.aint.jblog.model.entity.Hub;
+import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.service.data.HubService;
 
 /**
- * This exception thrown when an entity can't be found.
+ * This exception thrown when a {@link Hub}'s name is duplicated.
  * 
  * @author Olexandr Tyshkovets
- * @see Exception
- * @see Entity
- * @see AnonymousMessageNotFoundException
- * @see ArticleNotFoundException
- * @see CommentNotFoundException
- * @see HubNotFoundException
- * @see NewsNotFoundException
- * @see UserNotFoundException
- * @see GenericEntityService#get(Long)
+ * @see DuplicateException
+ * @see HubService#add(String, boolean, User)
  */
-public abstract class EntityNotFoundException extends Exception {
-    private static final long serialVersionUID = -4573655480249052805L;
+public class DuplicateHubNameException extends DuplicateException {
+    private static final long serialVersionUID = 5979309034205066626L;
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      */
-    public EntityNotFoundException() {
+    public DuplicateHubNameException() {
     }
 
     /**
-     * Constructs a new exception with the specified entity.
+     * Constructs a new exception with the specified {@code hubName}.
      * 
-     * @param entity
-     *            an entity, which was not found
+     * @param hubName
+     *            the hub name, which is duplicated
      */
-    public EntityNotFoundException(Entity entity) {
-        super("Entity not found: " + entity);
-    }
-
-    /**
-     * Constructs a new exception with the specified detail message.
-     * 
-     * @param message
-     *            the detail message
-     */
-    public EntityNotFoundException(String message) {
-        super(message);
+    public DuplicateHubNameException(String hubName) {
+        super("This hub name: " + hubName + " is duplicated");
     }
 
     /**
@@ -71,7 +55,7 @@ public abstract class EntityNotFoundException extends Exception {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public EntityNotFoundException(String message, Throwable cause) {
+    public DuplicateHubNameException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -81,7 +65,7 @@ public abstract class EntityNotFoundException extends Exception {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public EntityNotFoundException(Throwable cause) {
+    public DuplicateHubNameException(Throwable cause) {
         super(cause);
     }
 

@@ -19,10 +19,11 @@ package com.github.aint.jblog.model.util;
 
 import java.util.Date;
 
+import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.model.entity.Article;
 import com.github.aint.jblog.model.entity.Comment;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.News;
-import com.github.aint.jblog.model.entity.AnonymousMessage;
 import com.github.aint.jblog.model.entity.User;
 
 /**
@@ -44,8 +45,8 @@ public final class EntityFactory {
         return user;
     }
 
-    public static Article getDefaultArticle(User author) {
-        Article article = new Article("title", "preview", "body", "keywords", author);
+    public static Article getDefaultArticle(User author, Hub hub) {
+        Article article = new Article("title", "preview", "body", "keywords", author, hub);
         article.setCreationDate(new Date());
         article.setRating(0);
         return article;
@@ -68,6 +69,12 @@ public final class EntityFactory {
         News news = new News("title", "body", author);
         news.setCreationDate(new Date());
         return news;
+    }
+
+    public static Hub getDefaultHub(String name, User author) {
+        Hub hub = new Hub(name, "description", false, author);
+        hub.setRating(0);
+        return hub;
     }
 
 }

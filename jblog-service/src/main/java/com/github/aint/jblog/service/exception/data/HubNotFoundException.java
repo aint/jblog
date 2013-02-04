@@ -17,40 +17,32 @@
  */
 package com.github.aint.jblog.service.exception.data;
 
-import com.github.aint.jblog.model.entity.Entity;
-import com.github.aint.jblog.service.data.GenericEntityService;
+import com.github.aint.jblog.model.entity.Hub;
 
 /**
- * This exception thrown when an entity can't be found.
+ * This exception thrown when a {@link Hub} can't be found.
  * 
  * @author Olexandr Tyshkovets
- * @see Exception
- * @see Entity
- * @see AnonymousMessageNotFoundException
- * @see ArticleNotFoundException
- * @see CommentNotFoundException
- * @see HubNotFoundException
- * @see NewsNotFoundException
- * @see UserNotFoundException
- * @see GenericEntityService#get(Long)
+ * @see EntityNotFoundException
+ * @see HubServiceImpl
  */
-public abstract class EntityNotFoundException extends Exception {
-    private static final long serialVersionUID = -4573655480249052805L;
+public class HubNotFoundException extends EntityNotFoundException {
+    private static final long serialVersionUID = 1134101187184624105L;
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      */
-    public EntityNotFoundException() {
+    public HubNotFoundException() {
     }
 
     /**
-     * Constructs a new exception with the specified entity.
+     * Constructs a new exception with the specified {@link Hub}.
      * 
-     * @param entity
-     *            an entity, which was not found
+     * @param hub
+     *            a {@link Hub}, which was not found
      */
-    public EntityNotFoundException(Entity entity) {
-        super("Entity not found: " + entity);
+    public HubNotFoundException(Hub hub) {
+        super("Hub not found: " + hub);
     }
 
     /**
@@ -59,7 +51,7 @@ public abstract class EntityNotFoundException extends Exception {
      * @param message
      *            the detail message
      */
-    public EntityNotFoundException(String message) {
+    public HubNotFoundException(String message) {
         super(message);
     }
 
@@ -71,7 +63,7 @@ public abstract class EntityNotFoundException extends Exception {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public EntityNotFoundException(String message, Throwable cause) {
+    public HubNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -81,7 +73,7 @@ public abstract class EntityNotFoundException extends Exception {
      * @param cause
      *            the cause (which is saved for later retrieval by the {@link #getCause()} method)
      */
-    public EntityNotFoundException(Throwable cause) {
+    public HubNotFoundException(Throwable cause) {
         super(cause);
     }
 

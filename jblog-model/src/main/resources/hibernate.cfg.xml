@@ -46,6 +46,7 @@
     <mapping class="com.github.aint.jblog.model.entity.AnonymousMessage" />
     <mapping class="com.github.aint.jblog.model.entity.Article" />
     <mapping class="com.github.aint.jblog.model.entity.Comment" />
+    <mapping class="com.github.aint.jblog.model.entity.Hub" />
     <mapping class="com.github.aint.jblog.model.entity.News" />
     <mapping class="com.github.aint.jblog.model.entity.User" />
     <mapping class="com.github.aint.jblog.model.entity.VoiceForArticle" />

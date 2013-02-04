@@ -73,6 +73,7 @@ public class User implements Entity, Comparable<User> {
     private Role role = Role.USER;
     private Set<Article> articles = new HashSet<Article>();
     private Set<Comment> comments = new HashSet<Comment>();
+    private Set<Hub> hubs = new HashSet<Hub>();
 
     /**
      * The minimum length of the username.
@@ -471,6 +472,23 @@ public class User implements Entity, Comparable<User> {
     }
 
     /**
+     * @return the user's hubs
+     * @see Hub
+     */
+    @OneToMany(mappedBy = "author")
+    public Set<Hub> getHubs() {
+        return hubs;
+    }
+
+    /**
+     * @param hubs
+     *            the hubs to set
+     */
+    public void setHubs(Set<Hub> hubs) {
+        this.hubs = hubs;
+    }
+
+    /**
      * Compares two users for ordering. Compares by {@code uuid}, {@code userName} and {@code email}.
      * 
      * @param user
@@ -564,6 +582,7 @@ public class User implements Entity, Comparable<User> {
                 + ",role=" + role
                 + ",articles.size()=" + articles.size()
                 + ",comments.size()=" + comments.size()
+                + ",hubs.size()=" + hubs.size()
                 + "]";
     }
 

@@ -32,49 +32,42 @@ import javax.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
 import com.github.aint.jblog.model.entity.Language;
-import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.data.UserService;
-import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
-import com.github.aint.jblog.service.exception.data.HubNotFoundException;
+import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
-import com.github.aint.jblog.web.dto.ArticleDto;
+import com.github.aint.jblog.web.dto.HubDto;
 
 /**
- * This servlet adds an article.
+ * This servlet adds a hub.
  * 
  * @author Olexandr Tyshkovets
  */
-@WebServlet("/add-article")
-public class AddArticle extends HttpServlet {
-    private static final long serialVersionUID = 318019731167585591L;
-    private static Logger logger = LoggerFactory.getLogger(AddArticle.class);
-    private static final String ADD_ARTICLE_JSP_PATH = ConstantHolder.PATH.getProperty("path.jsp.addArticle");
-    private static final String ARTICLES_SERVLET_URL_PATTERN = ConstantHolder.MAPPING
-            .getProperty("mapping.servlet.articles");
-    private static final String ADD_ARTICLE_BUTTON = "addArticleButton";
-    private static final String ARTICLE_HUB_FIELD = "articleHubField";
-    private static final String ARTICLE_TITLE_FIELD = "articleTitleField";
-    private static final String ARTICLE_PREVIEW_FIELD = "articlePreviewField";
-    private static final String ARTICLE_BODY_FIELD = "articleBodyField";
-    private static final String ARTICLE_KEYWORDS_FIELD = "articleKeywords";
-    private ArticleService articleService;
+@WebServlet("/add-hub")
+public class AddHub extends HttpServlet {
+    private static final long serialVersionUID = 1869782172856853746L;
+    private static Logger logger = LoggerFactory.getLogger(AddHub.class);
+    private static final String ADD_HUB_JSP_PATH = ConstantHolder.PATH.getProperty("path.jsp.addHub");
+    private static final String ADD_ARTICLE_SERVLET_URL_PATTERN = ConstantHolder.MAPPING
+            .getProperty("mapping.servlet.addArticle");
+    private static final String ADD_HUB_BUTTON = "addHubButton";
+    private static final String HUB_NAME_FIELD = "hubNameField";
+    private static final String HUB_DESCRIPTION_FIELD = "hubDescriptionField";
+    private static final String HUB_TYPE_FIELD = "hubTypeField";
     private HubService hubService;
     private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        articleService = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()));
         hubService = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()));
         userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
     }
@@ -86,53 +79,41 @@ public class AddArticle extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setAttribute("HUBS", hubService.getNamesOfAllPublicHubs());
-
-        if (request.getParameter(ADD_ARTICLE_BUTTON) == null) {
-            request.getRequestDispatcher(ADD_ARTICLE_JSP_PATH).forward(request, response);
+        if (request.getParameter(ADD_HUB_BUTTON) == null) {
+            request.getRequestDispatcher(ADD_HUB_JSP_PATH).forward(request, response);
             return;
         }
 
-        String articleTitle = request.getParameter(ARTICLE_TITLE_FIELD);
-        String articlePreview = request.getParameter(ARTICLE_PREVIEW_FIELD);
-        String articleBody = request.getParameter(ARTICLE_BODY_FIELD);
-        String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
-        String artcleHub = request.getParameter(ARTICLE_HUB_FIELD);
-
-        ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords, artcleHub);
+        String hubName = request.getParameter(HUB_NAME_FIELD);
+        String hubDescription = request.getParameter(HUB_DESCRIPTION_FIELD);
+        HubDto hubDto = new HubDto(hubName, hubDescription, request.getParameter(HUB_TYPE_FIELD));
         Language language = (Language)
                 request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
         Validator validator = Validation.getValidator(language.getLocale());
-        Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
+        Set<ConstraintViolation<HubDto>> validationErrors = validator.validate(hubDto);
         if (!validationErrors.isEmpty()) {
-            logger.debug("The article's validation error messages: {}", validationErrors);
+            logger.debug("The hub's validation error messages: {}", validationErrors);
             request.setAttribute("validationErrors", validationErrors);
-            request.setAttribute(ARTICLE_TITLE_FIELD, articleTitle);
-            request.setAttribute(ARTICLE_PREVIEW_FIELD, articlePreview);
-            request.setAttribute(ARTICLE_BODY_FIELD, articleBody);
-            request.setAttribute(ARTICLE_KEYWORDS_FIELD, articleKeywords);
-            request.getRequestDispatcher(ADD_ARTICLE_JSP_PATH).forward(request, response);
+            request.setAttribute(HUB_NAME_FIELD, hubName);
+            request.setAttribute(HUB_DESCRIPTION_FIELD, hubDescription);
+            request.getRequestDispatcher(ADD_HUB_JSP_PATH).forward(request, response);
             return;
         }
 
         try {
-            articleService.add(
-                    articleDto.createArticle(),
-                    userService.getByUserName(
-                            (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE)),
-                    hubService.getByHubName(artcleHub)
-                    );
+            hubService.add(hubDto.createHub(), userService.getByUserName(
+                    (String) request.getSession(true).getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE)));
+        } catch (DuplicateHubNameException e) {
+            logger.error("The hub's name was duplicated", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
         } catch (UserNotFoundException e) {
             logger.error("The user not found", e);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
-        } catch (HubNotFoundException e) {
-            logger.error("The hub not found", e);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
         }
 
-        response.sendRedirect(ARTICLES_SERVLET_URL_PATTERN);
+        response.sendRedirect(ADD_ARTICLE_SERVLET_URL_PATTERN);
     }
 
     /**

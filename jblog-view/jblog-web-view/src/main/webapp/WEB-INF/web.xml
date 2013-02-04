@@ -265,6 +265,15 @@
     <url-pattern>/add-news</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AddHub</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.AddHub</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddHub</servlet-name>
+    <url-pattern>/add-hub</url-pattern>
+  </servlet-mapping>
+
   <!-- error pages -->
 
   <error-page>

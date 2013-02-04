@@ -25,8 +25,10 @@ import javax.validation.constraints.Size;
 
 import com.github.aint.jblog.model.entity.AbstractArticle;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
+import com.github.aint.jblog.service.validation.annotation.Exists;
 
 /**
  * DTO for a {@link Article} entity. Used for validation of a {@link Article}'s data.
@@ -51,6 +53,9 @@ public class ArticleDto {
     @Size(min = Article.ARTICLE_KEYWORDS_MIN_LENGTH, max = Article.ARTICLE_KEYWORDS_MAX_LENGTH, message = "{article.keywords.length}")
     private String keywords;
 
+    @Exists(entity = Hub.class, field = "name", message = "{article.hub_name.not_exists}")
+    private String hubName;
+
     /**
      * Constructs a {@code ArticleDto} with the given parameters. Trims all not-null fields.
      * 
@@ -62,13 +67,18 @@ public class ArticleDto {
      *            the article's body
      * @param keywords
      *            the article's keywords
+     * @param habName
+     *            the article's hub name
+     * 
      * @see Article
+     * @see Hub#getName()
      */
-    public ArticleDto(String title, String preview, String body, String keywords) {
+    public ArticleDto(String title, String preview, String body, String keywords, String hubName) {
         this.title = title == null ? null : title.trim();
         this.preview = preview == null ? preview : preview.trim();
         this.body = body == null ? null : body.trim();
         this.keywords = keywords == null ? null : keywords.trim();
+        this.hubName = hubName == null ? null : hubName.trim();
     }
 
     /**
