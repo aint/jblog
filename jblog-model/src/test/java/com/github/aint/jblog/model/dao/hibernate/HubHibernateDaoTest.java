@@ -85,6 +85,21 @@ public class HubHibernateDaoTest {
         assertEquals(hubDao.getAllPublicHubs(), hubs.subList(0, 3));
     }
 
+    @Test
+    public void getHubsOfUser() {
+        final String username = "troll";
+        final User author = EntityFactory.getDefaultUser(username, "troll@gmail.com");
+        session.save(author);
+        final List<Hub> hubs = getHub(5);
+        for (int i = 0; i < hubs.size(); i++) {
+            Hub hub = hubs.get(i);
+            hub.setAuthor(i < 3 ? author : hub.getAuthor());
+            session.save(hub);
+        }
+
+        assertEquals(hubDao.getHubsOfUser(username), hubs.subList(0, 3));
+    }
+
     /* ----- common methods ----- */
 
     @Test
@@ -160,10 +175,10 @@ public class HubHibernateDaoTest {
     }
 
     private List<Hub> getHub(int count) {
+        User author = EntityFactory.getDefaultUser("author", "author@gmail.com");
+        session.save(author);
         List<Hub> hubs = new ArrayList<Hub>();
         for (int i = 0; i < count; i++) {
-            User author = EntityFactory.getDefaultUser("author" + i, "author" + i + "@gmail.com");
-            session.save(author);
             hubs.add(EntityFactory.getDefaultHub("name" + i, author));
         }
         return hubs;
