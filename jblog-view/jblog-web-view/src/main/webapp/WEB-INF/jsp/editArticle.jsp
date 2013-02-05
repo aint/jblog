@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <script src="${pageContext.request.contextPath}/resources/js/dateFormat.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/validate.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/insertTags.js"></script>
 </head>
 
 <body>
