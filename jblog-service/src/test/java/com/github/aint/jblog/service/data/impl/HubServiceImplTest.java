@@ -27,7 +27,9 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
@@ -97,19 +99,29 @@ public class HubServiceImplTest {
     }
 
     @Test
-    public void getNamesOfAllPublicHub() {
-        List<Hub> publicHubs = new ArrayList<Hub>();
-        List<String> names = new ArrayList<String>();
+    public void getNamesOfHubsAvailableToUser() {
+        final Set<String> names = new LinkedHashSet<String>();
+        final List<Hub> publicHubs = new ArrayList<Hub>();
         for (int i = 0; i < 5; i++) {
-            String name = "hubName" + i;
-            publicHubs.add(new Hub(name, "hubDescription", false, HUB_AUTHOR));
+            String name = "name" + i;
+            publicHubs.add(new Hub(name, "description", false, HUB_AUTHOR));
+            names.add(name);
+        }
+
+        final User user = new User("aint", "mail@gmail.com", "password");
+        final List<Hub> ownHubs = new ArrayList<Hub>();
+        for (int i = 0; i < 3; i++) {
+            String name = "name" + i;
+            ownHubs.add(new Hub(name, "description", true, user));
             names.add(name);
         }
 
         when(hubDao.getAllPublicHubs()).thenReturn(publicHubs);
+        when(hubDao.getHubsOfUser(user.getUserName())).thenReturn(ownHubs);
 
-        assertEquals(hubService.getNamesOfAllPublicHubs(), names);
+        assertEquals(hubService.getNamesOfHubsAvailableToUser(user), names);
         verify(hubDao).getAllPublicHubs();
+        verify(hubDao).getHubsOfUser(user.getUserName());
     }
 
     /* ----- common methods ----- */

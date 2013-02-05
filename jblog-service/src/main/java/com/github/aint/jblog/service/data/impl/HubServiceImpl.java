@@ -18,7 +18,9 @@
 package com.github.aint.jblog.service.data.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.github.aint.jblog.model.dao.HubDao;
 import com.github.aint.jblog.model.entity.Hub;
@@ -79,12 +81,18 @@ public class HubServiceImpl implements HubService {
      * {@inheritDoc}
      */
     @Override
-    public List<String> getNamesOfAllPublicHubs() {
-        List<String> names = new ArrayList<String>();
+    public Set<String> getNamesOfHubsAvailableToUser(User user) {
+        Set<String> publicHubs = new LinkedHashSet<String>();
         for (Hub hub : hubDao.getAllPublicHubs()) {
-            names.add(hub.getName());
+            publicHubs.add(hub.getName());
         }
-        return names;
+        List<String> ownHubs = new ArrayList<String>();
+        for (Hub hub : hubDao.getHubsOfUser(user.getUserName())) {
+            ownHubs.add(hub.getName());
+        }
+        publicHubs.addAll(ownHubs);
+
+        return publicHubs;
     }
 
     /**
