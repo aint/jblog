@@ -57,7 +57,7 @@
                     <span style="color: red;"><jblog:printValidationErrors property="description" /></span><br>
                     <b><fmt:message key="add_hub.label.hub_description" /></b><br>
                     <textarea cols="55" rows="15" name="hubDescriptionField"><c:out value="${requestScope.hubDescriptionField}" /></textarea><br>
-                    <span style="font-size: 60%; color: grey;">length: 2-5000</span><br>
+                    <span style="font-size: 60%; color: grey;">length: 10-300</span><br>
                     <input type="submit" value="<fmt:message key="add_hub.button.add_hub" />" id="submit" name="addHubButton">
                 </p>
             </form>
