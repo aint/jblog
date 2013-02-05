@@ -69,6 +69,18 @@ public class HubHibernateDao implements HubDao {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Hub> getHubsOfUser(String username) {
+        return getSession()
+                .getNamedQuery("Hub.getHubsOfUser")
+                .setString(0, username)
+                .list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(Hub entity) {
         getSession().save(entity);

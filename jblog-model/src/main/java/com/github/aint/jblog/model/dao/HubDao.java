@@ -46,4 +46,13 @@ public interface HubDao extends GenericDao<Hub> {
      */
     List<Hub> getAllPublicHubs();
 
+    /**
+     * Returns all hubs of a {@link User} by its {@code username}.
+     * 
+     * @param username
+     *            username to find a hubs for
+     * @return all hubs of a {@link User}
+     */
+    List<Hub> getHubsOfUser(String username);
+
 }
