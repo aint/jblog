@@ -36,6 +36,7 @@ import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
 import com.github.aint.jblog.model.entity.Language;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.data.UserService;
@@ -86,7 +87,16 @@ public class AddArticle extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setAttribute("HUBS", hubService.getNamesOfAllPublicHubs());
+        User user = null;
+        try {
+            user = userService.getByUserName(
+                    (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
+        } catch (UserNotFoundException e) {
+            logger.error("The user not found", e);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        request.setAttribute("HUBS", hubService.getNamesOfHubsAvailableToUser(user));
 
         if (request.getParameter(ADD_ARTICLE_BUTTON) == null) {
             request.getRequestDispatcher(ADD_ARTICLE_JSP_PATH).forward(request, response);
@@ -116,16 +126,7 @@ public class AddArticle extends HttpServlet {
         }
 
         try {
-            articleService.add(
-                    articleDto.createArticle(),
-                    userService.getByUserName(
-                            (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE)),
-                    hubService.getByHubName(artcleHub)
-                    );
-        } catch (UserNotFoundException e) {
-            logger.error("The user not found", e);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
+            articleService.add(articleDto.createArticle(), user, hubService.getByHubName(artcleHub));
         } catch (HubNotFoundException e) {
             logger.error("The hub not found", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
