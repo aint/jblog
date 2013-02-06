@@ -60,7 +60,7 @@
                                         <b><c:out value="${hub.name}" /></b>
                                     </div>
                                     <div style="margin-left: 5%; margin-right: 5%;">
-                                        <a href="javascript:spoiler('hubDescription-${var.count}')">description</a>
+                                        <a href="javascript:spoiler('hubDescription-${var.count}')"><fmt:message key="hubs.label.description" /></a>
                                         <c:out value="${hub.author.userName}"/>
                                         <jblog:printRating rating="${hub.rating}"/>
                                         <c:out value="${fn:length(hub.articles)}"/>
