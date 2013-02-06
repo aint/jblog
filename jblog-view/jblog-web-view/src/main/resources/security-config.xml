@@ -78,6 +78,11 @@
     <role name="moderator" />
     <role name="admin" />
   </action>
+  <action path="/hubs">
+    <role name="user" />
+    <role name="moderator" />
+    <role name="admin" />
+  </action>
   <other-actions>
     <role name="guest" />
     <role name="user" />
