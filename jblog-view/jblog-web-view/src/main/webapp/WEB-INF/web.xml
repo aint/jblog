@@ -274,6 +274,15 @@
     <url-pattern>/add-hub</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>Hubs</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.Hubs</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Hubs</servlet-name>
+    <url-pattern>/hubs</url-pattern>
+  </servlet-mapping>
+
   <!-- error pages -->
 
   <error-page>
