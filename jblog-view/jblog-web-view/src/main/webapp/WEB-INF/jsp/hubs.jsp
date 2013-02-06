@@ -60,11 +60,19 @@
                                         <b><c:out value="${hub.name}" /></b>
                                     </div>
                                     <div style="margin-left: 5%; margin-right: 5%;">
-                                        <a href="javascript:spoiler('hubDescription-${var.count}')"><fmt:message key="hubs.label.description" /></a>
-                                        <c:out value="${hub.author.userName}"/>
-                                        <jblog:printRating rating="${hub.rating}"/>
-                                        <c:out value="${fn:length(hub.articles)}"/>
-                                        <span id="hubDescription-${var.count}" style="float:none; padding:5px 10px 0px 15px; border:thin solid #e0e0e0; background-color:whiteSmoke; display:none">
+                                        <div class="hubInfo">
+                                            <a href="javascript:spoiler('hubDescription-${var.count}')"><fmt:message key="hubs.label.description" /></a>
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent; padding-left: 30px; margin-right: 20px; margin-left: 20px;" title="user">
+                                                <c:out value="${hub.author.userName}" />
+                                            </span>
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/voteUp2-icon.png') no-repeat scroll 0 4px transparent; padding-left: 15px;" title="rating"></span>
+                                            <jblog:printRating rating="${hub.rating}" />
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/voteDown2-icon.png') no-repeat scroll 0 4px transparent; padding-left: 20px;" title="rating"></span>
+                                            <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/articles.png') no-repeat scroll 0 1px transparent; padding-left: 30px;" title="articles">
+                                                <c:out value="${fn:length(hub.articles)}" />
+                                            </span>
+                                        </div>
+                                        <span id="hubDescription-${var.count}" style="float:none; padding:5px 10px 0px 15px; border:thin solid #e0e0e0; background-color:whiteSmoke; border-radius: 8px; display:none;">
                                             <c:out value="${hub.description}" />
                                         </span>
                                         <hr>
