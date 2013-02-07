@@ -49,17 +49,17 @@
         <jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp"/>
         <div class="content">
-            <h3 align="center"><fmt:message key="hubs.title" /></h3>	
+            <h3 align="center"><fmt:message key="hubs.title" /></h3>
             <c:choose>
                 <c:when test="${not empty requestScope.HUBS}">
                     <c:forEach items="${requestScope.HUBS}" var="hub" varStatus="var">
                         <table style="width: 100%;">
                             <tr>
                                 <td>
-                                    <div style="margin-left: 3%; margin-right: 3%; font-size: 130%;">
-                                        <b><c:out value="${hub.name}" /></b>
+                                    <div class="postTitle">
+                                        <c:out value="${hub.name}" />
                                     </div>
-                                    <div style="margin-left: 5%; margin-right: 5%;">
+                                    <div style="margin-left: 2%; margin-right: 1%;">
                                         <div class="hubInfo">
                                             <a href="javascript:spoiler('hubDescription-${var.count}')"><fmt:message key="hubs.label.description" /></a>
                                             <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent; padding-left: 30px; margin-right: 20px; margin-left: 20px;" title="user">
@@ -75,8 +75,8 @@
                                         <span id="hubDescription-${var.count}" style="float:none; padding:5px 10px 0px 15px; border:thin solid #e0e0e0; background-color:whiteSmoke; border-radius: 8px; display:none;">
                                             <c:out value="${hub.description}" />
                                         </span>
-                                        <hr>
                                     </div>
+                                    <hr>
                                 </td>
                             </tr>
                         </table>

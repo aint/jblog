@@ -43,40 +43,40 @@
         <jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp"/>
         <div class="content">
-            <h3 align="center"><fmt:message key="articles.title" /></h3>	
+            <h3 align="center"><fmt:message key="articles.title" /></h3>
             <c:choose>
                 <c:when test="${not empty articles}">
                     <c:forEach items="${articles}" var="article">
                         <table style="width: 100%;">
                             <tr>
                                 <td>
-                                    <p>
-                                        <span style="font-size: 130%;">
-                                            <a href="${pageContext.request.contextPath}/display-article/${article.id}">${article.title}</a>
-                                        </span><br>
-                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/hub-icon.png') no-repeat 0px 0px;padding-left:25px;font-size:11px;padding-top:2px;padding-bottom:2px;color:#999;margin-bottom:15px;" title="hub">
+                                    <div class="postTitle">
+                                        <a href="${pageContext.request.contextPath}/display-article/${article.id}">${article.title}</a>
+                                    </div>
+                                    <div style="margin-left: 2%; margin-right: 1%;">
+                                        <div style="background: url('${pageContext.request.contextPath}/resources/images/hub-icon.png') no-repeat 0px 0px;padding-left:25px;font-size:11px;padding-top:2px;padding-bottom:2px;color:#999;margin-bottom:5px;" title="hub">
                                             <c:out value="${article.hub.name}" /><br>
-                                        </span>
+                                        </div>
                                         <c:out value="${article.preview}"/><br>
-                                    </p>
-                                    <div class="articleInfo">
-                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
-                                            <c:out value="${article.author.userName}"/>
-                                        </span>
-                                        <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
-                                            <fmt:formatDate value="${article.creationDate}" type="both" timeStyle="short" />
-                                        </span>
-                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/pageViews-icon.png') no-repeat 0 6px;padding-left: 20px; margin-right: 20px;" title="views">
-                                            <c:out value="${article.views}"/>
-                                        </span>
-                                        
-                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/voteUp2-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px;" title="rating"></span>
-                                            <jblog:printRating rating="${article.rating}"/>
-                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/voteDown2-icon.png') no-repeat scroll 0 4px transparent;padding-left: 20px;" title="rating"></span>
-                                        
-                                        <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/comment1-icon.png') no-repeat scroll 0 6px transparent;padding-left: 20px;" title="comments">
-                                            <c:out value="${fn:length(article.comments)}"/>
-                                        </span>
+                                        <div class="articleInfo">
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
+                                                <c:out value="${article.author.userName}"/>
+                                            </span>
+                                            <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
+                                                <fmt:formatDate value="${article.creationDate}" type="both" timeStyle="short" />
+                                            </span>
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/pageViews-icon.png') no-repeat 0 6px;padding-left: 20px; margin-right: 20px;" title="views">
+                                                <c:out value="${article.views}"/>
+                                            </span>
+                                            
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/voteUp2-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px;" title="rating"></span>
+                                                <jblog:printRating rating="${article.rating}"/>
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/voteDown2-icon.png') no-repeat scroll 0 4px transparent;padding-left: 20px;" title="rating"></span>
+                                            
+                                            <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/comment1-icon.png') no-repeat scroll 0 6px transparent;padding-left: 20px;" title="comments">
+                                                <c:out value="${fn:length(article.comments)}"/>
+                                            </span>
+                                        </div>
                                     </div>
                                     <hr>
                                 </td>
