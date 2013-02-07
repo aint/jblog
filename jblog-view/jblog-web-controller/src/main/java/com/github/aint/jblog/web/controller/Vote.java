@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.CommentHibernateDao;
+import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.VoiceForArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.VoiceForCommentHibernateDao;
@@ -40,9 +41,11 @@ import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.entity.VoiceValue;
 import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.CommentService;
+import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.CommentServiceImpl;
+import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
@@ -66,8 +69,9 @@ public class Vote extends HttpServlet {
             .getProperty("mapping.servlet.displayArticle");
     private static final String USER_RANK_XML_PATH = "/com/github/aint/jblog/service/other/userRank-config.xml";
     private static final String USER_RANK_DTD_PATH = "/com/github/aint/jblog/service/other/userRank-config.dtd";
-    private CommentService commentService;
     private ArticleService articleService;
+    private CommentService commentService;
+    private HubService hubService;
     private UserService userService;
     private UserRankConfiguration userRankConfig;
     private Long articleId;
@@ -79,6 +83,7 @@ public class Vote extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         articleService = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()));
         commentService = new CommentServiceImpl(new CommentHibernateDao(HibernateUtil.getSessionFactory()));
+        hubService = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()));
         userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
         try {
             userRankConfig = new XmlUserRankConfiguration(getClass().getResourceAsStream(USER_RANK_XML_PATH),
@@ -125,6 +130,7 @@ public class Vote extends HttpServlet {
 
             userService.updateRating(article.getAuthor(), voiceForArticle);
             userService.updateRank(article.getAuthor(), userRankConfig);
+            hubService.updateRating(article.getHub(), voiceForArticle);
         }
 
         VoiceValue voiceForComment = VoiceValue.lookUp(request.getParameter("forComment"));
@@ -147,6 +153,7 @@ public class Vote extends HttpServlet {
 
             userService.updateRating(comment.getAuthor(), voiceForComment);
             userService.updateRank(comment.getAuthor(), userRankConfig);
+            hubService.updateRating(comment.getArticle().getHub(), voiceForArticle);
         }
 
         response.sendRedirect(SHOWSTORY_SERVLET_URL_PATTERN + "/" + articleId);
