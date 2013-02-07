@@ -21,6 +21,7 @@ import java.util.Set;
 
 import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.model.entity.VoiceValue;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.HubNotFoundException;
@@ -70,5 +71,19 @@ public interface HubService extends GenericEntityService<Hub> {
      * @see User
      */
     Set<String> getNamesOfHubsAvailableToUser(User user);
+
+    /**
+     * Updates a {@link Hub}'s rating.
+     * 
+     * @param hub
+     *            a rating of this hub will be updated
+     * @param voiceValue
+     *            the positive or negative voice
+     * @return the {@code hub} with the updated rating
+     * 
+     * @see VoiceValue
+     * @see Hub#getRating()
+     */
+    Hub updateRating(Hub hub, VoiceValue voiceValue);
 
 }

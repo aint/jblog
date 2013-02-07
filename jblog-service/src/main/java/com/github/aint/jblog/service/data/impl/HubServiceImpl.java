@@ -25,6 +25,7 @@ import java.util.Set;
 import com.github.aint.jblog.model.dao.HubDao;
 import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.model.entity.VoiceValue;
 import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.HubNotFoundException;
@@ -93,6 +94,15 @@ public class HubServiceImpl implements HubService {
         publicHubs.addAll(ownHubs);
 
         return publicHubs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Hub updateRating(Hub hub, VoiceValue voiceValue) {
+        hub.setRating(VoiceValue.NEGATIVE.equals(voiceValue) ? hub.getRating() - 1 : hub.getRating() + 1);
+        return hub;
     }
 
     /**
