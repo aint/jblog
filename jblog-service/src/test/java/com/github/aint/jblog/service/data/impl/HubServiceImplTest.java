@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
 import com.github.aint.jblog.model.dao.HubDao;
 import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.model.entity.VoiceValue;
 import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
@@ -122,6 +123,26 @@ public class HubServiceImplTest {
         assertEquals(hubService.getNamesOfHubsAvailableToUser(user), names);
         verify(hubDao).getAllPublicHubs();
         verify(hubDao).getHubsOfUser(user.getUserName());
+    }
+
+    @Test
+    public void updateRatingIncrease() {
+        final Hub hub = getHub();
+        final int rating = 10;
+        hub.setRating(rating);
+        hubService.updateRating(hub, VoiceValue.POSITIVE);
+
+        assertEquals(hub.getRating(), rating + 1);
+    }
+
+    @Test
+    public void updateRatingDecrease() {
+        final Hub hub = getHub();
+        final int rating = 13;
+        hub.setRating(rating);
+        hubService.updateRating(hub, VoiceValue.NEGATIVE);
+
+        assertEquals(hub.getRating(), rating - 1);
     }
 
     /* ----- common methods ----- */
