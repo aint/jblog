@@ -54,6 +54,9 @@
                                         <span style="font-size: 130%;">
                                             <a href="${pageContext.request.contextPath}/display-article/${article.id}">${article.title}</a>
                                         </span><br>
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/hub-icon.png') no-repeat 0px 0px;padding-left:25px;font-size:11px;padding-top:2px;padding-bottom:2px;color:#999;margin-bottom:15px;" title="hub">
+                                            <c:out value="${article.hub.name}" /><br>
+                                        </span>
                                         <c:out value="${article.preview}"/><br>
                                     </p>
                                     <div class="articleInfo">

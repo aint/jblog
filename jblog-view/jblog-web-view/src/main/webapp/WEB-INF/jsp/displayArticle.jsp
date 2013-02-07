@@ -47,6 +47,9 @@
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp"/>
         <div class="content">
             <h3 align="center"><c:out value="${article.title}"/></h3>
+            <div style="margin-left: 2%; margin-right: 1%; background: url('${pageContext.request.contextPath}/resources/images/hub-icon.png') no-repeat 0px 0px;padding-left:25px;font-size:11px;padding-top:2px;padding-bottom:2px;color:#999;margin-bottom:15px;" title="hub">
+                <c:out value="${article.hub.name}" />
+            </div>
             <div style="margin-left: 2%; margin-right: 1%;"><c:out value="${article.body}" escapeXml="false"/></div>
             <%-- article's details --%>
             <p><b><fmt:message key="display_article.label.keywords" />:</b>
