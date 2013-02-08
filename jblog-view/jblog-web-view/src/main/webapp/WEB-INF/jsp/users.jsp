@@ -112,11 +112,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <p>
-                        empty<br>
-                        -_O<br>
-                        <a href="${pageContext.request.contextPath}/registration">registration</a>
-                    </p> 
+                    <p><fmt:message key="users.label.have_no_users" /></p> 
                 </c:otherwise>
             </c:choose>
         

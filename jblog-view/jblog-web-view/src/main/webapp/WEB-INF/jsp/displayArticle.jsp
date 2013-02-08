@@ -19,7 +19,7 @@
 --%>
 <%-- 
   - Author:      Olexandr Tyshkovets
-  - Description: This page displays article.
+  - Description: This page displays the article.
   --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -91,31 +91,38 @@
                 <br><br>
                 <h4 align="center"><img src="${pageContext.request.contextPath}/resources/images/comment2-icon.png" height="12" width="26"><fmt:message key="display_article.label.comments" />(${fn:length(requestScope.COMMENTS)})</h4>
                 <%-- show article's comments --%>
-                <c:forEach items="${requestScope.COMMENTS}" var="comment">
-                    <hr>
-                    <div class="commentInfo">
-                        <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
-                            <c:out value="${comment.author.userName}"/>(<fmt:message key="${comment.author.rank}" />)
-                        </span>
-                        <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
-                            <fmt:formatDate value="${comment.creationDate}" type="both" timeStyle="short" />
-                        </span>
-                        
-                        <jblog:showCommentVote comment="${comment}">
-                            <a href="${pageContext.request.contextPath}/vote?forComment=plus&commentId=${comment.id}">
-                                <span style="background: url('${pageContext.request.contextPath}/resources/images/voteUp1-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px;" title="rating"></span>
-                            </a>
-                        </jblog:showCommentVote>
-                        <jblog:printRating rating="${comment.rating}"/>
-                        <jblog:showCommentVote comment="${comment}">
-                            <a href="${pageContext.request.contextPath}/vote?forComment=minus&commentId=${comment.id}">
-                                <span style="background: url('${pageContext.request.contextPath}/resources/images/voteDown1-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px; margin-left: 5px;" title="rating"></span>
-                            </a>
-                        </jblog:showCommentVote>
-                    </div>
-                    <c:out value="${comment.body}" escapeXml="false"/>
-                    <hr>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty requestScope.COMMENTS}">
+                        <c:forEach items="${requestScope.COMMENTS}" var="comment">
+                            <hr>
+                            <div class="commentInfo">
+                                <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
+                                    <c:out value="${comment.author.userName}"/>(<fmt:message key="${comment.author.rank}" />)
+                                </span>
+                                <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
+                                    <fmt:formatDate value="${comment.creationDate}" type="both" timeStyle="short" />
+                                </span>
+                                
+                                <jblog:showCommentVote comment="${comment}">
+                                    <a href="${pageContext.request.contextPath}/vote?forComment=plus&commentId=${comment.id}">
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/voteUp1-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px;" title="rating"></span>
+                                    </a>
+                                </jblog:showCommentVote>
+                                <jblog:printRating rating="${comment.rating}"/>
+                                <jblog:showCommentVote comment="${comment}">
+                                    <a href="${pageContext.request.contextPath}/vote?forComment=minus&commentId=${comment.id}">
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/voteDown1-icon.png') no-repeat scroll 0 4px transparent;padding-left: 15px; margin-left: 5px;" title="rating"></span>
+                                    </a>
+                                </jblog:showCommentVote>
+                            </div>
+                            <c:out value="${comment.body}" escapeXml="false"/>
+                            <hr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p><fmt:message key="articles.label.have_no_articles" /></p>
+                    </c:otherwise>
+                </c:choose>
                 
                 <%-- add comment --%>
                 <form action="${pageContext.request.contextPath}/add-comment?articleId=${article.id}" method="post">

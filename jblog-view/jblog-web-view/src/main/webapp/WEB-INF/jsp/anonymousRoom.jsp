@@ -63,10 +63,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <p>
-                        empty<br>
-                        O_-<br>
-                        </p>
+                    <p><fmt:message key="anonymous_room.label.have_no_messages" /></p>
                 </c:otherwise>
             </c:choose>
             <form action="${pageContext.request.contextPath}/anonymous-room" method="post" name="addMessageForm">

@@ -83,7 +83,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <p>haven't hubs<br></p> 
+                    <p><fmt:message key="hubs.label.have_no_hubs" /></p> 
                 </c:otherwise>
             </c:choose>
         </div>

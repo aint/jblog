@@ -97,11 +97,7 @@
                     </p>
                 </c:when>
                 <c:otherwise>
-                    <p>
-                        haven't stories<br>
-                        o_O<br>
-                        <a href="${pageContext.request.contextPath}/add-article">write first article</a>
-                    </p> 
+                    <p><fmt:message key="articles.label.have_no_articles" /></p>
                 </c:otherwise>
             </c:choose>
         </div>
