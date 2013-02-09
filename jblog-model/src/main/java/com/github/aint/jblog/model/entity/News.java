@@ -36,6 +36,7 @@ import javax.persistence.Table;
 @Table(name = "NEWS")
 @NamedQueries({
         @NamedQuery(name = "News.getCreatedSince", query = "FROM News n WHERE n.creationDate > ? ORDER BY n.creationDate DESC"),
+        @NamedQuery(name = "News.getAllPinned", query = "FROM News n WHERE n.pinned = TRUE ORDER BY n.creationDate DESC"),
         @NamedQuery(name = "News.getAll", query = "FROM News"),
         @NamedQuery(name = "News.getAllOnPageAsc", query = "FROM News n ORDER BY n.id ASC"),
         @NamedQuery(name = "News.getAllOnPageDesc", query = "FROM News n ORDER BY n.id DESC"),
@@ -45,6 +46,7 @@ import javax.persistence.Table;
 public class News extends AbstractArticle {
     private static final long serialVersionUID = -5769938854957361379L;
     private Long id;
+    private boolean pinned;
     private NewsImportance newsImportance = NewsImportance.INTERMEDIATE;
 
     /**
@@ -66,15 +68,37 @@ public class News extends AbstractArticle {
      * Constructs a {@code News} with required fields.
      * 
      * @param title
-     *            a news's title
+     *            the news' title
      * @param body
-     *            a news's body
-     * @param author
-     *            a news's author
+     *            the news' body
+     * @param pinned
+     *            the news' pinned status
+     * @param newsImportance
+     *            the news' importance
      */
-    public News(String title, String body, User author) {
+    public News(String title, String body, boolean pinned, NewsImportance newsImportance) {
         this.title = title;
         this.body = body;
+        this.pinned = pinned;
+        this.newsImportance = newsImportance;
+    }
+
+    /**
+     * Constructs a {@code News} with required fields.
+     * 
+     * @param title
+     *            the news' title
+     * @param body
+     *            the news' body
+     * @param pinned
+     *            the news' pinned status
+     * @param author
+     *            the news' author
+     */
+    public News(String title, String body, boolean pinned, User author) {
+        this.title = title;
+        this.body = body;
+        this.pinned = pinned;
         this.author = author;
     }
 
@@ -95,6 +119,22 @@ public class News extends AbstractArticle {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the pinned
+     */
+    @Column(name = "PINNED", nullable = false)
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    /**
+     * @param pinned
+     *            the pinned to set
+     */
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     /**
@@ -167,6 +207,7 @@ public class News extends AbstractArticle {
                 "[id=" + id
                 + ",title=" + title
                 + ",body=" + body
+                + ",pinned=" + pinned
                 + ",creationDate=" + creationDate
                 + ",author=" + author.getUserName()
                 + "]";

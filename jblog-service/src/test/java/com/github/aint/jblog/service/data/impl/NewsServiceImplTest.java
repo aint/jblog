@@ -89,7 +89,16 @@ public class NewsServiceImplTest {
         verify(newsDao).getNewsCreatedSince(today);
     }
 
-    /* ===== common methods ===== */
+    @Test
+    public void getAllPinnedNews() {
+        final List<News> expected = new ArrayList<News>(Arrays.asList(getNews(), getNews(), getNews()));
+        when(newsDao.getAllPinnedNews()).thenReturn(expected);
+
+        assertEquals(newsService.getAllPinnedNews(), expected);
+        verify(newsDao).getAllPinnedNews();
+    }
+
+    /* ----- common methods ----- */
 
     @Test
     public void get() throws EntityNotFoundException {
@@ -146,7 +155,7 @@ public class NewsServiceImplTest {
     }
 
     private News getNews() {
-        News news = new News("title", "body", NEWS_AUTHOR);
+        News news = new News("title", "body", false, NEWS_AUTHOR);
         news.setId(NEWS_ID);
         news.setCreationDate(new Date());
         return news;

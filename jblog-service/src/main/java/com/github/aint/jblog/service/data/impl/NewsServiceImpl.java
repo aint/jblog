@@ -71,6 +71,14 @@ public class NewsServiceImpl implements NewsService {
      * {@inheritDoc}
      */
     @Override
+    public List<News> getAllPinnedNews() {
+        return newsDao.getAllPinnedNews();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public News get(Long id) throws NewsNotFoundException {
         News news = newsDao.get(id);
         if (news == null) {
