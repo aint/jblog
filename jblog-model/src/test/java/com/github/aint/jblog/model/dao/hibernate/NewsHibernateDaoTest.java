@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -82,6 +83,30 @@ public class NewsHibernateDaoTest {
             }
         });
         assertEquals(newsDao.getNewsCreatedSince(new Date(today - oneDay * 11)), resultList);
+    }
+
+    @Test
+    public void getAllPinnedNews() {
+        final List<News> newsList = getNews(10);
+        final List<News> pinnedNews = new ArrayList<News>();
+        Random rnd = new Random();
+        for (News news : newsList) {
+            if (rnd.nextInt(1) == 0) {
+                news.setPinned(true);
+                pinnedNews.add(news);
+            }
+            news.setCreationDate(new Date(System.currentTimeMillis() + rnd.nextInt(1000000)));
+            session.save(news);
+        }
+
+        Collections.sort(pinnedNews, new Comparator<News>() {
+            @Override
+            public int compare(News n1, News n2) {
+                return n2.getCreationDate().compareTo(n1.getCreationDate());
+            }
+        });
+
+        assertEquals(newsDao.getAllPinnedNews(), pinnedNews);
     }
 
     /* ----- common methods ----- */

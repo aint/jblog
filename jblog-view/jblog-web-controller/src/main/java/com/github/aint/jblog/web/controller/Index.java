@@ -20,7 +20,9 @@ package com.github.aint.jblog.web.controller;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -64,7 +66,9 @@ public class Index extends HttpServlet {
         request.setAttribute("articles", popularArticles);
 
         NewsService newsService = new NewsServiceImpl(new NewsHibernateDao(HibernateUtil.getSessionFactory()));
-        List<News> news = newsService.getNewsCreatedSince(new Date(System.currentTimeMillis() - ONE_DAY * 31));
+        Set<News> news = new LinkedHashSet<News>(
+                newsService.getNewsCreatedSince(new Date(System.currentTimeMillis() - ONE_DAY * 31)));
+        news.addAll(newsService.getAllPinnedNews());
         request.setAttribute("news", news);
 
         request.getRequestDispatcher(INDEX_JSP_PATH).forward(request, response);

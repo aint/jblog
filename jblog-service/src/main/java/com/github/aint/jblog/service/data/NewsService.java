@@ -58,4 +58,11 @@ public interface NewsService extends GenericEntityService<News> {
      */
     List<News> getNewsCreatedSince(Date createdSince);
 
+    /**
+     * Returns all pinned news.
+     * 
+     * @return the list of pinned news
+     */
+    List<News> getAllPinnedNews();
+
 }

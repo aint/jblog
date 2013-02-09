@@ -60,6 +60,17 @@ public class NewsHibernateDao implements NewsDao {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<News> getAllPinnedNews() {
+        return getSession()
+                .getNamedQuery("News.getAllPinned")
+                .list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(News entity) {
         getSession().save(entity);

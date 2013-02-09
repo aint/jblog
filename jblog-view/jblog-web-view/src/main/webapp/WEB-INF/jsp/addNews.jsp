@@ -50,7 +50,9 @@
                     <span style="color: red;"><jblog:printValidationErrors property="title" /></span><br>
                     <b><fmt:message key="add_news.label.title" /></b><br>
                     <input type="text" size="80" value="<c:out value="${requestScope.newsTitleField}" />" name="newsTitleField"><br>
-                    <span style="font-size: 60%; color: grey;">length: 5-75</span><br>
+                    <span style="font-size: 60%; color: grey;">length: 5-75</span><br><br>
+                    
+                    <input type="checkbox" value="true" name="newsIsPinnedField"> <b><fmt:message key="add_news.label.pinned" /></b><br>
                     
                     <span style="color: red;"><jblog:printValidationErrors property="importance" /></span><br>
                     <b><fmt:message key="add_news.label.news_importance" /></b><br>

@@ -63,6 +63,9 @@
                                         </c:when>
                                     </c:choose>
                                     <font color="${newsColor}">&#9612;</font><c:out value="${n.title}" />
+                                    <c:if test="${n.pinned}">
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/pinned-icon.png') 0 2px transparent;padding-left: 35px;" title="pinned"></span>
+                                    </c:if>
                                 </div>
                                 <div style="margin-left: 2%; margin-right: 1%;">
                                     <c:out value="${n.body}" escapeXml="false" />

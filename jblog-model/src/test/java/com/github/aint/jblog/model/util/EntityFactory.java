@@ -66,7 +66,7 @@ public final class EntityFactory {
     }
 
     public static News getDefaultNews(User author) {
-        News news = new News("title", "body", author);
+        News news = new News("title", "body", false, author);
         news.setCreationDate(new Date());
         return news;
     }
