@@ -61,6 +61,7 @@ public class AddNews extends HttpServlet {
     private static final String ADD_NEWS_BUTTON = "addNewsButton";
     private static final String NEWS_TITLE_FIELD = "newsTitleField";
     private static final String NEWS_BODY_FIELD = "newsBodyField";
+    private static final String NEWS_IS_PINNED_FIELD = "newsIsPinnedField";
     private static final String NEWS_IMPORTANCE_FIELD = "newsImportanceField";
     private NewsService newsService;
     private UserService userService;
@@ -89,7 +90,7 @@ public class AddNews extends HttpServlet {
         String newsBody = request.getParameter(NEWS_BODY_FIELD);
         String newsImportance = request.getParameter(NEWS_IMPORTANCE_FIELD);
 
-        NewsDto newsDto = new NewsDto(newsTitle, newsBody, newsImportance);
+        NewsDto newsDto = new NewsDto(newsTitle, newsBody, request.getParameter(NEWS_IS_PINNED_FIELD), newsImportance);
         Language language = (Language)
                 request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
         Validator validator = Validation.getValidator(language.getLocale());

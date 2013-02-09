@@ -45,6 +45,8 @@ public class NewsDto {
     @Size(min = News.NEWS_BODY_MIN_LENGTH, max = News.NEWS_BODY_MAX_LENGTH, message = "{news.body.length}")
     private String body;
 
+    private String pinned;
+
     @Pattern(regexp = "(minor|intermediate|major)", message = "{news.importance.pattern}")
     private String importance;
 
@@ -52,15 +54,18 @@ public class NewsDto {
      * Constructs a {@code NewsDto} with the given parameters. Trims all not-null fields.
      * 
      * @param title
-     *            the news's title
+     *            the news' title
      * @param body
-     *            the news's body
+     *            the news' body
+     * @param pinned
+     *            the news' pinned status
      * @param importance
-     *            the news's importance
+     *            the news' importance
      */
-    public NewsDto(String title, String body, String importance) {
+    public NewsDto(String title, String body, String pinned, String importance) {
         this.title = title == null ? null : title.trim();
         this.body = body == null ? null : body.trim();
+        this.pinned = pinned == null ? null : pinned.trim();
         this.importance = importance == null ? null : importance.trim();
     }
 
@@ -79,9 +84,11 @@ public class NewsDto {
         ignoredTags.add(HtmlTag.BLOCKQUOTE);
         ignoredTags.add(HtmlTag.DEL);
         ignoredTags.add(HtmlTag.I);
-        News news = new News(title, StringUtil.convertLineDelimitersToHtmlBR(
-                StringUtil.escapeHtmlInText(ignoredTags, body)), null);
-        news.setNewsImportance(NewsImportance.lookUp(importance));
+        News news = new News(
+                title,
+                StringUtil.convertLineDelimitersToHtmlBR(StringUtil.escapeHtmlInText(ignoredTags, body)),
+                "true".equals(pinned),
+                NewsImportance.lookUp(importance));
         return news;
     }
 
@@ -97,6 +104,20 @@ public class NewsDto {
      */
     public String getBody() {
         return body;
+    }
+
+    /**
+     * @return the pinned
+     */
+    public String getPinned() {
+        return pinned;
+    }
+
+    /**
+     * @return the importance
+     */
+    public String getImportance() {
+        return importance;
     }
 
 }
