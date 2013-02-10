@@ -52,13 +52,13 @@
                             <td>
                                 <div class="postTitle">
                                     <c:choose>
-                                        <c:when test="${n.newsImportance.importance eq 'minor'}">
+                                        <c:when test="${n.importance.importance eq 'low'}">
                                             <c:set var="newsColor" value="1dff00" scope="page" />
                                         </c:when>
-                                        <c:when test="${n.newsImportance.importance eq 'intermediate'}">
+                                        <c:when test="${n.importance.importance eq 'middle'}">
                                             <c:set var="newsColor" value="e3e006" scope="page" />
                                         </c:when>
-                                        <c:when test="${n.newsImportance.importance eq 'major'}">
+                                        <c:when test="${n.importance.importance eq 'high'}">
                                             <c:set var="newsColor" value="f31212" scope="page" />
                                         </c:when>
                                     </c:choose>

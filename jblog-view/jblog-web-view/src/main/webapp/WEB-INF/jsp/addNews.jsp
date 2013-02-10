@@ -57,9 +57,9 @@
                     <span style="color: red;"><jblog:printValidationErrors property="importance" /></span><br>
                     <b><fmt:message key="add_news.label.news_importance" /></b><br>
                     <select name="newsImportanceField">
-                        <option value="minor"><fmt:message key="add_news.label.news_importance.minor" /></option>
-                        <option value="importance"><fmt:message key="add_news.label.news_importance.intermediate" /></option>
-                        <option value="major"><fmt:message key="add_news.label.news_importance.major" /></option>
+                        <option value="low"><fmt:message key="add_news.label.news_importance.low" /></option>
+                        <option value="middle"><fmt:message key="add_news.label.news_importance.middle" /></option>
+                        <option value="high"><fmt:message key="add_news.label.news_importance.high" /></option>
                     </select><br><br>
                     
                     <span id="tag_toolbar">
