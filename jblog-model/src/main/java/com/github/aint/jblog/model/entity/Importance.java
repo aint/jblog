@@ -18,46 +18,46 @@
 package com.github.aint.jblog.model.entity;
 
 /**
- * This enum lists a {@link News}'s importance.
+ * This enum lists a {@link News}' importance.
  * 
  * @author Olexandr Tyshkovets
  * @see News#getImportance()
  */
-public enum NewsImportance {
+public enum Importance {
     /**
      * Lesser importance of a news.
      */
-    MINOR("minor"),
+    LOW("low"),
     /**
      * Middle importance of a news.
      */
-    INTERMEDIATE("intermediate"),
+    MIDDLE("middle"),
     /**
      * Higher importance of a news.
      */
-    MAJOR("major");
+    HIGH("high");
 
     private String importance;
 
     /**
-     * Constructs a {@code NewsImportance} with the given {@code importance}.
+     * Constructs a {@code Importance} with the given {@code importance}.
      * 
      * @param roleName
      *            the role's name
      */
-    private NewsImportance(String importance) {
+    private Importance(String importance) {
         this.importance = importance;
     }
 
     /**
-     * Returns the lookup {@code NewsImportance} by the given {@code importance}. Lookups with ignoring case.
+     * Returns the lookup {@code Importance} by the given {@code importance}. Lookups with ignoring case.
      * 
      * @param importance
      *            the news's importance
-     * @return a {@code NewsImportance} by the given {@code importance}; {@code null} otherwise
+     * @return a {@code Importance} by the given {@code importance}; {@code null} otherwise
      */
-    public static NewsImportance lookUp(String importance) {
-        for (NewsImportance im : values()) {
+    public static Importance lookUp(String importance) {
+        for (Importance im : values()) {
             if (im.getImportance().equalsIgnoreCase(importance)) {
                 return im;
             }
