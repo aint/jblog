@@ -47,7 +47,7 @@ public class News extends AbstractArticle {
     private static final long serialVersionUID = -5769938854957361379L;
     private Long id;
     private boolean pinned;
-    private NewsImportance newsImportance = NewsImportance.INTERMEDIATE;
+    private Importance importance = Importance.MIDDLE;
 
     /**
      * The minimum length of the news' body.
@@ -73,14 +73,14 @@ public class News extends AbstractArticle {
      *            the news' body
      * @param pinned
      *            the news' pinned status
-     * @param newsImportance
+     * @param importance
      *            the news' importance
      */
-    public News(String title, String body, boolean pinned, NewsImportance newsImportance) {
+    public News(String title, String body, boolean pinned, Importance importance) {
         this.title = title;
         this.body = body;
         this.pinned = pinned;
-        this.newsImportance = newsImportance;
+        this.importance = importance;
     }
 
     /**
@@ -138,20 +138,20 @@ public class News extends AbstractArticle {
     }
 
     /**
-     * @return the newsImportance
+     * @return the importance
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "IMPORTANCE", nullable = false)
-    public NewsImportance getNewsImportance() {
-        return newsImportance;
+    public Importance getImportance() {
+        return importance;
     }
 
     /**
-     * @param newsImportance
-     *            the newsImportance to set
+     * @param importance
+     *            the importance to set
      */
-    public void setNewsImportance(NewsImportance newsImportance) {
-        this.newsImportance = newsImportance;
+    public void setImportance(Importance importance) {
+        this.importance = importance;
     }
 
     /**

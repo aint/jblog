@@ -25,8 +25,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.github.aint.jblog.model.entity.AbstractArticle;
+import com.github.aint.jblog.model.entity.Importance;
 import com.github.aint.jblog.model.entity.News;
-import com.github.aint.jblog.model.entity.NewsImportance;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
 
@@ -47,7 +47,7 @@ public class NewsDto {
 
     private String pinned;
 
-    @Pattern(regexp = "(minor|intermediate|major)", message = "{news.importance.pattern}")
+    @Pattern(regexp = "(low|middle|high)", message = "{news.importance.pattern}")
     private String importance;
 
     /**
@@ -88,7 +88,7 @@ public class NewsDto {
                 title,
                 StringUtil.convertLineDelimitersToHtmlBR(StringUtil.escapeHtmlInText(ignoredTags, body)),
                 "true".equals(pinned),
-                NewsImportance.lookUp(importance));
+                Importance.lookUp(importance));
         return news;
     }
 
