@@ -58,6 +58,9 @@
                                 <td>
                                     <div class="postTitle">
                                         <c:out value="${hub.name}" />
+                                        <c:if test="${hub.personal}">
+                                            <span style="background: url('${pageContext.request.contextPath}/resources/images/lock-icon.png') no-repeat 0 0px transparent;padding-left: 35px;" title="personal"></span>
+                                        </c:if>
                                     </div>
                                     <div style="margin-left: 2%; margin-right: 1%;">
                                         <div class="hubInfo">
