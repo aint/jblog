@@ -32,7 +32,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><fmt:message key="view_hub.title" /></title>
+    <title><c:out value="${requestScope.HUB.name}" /></title>
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <script src="${pageContext.request.contextPath}/resources/js/dateFormat.js"></script>
@@ -43,7 +43,9 @@
         <jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp"/>
         <div class="content">
-            <h3 align="center"><c:out value="${requestScope.HUB.name}" /></h3>
+            <div class="postTitle" style="text-align: center;">
+                <c:out value="${requestScope.HUB.name}" />
+            </div>
             <c:choose>
                 <c:when test="${not empty requestScope.ARTICLES}">
                     <c:forEach items="${requestScope.ARTICLES}" var="article">

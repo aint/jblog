@@ -34,4 +34,9 @@
     <from>^/activate-account/([a-zA-z-\d]+)$</from>
     <to>/activate-account?uuid=$1</to>
   </rule>
+
+  <rule>
+    <from>^/hub/([\d]+)$</from>
+    <to>/hub?hubId=$1</to>
+  </rule>
 </urlrewrite>
