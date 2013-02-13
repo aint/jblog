@@ -57,7 +57,7 @@
                             <tr>
                                 <td>
                                     <div class="postTitle">
-                                        <c:out value="${hub.name}" />
+                                        <a href="${pageContext.request.contextPath}/hub?hubId=${hub.id}"><c:out value="${hub.name}" /></a>
                                         <c:if test="${hub.personal}">
                                             <span style="background: url('${pageContext.request.contextPath}/resources/images/lock-icon.png') no-repeat 0 0px transparent;padding-left: 35px;" title="personal"></span>
                                         </c:if>

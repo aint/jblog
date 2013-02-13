@@ -58,11 +58,11 @@ public class ViewHub extends HttpServlet {
             hub = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()))
                     .get(Long.valueOf(request.getParameter("hubId")));
         } catch (NumberFormatException e) {
-            logger.warn("The hub's id parameter is incorrect {} {}" + e.getClass() + " " + e.getMessage());
+            logger.warn("The hub's id parameter is incorrect. {} {}", e.getClass(), e.getMessage());
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         } catch (EntityNotFoundException e) {
-            logger.info("The hub not found", e);
+            logger.info("The hub not found. {} {}", e.getClass(), e.getMessage());
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

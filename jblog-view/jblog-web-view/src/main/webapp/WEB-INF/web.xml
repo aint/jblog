@@ -282,6 +282,15 @@
     <servlet-name>Hubs</servlet-name>
     <url-pattern>/hubs</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ViewHub</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.ViewHub</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewHub</servlet-name>
+    <url-pattern>/hub</url-pattern>
+  </servlet-mapping>
 
   <!-- error pages -->
 
