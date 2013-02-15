@@ -35,13 +35,8 @@
     <title><fmt:message key="users.title" /></title>
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/users.css" />
     <script src="${pageContext.request.contextPath}/resources/js/dateFormat.js"></script>
-    <script type="text/javascript">
-        function sh(elem) {
-            obj = document.getElementById(elem);
-            if (obj.style.display == "none") { obj.style.display = "block"; } else { obj.style.display = "none"; }
-        }
-    </script>
 </head>
 
 <body>
@@ -49,7 +44,12 @@
         <jsp:include page="/WEB-INF/jsp/include/header.jsp" />
         <jsp:include page="/WEB-INF/jsp/include/sidebar.jsp" />
         <div class="content">
-            <h3 align="center"><fmt:message key="users.title" /></h3>
+            <h3 align="center" style="color:#333333;font: 30px/118% normal Verdana, Tahoma, sans-serif;"><fmt:message key="users.title" /></h3>
+            
+            <div class="users_header">
+                <div class="karma"><fmt:message key="users.label.rating" /></div>
+            </div>
+            
             <jblog:ifAuth roles="moderator,admin">
                 <c:set var="show" value="true" scope="page" />
             </jblog:ifAuth>
@@ -57,34 +57,21 @@
                 <c:when test="${not empty requestScope.USERS}">
                     <c:forEach items="${requestScope.USERS}" var="user" varStatus="var">
                         
-                        <div class="userNameInfo">
-                            <c:out value="${user.userName}: ${user.firstName} ${user.lastName}" /><br>
+                        <div class="users">
+                            <div class="user">
+                                <div class="karma"><c:out value="${user.rating}" /></div>
+                                <c:if test="${var.count eq 1}">
+                                    <div class="king"></div>
+                                </c:if>
+                                <div class="info">
+                                    <div class="userlogin">
+                                        <div class="username">
+                                            <a style="color: #6DA3BD;" href="${pageContext.request.contextPath}/user?username=${user.userName}"><c:out value="${user.userName}" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <p>
-                            <fmt:formatDate value="${user.birthday}" pattern="dd.MM.yyyy" var="birthday" />
-                            <fmt:message key="users.label.birthday" /> ${birthday}<br>
-                            <fmt:message key="users.label.posted_articles" /> ${fn:length(user.articles)}<br>
-                            <c:if test="${fn:length(user.articles) ne 0}">
-                                <a href="javascript:sh('userArticles-${var.count}')"><fmt:message key="users.label.show_user_articles" /></a>
-                                <span id="userArticles-${var.count}" style="margin-left:10px; float:none; padding:1px 15px 3px 15px; border:thin solid #e0e0e0;background-color: whiteSmoke; display:none">
-                                    <c:forEach items="${user.articles}" var="article">
-                                        <a href="${pageContext.request.contextPath}/display-article/${article.id}"><c:out value="${article.title}" /></a>;
-                                    </c:forEach>
-                                </span>
-                                <br>
-                            </c:if>
-                            <fmt:message key="users.label.posted_comments" /> ${fn:length(user.comments)}<br>
-                            <fmt:message key="users.label.registration_date" /> <fmt:formatDate value="${user.registrationDate}" />,
-                            <fmt:message key="users.label.last_login_time" /> <fmt:formatDate value="${user.lastLoginTime}" type="both" timeStyle="medium" /><br>
-                            <fmt:message key="users.label.rank" /> <fmt:message key="${user.rank}" />,
-                            <fmt:message key="users.label.rating" /> <jblog:printRating rating="${user.rating}" /><br>
-                            <jblog:ifBanned user="${user}">
-                                <fmt:message key="users.label.ban_expiration_date" /> <fmt:formatDate value="${user.banExpirationDate}" type="both" timeStyle="medium" />,
-                                <fmt:message key="users.label.banReason" /> ${user.banReason}
-                                <c:set var="banned" value="true" scope="page"/>
-                             </jblog:ifBanned>
-                        </p>
                         
                         <c:if test="${not empty show}">
                             <form action="${pageContext.request.contextPath}/users" method="post">
@@ -105,9 +92,9 @@
                                     </c:choose>
                                     <input type="submit" value="ban/unban" name="BanUnbanUserButton">
                                 </p>
+                                <hr>
                             </form>
                         </c:if>
-                        <div style="margin-left: 3%; margin-right: 3%;"><hr></div>
                         
                     </c:forEach>
                 </c:when>
