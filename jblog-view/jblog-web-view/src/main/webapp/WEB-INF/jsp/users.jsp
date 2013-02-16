@@ -66,7 +66,7 @@
                                 <div class="info">
                                     <div class="userlogin">
                                         <div class="username">
-                                            <a style="color: #6DA3BD;" href="${pageContext.request.contextPath}/user?username=${user.userName}"><c:out value="${user.userName}" /></a>
+                                            <a style="color: #6DA3BD;" href="${pageContext.request.contextPath}/user/${user.userName}"><c:out value="${user.userName}" /></a>
                                         </div>
                                     </div>
                                 </div>
