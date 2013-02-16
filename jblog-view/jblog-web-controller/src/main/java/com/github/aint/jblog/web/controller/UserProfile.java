@@ -18,6 +18,8 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +36,7 @@ import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.util.HibernateUtil;
+import com.github.aint.jblog.service.util.impl.UserComparatorFactory;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 
 /**
@@ -64,6 +67,9 @@ public class UserProfile extends HttpServlet {
             return;
         }
 
+        List<User> users = userService.getAll();
+        Collections.sort(users, Collections.reverseOrder(new UserComparatorFactory().getRatingComparator()));
+        request.setAttribute("USER_POSITION", users.indexOf(user) + 1);
         request.setAttribute("USER", user);
 
         request.getRequestDispatcher(USER_PROFILE_JSP_PATH).forward(request, response);

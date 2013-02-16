@@ -73,6 +73,7 @@
             
             <div class="user_profile">
                 <div class="fullname"><c:out value="${requestScope.USER.firstName} ${requestScope.USER.lastName}" /></div>
+                <div class="rating-place"><c:out value="${USER_POSITION}" /><fmt:message key="user_profile.label.position" /></div>
                 <dl>
                     <dt><fmt:message key="user_profile.label.birthday" /></dt>
                     <dd><fmt:formatDate value="${requestScope.USER.birthday}" /></dd>
