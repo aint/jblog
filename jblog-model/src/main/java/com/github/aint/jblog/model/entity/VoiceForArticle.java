@@ -23,6 +23,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -33,6 +35,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "VOICE_FOR_ARTICLE")
+@NamedQueries({
+        @NamedQuery(name = "VoiceForArticle.getAll", query = "FROM VoiceForArticle"),
+        @NamedQuery(name = "VoiceForArticle.getAllOnPageAsc", query = "FROM VoiceForArticle v ORDER BY v.id ASC"),
+        @NamedQuery(name = "VoiceForArticle.getAllOnPageDesc", query = "FROM VoiceForArticle v ORDER BY v.id DESC"),
+        @NamedQuery(name = "VoiceForArticle.getCount", query = "SELECT COUNT(*) FROM VoiceForArticle"),
+        @NamedQuery(name = "VoiceForArticle.deleteById", query = "DELETE VoiceForArticle v WHERE v.id = ?"),
+})
 public class VoiceForArticle extends AbstractVoice {
     private static final long serialVersionUID = 8782354428056517207L;
     private Long id;

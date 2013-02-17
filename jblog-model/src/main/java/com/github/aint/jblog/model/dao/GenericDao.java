@@ -28,10 +28,10 @@ import com.github.aint.jblog.model.entity.Entity;
  *            the entity class
  * @author Olexandr Tyshkovets
  * @see Entity
+ * @see AnonymousMessageDao
  * @see ArticleDao
  * @see CommentDao
  * @see NewsDao
- * @see PublicMessageDao
  * @see UserDao
  */
 public interface GenericDao<T extends Entity> {

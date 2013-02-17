@@ -23,6 +23,7 @@ import java.util.List;
 import com.github.aint.jblog.model.dao.ArticleDao;
 import com.github.aint.jblog.model.dao.VoiceForArticleDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Hub;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.model.entity.VoiceForArticle;
 import com.github.aint.jblog.model.entity.VoiceValue;
@@ -53,11 +54,12 @@ public class ArticleServiceImpl implements ArticleService {
      * {@inheritDoc}
      */
     @Override
-    public Article add(Article article, User author) {
+    public Article add(Article article, User author, Hub hub) {
         article.setRating(0);
         article.setViews(0);
         article.setCreationDate(new Date());
         article.setAuthor(author);
+        article.setHub(hub);
         articleDao.save(article);
 
         return article;

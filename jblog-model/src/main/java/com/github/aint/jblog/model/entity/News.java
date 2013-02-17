@@ -22,6 +22,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -32,10 +34,20 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "NEWS")
+@NamedQueries({
+        @NamedQuery(name = "News.getCreatedSince", query = "FROM News n WHERE n.creationDate > ? ORDER BY n.creationDate DESC"),
+        @NamedQuery(name = "News.getAllPinned", query = "FROM News n WHERE n.pinned = TRUE ORDER BY n.creationDate DESC"),
+        @NamedQuery(name = "News.getAll", query = "FROM News"),
+        @NamedQuery(name = "News.getAllOnPageAsc", query = "FROM News n ORDER BY n.id ASC"),
+        @NamedQuery(name = "News.getAllOnPageDesc", query = "FROM News n ORDER BY n.id DESC"),
+        @NamedQuery(name = "News.getCount", query = "SELECT COUNT(*) FROM News"),
+        @NamedQuery(name = "News.deleteById", query = "DELETE News n WHERE n.id = ?"),
+})
 public class News extends AbstractArticle {
     private static final long serialVersionUID = -5769938854957361379L;
     private Long id;
-    private NewsImportance newsImportance = NewsImportance.INTERMEDIATE;
+    private boolean pinned;
+    private Importance importance = Importance.MIDDLE;
 
     /**
      * The minimum length of the news' body.
@@ -56,15 +68,37 @@ public class News extends AbstractArticle {
      * Constructs a {@code News} with required fields.
      * 
      * @param title
-     *            a news's title
+     *            the news' title
      * @param body
-     *            a news's body
-     * @param author
-     *            a news's author
+     *            the news' body
+     * @param pinned
+     *            the news' pinned status
+     * @param importance
+     *            the news' importance
      */
-    public News(String title, String body, User author) {
+    public News(String title, String body, boolean pinned, Importance importance) {
         this.title = title;
         this.body = body;
+        this.pinned = pinned;
+        this.importance = importance;
+    }
+
+    /**
+     * Constructs a {@code News} with required fields.
+     * 
+     * @param title
+     *            the news' title
+     * @param body
+     *            the news' body
+     * @param pinned
+     *            the news' pinned status
+     * @param author
+     *            the news' author
+     */
+    public News(String title, String body, boolean pinned, User author) {
+        this.title = title;
+        this.body = body;
+        this.pinned = pinned;
         this.author = author;
     }
 
@@ -88,20 +122,36 @@ public class News extends AbstractArticle {
     }
 
     /**
-     * @return the newsImportance
+     * @return the pinned
      */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "IMPORTANCE", nullable = false)
-    public NewsImportance getNewsImportance() {
-        return newsImportance;
+    @Column(name = "PINNED", nullable = false)
+    public boolean isPinned() {
+        return pinned;
     }
 
     /**
-     * @param newsImportance
-     *            the newsImportance to set
+     * @param pinned
+     *            the pinned to set
      */
-    public void setNewsImportance(NewsImportance newsImportance) {
-        this.newsImportance = newsImportance;
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    /**
+     * @return the importance
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "IMPORTANCE", nullable = false)
+    public Importance getImportance() {
+        return importance;
+    }
+
+    /**
+     * @param importance
+     *            the importance to set
+     */
+    public void setImportance(Importance importance) {
+        this.importance = importance;
     }
 
     /**
@@ -157,6 +207,7 @@ public class News extends AbstractArticle {
                 "[id=" + id
                 + ",title=" + title
                 + ",body=" + body
+                + ",pinned=" + pinned
                 + ",creationDate=" + creationDate
                 + ",author=" + author.getUserName()
                 + "]";

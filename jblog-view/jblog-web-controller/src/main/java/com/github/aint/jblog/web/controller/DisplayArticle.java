@@ -76,11 +76,11 @@ public class DisplayArticle extends HttpServlet {
 
         articleService.increaseAmountOfViews(article);
 
-        Object errors = request.getSession(true).getAttribute("errorMsgMap");
+        Object errors = request.getSession(true).getAttribute("validationErrors");
         if (errors != null) {
-            request.setAttribute("errorMsgMap", errors);
+            request.setAttribute("validationErrors", errors);
             request.setAttribute(COMMENT_BODY_FIELD, request.getSession().getAttribute(COMMENT_BODY_FIELD));
-            request.getSession().removeAttribute("errorMsgMap");
+            request.getSession().removeAttribute("validationErrors");
             request.getSession().removeAttribute(COMMENT_BODY_FIELD);
         }
         request.setAttribute("article", article);

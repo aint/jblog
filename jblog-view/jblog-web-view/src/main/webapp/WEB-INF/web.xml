@@ -230,12 +230,12 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>PublicRoom</servlet-name>
-    <servlet-class>com.github.aint.jblog.web.controller.PublicRoom</servlet-class>
+    <servlet-name>AnonymousRoom</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.AnonymousRoom</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PublicRoom</servlet-name>
-    <url-pattern>/public-room</url-pattern>
+    <servlet-name>AnonymousRoom</servlet-name>
+    <url-pattern>/anonymous-room</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -263,6 +263,33 @@
   <servlet-mapping>
     <servlet-name>AddNews</servlet-name>
     <url-pattern>/add-news</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddHub</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.AddHub</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddHub</servlet-name>
+    <url-pattern>/add-hub</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Hubs</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.Hubs</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Hubs</servlet-name>
+    <url-pattern>/hubs</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ViewHub</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.ViewHub</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewHub</servlet-name>
+    <url-pattern>/hub</url-pattern>
   </servlet-mapping>
 
   <!-- error pages -->

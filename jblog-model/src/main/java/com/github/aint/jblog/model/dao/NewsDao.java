@@ -40,4 +40,11 @@ public interface NewsDao extends GenericDao<News> {
      */
     List<News> getNewsCreatedSince(Date createdSince);
 
+    /**
+     * Returns all pinned news.
+     * 
+     * @return the list of pinned news
+     */
+    List<News> getAllPinnedNews();
+
 }

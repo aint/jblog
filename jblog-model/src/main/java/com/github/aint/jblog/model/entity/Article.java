@@ -23,6 +23,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,6 +38,14 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table(name = "ARTICLE")
+@NamedQueries({
+        @NamedQuery(name = "Article.getMostPopular", query = "FROM Article a WHERE a.rating >= ?"),
+        @NamedQuery(name = "Article.getAll", query = "FROM Article"),
+        @NamedQuery(name = "Article.getAllOnPageAsc", query = "FROM Article a ORDER BY a.id ASC"),
+        @NamedQuery(name = "Article.getAllOnPageDesc", query = "FROM Article a ORDER BY a.id DESC"),
+        @NamedQuery(name = "Article.getCount", query = "SELECT COUNT(*) FROM Article"),
+        @NamedQuery(name = "Article.deleteById", query = "DELETE Article a WHERE a.id = ?"),
+})
 public class Article extends AbstractArticle implements Comparable<Article> {
     private static final long serialVersionUID = -7631829435790815969L;
     private Long id;
@@ -41,6 +53,7 @@ public class Article extends AbstractArticle implements Comparable<Article> {
     private String keywords;
     private int rating;
     private int views;
+    private Hub hub;
     private Set<Comment> comments = new HashSet<Comment>();
     private Set<VoiceForArticle> voices = new HashSet<VoiceForArticle>();
 
@@ -98,23 +111,28 @@ public class Article extends AbstractArticle implements Comparable<Article> {
      * Constructs an {@code Article} with required fields.
      * 
      * @param title
-     *            an article's title
+     *            the article's title
      * @param preview
-     *            an article's preview
+     *            the article's preview
      * @param body
-     *            an article's body
+     *            the article's body
      * @param keywords
-     *            an article's keywords
+     *            the article's keywords
      * @param author
-     *            an article's author
+     *            the article's author
+     * @param hub
+     *            the article's hub
+     * 
+     * @see Hub
      * @see User
      */
-    public Article(String title, String preview, String body, String keywords, User author) {
+    public Article(String title, String preview, String body, String keywords, User author, Hub hub) {
         this.title = title;
         this.preview = preview;
         this.body = body;
         this.keywords = keywords;
         this.author = author;
+        this.hub = hub;
     }
 
     /**
@@ -198,6 +216,25 @@ public class Article extends AbstractArticle implements Comparable<Article> {
      */
     public void setViews(int views) {
         this.views = views;
+    }
+
+    /**
+     * @return the hub
+     * 
+     * @see Hub
+     */
+    @ManyToOne
+    @JoinColumn(name = "FK_HUB", nullable = false)
+    public Hub getHub() {
+        return hub;
+    }
+
+    /**
+     * @param hub
+     *            the hub to set
+     */
+    public void setHub(Hub hub) {
+        this.hub = hub;
     }
 
     /**
@@ -325,6 +362,7 @@ public class Article extends AbstractArticle implements Comparable<Article> {
                 + ",rating=" + rating
                 + ",creationDate=" + creationDate
                 + ",author=" + author.getUserName()
+                + ",hub=" + hub.getName()
                 + ",comments.size()=" + comments.size()
                 + ",voices.size()=" + voices.size()
                 + "]";

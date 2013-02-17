@@ -18,15 +18,16 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
@@ -37,17 +38,15 @@ import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.DuplicateEmailException;
 import com.github.aint.jblog.service.exception.data.DuplicateUserNameException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.mail.MailConfigurator;
 import com.github.aint.jblog.service.mail.impl.JavaxMailSender;
 import com.github.aint.jblog.service.mail.impl.MailServiceImpl;
 import com.github.aint.jblog.service.mail.impl.PropertiesMailConfigurator;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.RegisterUserDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.RegisterUserDto;
 
 /**
  * This servlet sign up a user.
@@ -90,33 +89,23 @@ public class Registration extends HttpServlet {
         String lastName = request.getParameter(LAST_NAME_FIELD);
         String userName = request.getParameter(USER_NAME_FIELD);
         String userEmail = request.getParameter(USER_EMAIL_FIELD);
-        String userPassword = request.getParameter(USER_PASSWORD_FIELD);
-        String userRePassword = request.getParameter(USER_REPASSWORD_FIELD);
+        String password = request.getParameter(USER_PASSWORD_FIELD);
+        String rePassword = request.getParameter(USER_REPASSWORD_FIELD);
         String year = request.getParameter(YEAR_FIELD);
         String month = request.getParameter(MONTH_FIELD);
         String day = request.getParameter(DAY_FIELD);
 
-        RegisterUserDto userDto = new RegisterUserDto(userName, firstName, lastName, userEmail, userPassword,
-                userRePassword, day, month, year, (Language) request.getSession(true).getAttribute(
-                        SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
+        RegisterUserDto userDto = new RegisterUserDto(userName, firstName, lastName, userEmail, password, rePassword,
+                day, month, year, request.getParameter(LICENSE_FIELD),
+                (Language) request.getSession(true).getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
 
-        Validator userValidator = new AnnotationBasedValidator();
-        Map<String, String> errorMsgMap = new HashMap<String, String>();
-        try {
-            errorMsgMap.putAll(userValidator.validate(userDto));
-        } catch (ValidationException e) {
-            logger.error("Some error occured in validation", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
-
-        if (request.getParameter(LICENSE_FIELD) == null) {
-            errorMsgMap.put("license", "license agreement not accepts");
-        }
-
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The register user's validation error messages: {}", errorMsgMap);
-            request.setAttribute("errorMsgMap", errorMsgMap);
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
+        Set<ConstraintViolation<RegisterUserDto>> constraintViolations = validator.validate(userDto);
+        if (!constraintViolations.isEmpty()) {
+            logger.debug("The register user's validation error messages: {}", constraintViolations);
+            request.setAttribute("errorMsgMap", constraintViolations);
             request.setAttribute(FIRST_NAME_FIELD, firstName);
             request.setAttribute(LAST_NAME_FIELD, lastName);
             request.setAttribute(USER_NAME_FIELD, userName);
@@ -149,22 +138,12 @@ public class Registration extends HttpServlet {
                     new UserHibernateDao(HibernateUtil.getSessionFactory())).registerUser(userDto.createUser(),
                     new MailServiceImpl(new JavaxMailSender(mailSenderConfig), velocityEngine, applicationUrl));
         } catch (DuplicateUserNameException e) {
-            logger.info("The userName was duplicated", e);
-            errorMsgMap.put("userName", "this userName is busy");
-        } catch (DuplicateEmailException e) {
-            logger.info("The user's email was duplicated", e);
-            errorMsgMap.put("email", "this email is busy");
-        }
-        // TODO eliminate duplicated code
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The register user's validation error messages: {}", errorMsgMap);
-            request.setAttribute("errorMsgMap", errorMsgMap);
-            request.setAttribute(FIRST_NAME_FIELD, firstName);
-            request.setAttribute(LAST_NAME_FIELD, lastName);
-            request.setAttribute(USER_NAME_FIELD, userName);
-            request.setAttribute(USER_EMAIL_FIELD, userEmail);
-            request.getRequestDispatcher(REGISTRATION_JSP_PATH).forward(request, response);
+            logger.error("The userName was duplicated", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
+        } catch (DuplicateEmailException e) {
+            logger.error("The user's email was duplicated", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         request.getRequestDispatcher(SUCCESSFUL_REGISTRATION_JSP_PATH).forward(request, response);

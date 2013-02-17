@@ -18,8 +18,7 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,25 +26,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.NewsHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.NewsService;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.NewsServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.exception.security.AccessException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.NewsDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.NewsDto;
 
 /**
  * This servlet adds a news.
@@ -61,6 +61,7 @@ public class AddNews extends HttpServlet {
     private static final String ADD_NEWS_BUTTON = "addNewsButton";
     private static final String NEWS_TITLE_FIELD = "newsTitleField";
     private static final String NEWS_BODY_FIELD = "newsBodyField";
+    private static final String NEWS_IS_PINNED_FIELD = "newsIsPinnedField";
     private static final String NEWS_IMPORTANCE_FIELD = "newsImportanceField";
     private NewsService newsService;
     private UserService userService;
@@ -89,21 +90,14 @@ public class AddNews extends HttpServlet {
         String newsBody = request.getParameter(NEWS_BODY_FIELD);
         String newsImportance = request.getParameter(NEWS_IMPORTANCE_FIELD);
 
-        NewsDto newsDto = new NewsDto(newsTitle, newsBody, newsImportance);
-
-        Validator newsValidator = new AnnotationBasedValidator();
-        Map<String, String> errorMsgMap = new HashMap<String, String>();
-        try {
-            errorMsgMap.putAll(newsValidator.validate(newsDto));
-        } catch (ValidationException e) {
-            logger.error("Some error occured in validation", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
-
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The news' validation error messages: {}", errorMsgMap);
-            request.setAttribute("errorMsgMap", errorMsgMap);
+        NewsDto newsDto = new NewsDto(newsTitle, newsBody, request.getParameter(NEWS_IS_PINNED_FIELD), newsImportance);
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
+        Set<ConstraintViolation<NewsDto>> validationErrors = validator.validate(newsDto);
+        if (!validationErrors.isEmpty()) {
+            logger.debug("The news' validation error messages: {}", validationErrors);
+            request.setAttribute("validationErrors", validationErrors);
             request.setAttribute(NEWS_TITLE_FIELD, newsTitle);
             request.setAttribute(NEWS_BODY_FIELD, newsBody);
             request.getRequestDispatcher(ADD_NEWS_JSP_PATH).forward(request, response);

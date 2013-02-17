@@ -18,8 +18,7 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,24 +26,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
+import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.ArticleService;
+import com.github.aint.jblog.service.data.HubService;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
+import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
+import com.github.aint.jblog.service.exception.data.HubNotFoundException;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.ArticleDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.ArticleDto;
 
 /**
  * This servlet adds an article.
@@ -59,16 +64,19 @@ public class AddArticle extends HttpServlet {
     private static final String ARTICLES_SERVLET_URL_PATTERN = ConstantHolder.MAPPING
             .getProperty("mapping.servlet.articles");
     private static final String ADD_ARTICLE_BUTTON = "addArticleButton";
+    private static final String ARTICLE_HUB_FIELD = "articleHubField";
     private static final String ARTICLE_TITLE_FIELD = "articleTitleField";
     private static final String ARTICLE_PREVIEW_FIELD = "articlePreviewField";
     private static final String ARTICLE_BODY_FIELD = "articleBodyField";
     private static final String ARTICLE_KEYWORDS_FIELD = "articleKeywords";
     private ArticleService articleService;
+    private HubService hubService;
     private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         articleService = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()));
+        hubService = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()));
         userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
     }
 
@@ -78,6 +86,18 @@ public class AddArticle extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        User user = null;
+        try {
+            user = userService.getByUserName(
+                    (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
+        } catch (UserNotFoundException e) {
+            logger.error("The user not found", e);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        request.setAttribute("HUBS", hubService.getNamesOfHubsAvailableToUser(user));
+
         if (request.getParameter(ADD_ARTICLE_BUTTON) == null) {
             request.getRequestDispatcher(ADD_ARTICLE_JSP_PATH).forward(request, response);
             return;
@@ -87,22 +107,16 @@ public class AddArticle extends HttpServlet {
         String articlePreview = request.getParameter(ARTICLE_PREVIEW_FIELD);
         String articleBody = request.getParameter(ARTICLE_BODY_FIELD);
         String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
+        String artcleHub = request.getParameter(ARTICLE_HUB_FIELD);
 
-        ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords);
-
-        Validator articleValidator = new AnnotationBasedValidator();
-        Map<String, String> errorMsgMap = new HashMap<String, String>();
-        try {
-            errorMsgMap.putAll(articleValidator.validate(articleDto));
-        } catch (ValidationException e) {
-            logger.error("Some error occured in validation", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
-
-        if (!errorMsgMap.isEmpty()) {
-            logger.debug("The article's validation error messages: {}", errorMsgMap);
-            request.setAttribute("errorMsgMap", errorMsgMap);
+        ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords, artcleHub);
+        Language language = (Language)
+                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+        Validator validator = Validation.getValidator(language.getLocale());
+        Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
+        if (!validationErrors.isEmpty()) {
+            logger.debug("The article's validation error messages: {}", validationErrors);
+            request.setAttribute("validationErrors", validationErrors);
             request.setAttribute(ARTICLE_TITLE_FIELD, articleTitle);
             request.setAttribute(ARTICLE_PREVIEW_FIELD, articlePreview);
             request.setAttribute(ARTICLE_BODY_FIELD, articleBody);
@@ -112,11 +126,10 @@ public class AddArticle extends HttpServlet {
         }
 
         try {
-            articleService.add(articleDto.createArticle(), userService.getByUserName(
-                    (String) request.getSession(true).getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE)));
-        } catch (UserNotFoundException e) {
-            logger.error("The user not found", e);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            articleService.add(articleDto.createArticle(), user, hubService.getByHubName(artcleHub));
+        } catch (HubNotFoundException e) {
+            logger.error("The hub not found", e);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 

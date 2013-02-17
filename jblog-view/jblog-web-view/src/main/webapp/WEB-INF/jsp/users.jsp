@@ -37,8 +37,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <script src="${pageContext.request.contextPath}/resources/js/dateFormat.js"></script>
     <script type="text/javascript">
-        function sh(num) {
-            obj = document.getElementById("userArticles" + num);
+        function sh(elem) {
+            obj = document.getElementById(elem);
             if (obj.style.display == "none") { obj.style.display = "block"; } else { obj.style.display = "none"; }
         }
     </script>
@@ -55,7 +55,7 @@
             </jblog:ifAuth>
             <c:choose>
                 <c:when test="${not empty requestScope.USERS}">
-                    <c:forEach items="${requestScope.USERS}" var="user">
+                    <c:forEach items="${requestScope.USERS}" var="user" varStatus="var">
                         
                         <div class="userNameInfo">
                             <c:out value="${user.userName}: ${user.firstName} ${user.lastName}" /><br>
@@ -66,8 +66,8 @@
                             <fmt:message key="users.label.birthday" /> ${birthday}<br>
                             <fmt:message key="users.label.posted_articles" /> ${fn:length(user.articles)}<br>
                             <c:if test="${fn:length(user.articles) ne 0}">
-                                <a href="javascript:sh('1')"><fmt:message key="users.label.show_user_articles" /></a>
-                                <span id="userArticles1" style="margin-left:10px; float:none; padding:1px 15px 3px 15px; border:thin solid #e0e0e0;background-color: whiteSmoke; display:none">
+                                <a href="javascript:sh('userArticles-${var.count}')"><fmt:message key="users.label.show_user_articles" /></a>
+                                <span id="userArticles-${var.count}" style="margin-left:10px; float:none; padding:1px 15px 3px 15px; border:thin solid #e0e0e0;background-color: whiteSmoke; display:none">
                                     <c:forEach items="${user.articles}" var="article">
                                         <a href="${pageContext.request.contextPath}/display-article/${article.id}"><c:out value="${article.title}" /></a>;
                                     </c:forEach>
@@ -112,11 +112,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <p>
-                        empty<br>
-                        -_O<br>
-                        <a href="${pageContext.request.contextPath}/registration">registration</a>
-                    </p> 
+                    <p><fmt:message key="users.label.have_no_users" /></p> 
                 </c:otherwise>
             </c:choose>
         

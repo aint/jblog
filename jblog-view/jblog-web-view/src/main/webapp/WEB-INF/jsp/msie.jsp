@@ -35,16 +35,13 @@
 
 <body>
     <div align="center">
-        <img src="${pageContext.request.contextPath}/resources/images/msie.jpg" width="998" height="531" align="middle" vspace="5" hspace="5" alt="Internet Explorer? FUCK OFF!!!">
-        <h3>
-            <strong>
-                А лучше установи себе действительно хороший браузер.
-                <br>
-                Например, <a href="//www.google.com/chrome/index.html">Google Chrome</a>, 
-                <a href="//www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a>, 
-                <a href="//www.apple.com/safari/download/">Safari</a> или <a href="//www.opera.com/download/">Opera</a>.
-            </strong>
-        </h3>
+        <img src="${pageContext.request.contextPath}/resources/images/msie.jpg" align="middle" alt="Internet Explorer? FUCK OFF!!!">
+        <div style="font-size: 200%; color: red; padding-bottom: 30px;"><fmt:message key="msie.label.gtfoh" /></div>
+        <b><fmt:message key="msie.label.advice" /></b><br>
+        <i><a href="//www.google.com/chrome/index.html">Google Chrome</a>, 
+        <a href="//www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a>, 
+        <a href="//www.apple.com/safari/download/">Safari</a>,
+        <a href="//www.opera.com/download/">Opera</a>.</i>
     </div>
 </body>
 

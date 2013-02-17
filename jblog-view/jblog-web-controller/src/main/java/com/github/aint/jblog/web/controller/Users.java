@@ -19,33 +19,33 @@ package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.exception.security.AccessException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.util.impl.UserComparatorFactory;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.BanUserDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.BanUserDto;
 
 /**
  * This servlet displays all users.
@@ -76,19 +76,14 @@ public class Users extends HttpServlet {
             String banReason = request.getParameter("banReason");
 
             if (BAN_ACTION.equals(action)) {
-                Validator userValidator = new AnnotationBasedValidator();
-                Map<String, String> errorMsgMap = new HashMap<String, String>();
-                try {
-                    errorMsgMap.putAll(userValidator.validate(new BanUserDto(userName, banLength, banReason)));
-                } catch (ValidationException e) {
-                    logger.error("Some error occured in validation", e);
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    return;
-                }
-
-                if (!errorMsgMap.isEmpty()) {
-                    logger.debug("The user's validation error messages: {}", errorMsgMap);
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsgMap.toString());
+                Language language = (Language)
+                        request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+                Validator validator = Validation.getValidator(language.getLocale());
+                Set<ConstraintViolation<BanUserDto>> validationErrors =
+                        validator.validate(new BanUserDto(userName, banLength, banReason));
+                if (!validationErrors.isEmpty()) {
+                    logger.debug("The user's validation error messages: {}", validationErrors);
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
             }
@@ -96,7 +91,7 @@ public class Users extends HttpServlet {
             User caller = null;
             User user = null;
             try {
-                caller = userService.getByUserName((String) request.getSession(true).getAttribute(
+                caller = userService.getByUserName((String) request.getSession().getAttribute(
                         SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
                 user = userService.getByUserName(userName);
                 if (BAN_ACTION.equals(action)) {

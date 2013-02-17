@@ -56,25 +56,6 @@ public class VoiceForCommentHibernateDao implements VoiceForCommentDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(VoiceForComment entity) {
-        getSession().delete(entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void delete(Long id) {
-        getSession()
-                .createQuery("delete VoiceForComment where id = ?")
-                .setLong(0, id)
-                .executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public VoiceForComment get(Long id) {
         return (VoiceForComment) getSession().get(VoiceForComment.class, id);
     }
@@ -85,7 +66,9 @@ public class VoiceForCommentHibernateDao implements VoiceForCommentDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<VoiceForComment> getAll() {
-        return getSession().createQuery("from VoiceForComment").list();
+        return getSession()
+                .getNamedQuery("VoiceForComment.getAll")
+                .list();
     }
 
     /**
@@ -95,7 +78,7 @@ public class VoiceForCommentHibernateDao implements VoiceForCommentDao {
     @Override
     public List<VoiceForComment> getAllOnPage(int pageNumber, int pageSize, boolean head) {
         return getSession()
-                .createQuery("from VoiceForComment order by id " + (head == true ? "asc" : "desc"))
+                .getNamedQuery(head == true ? "VoiceForComment.getAllOnPageAsc" : "VoiceForComment.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -107,9 +90,28 @@ public class VoiceForCommentHibernateDao implements VoiceForCommentDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from VoiceForComment")
+                .getNamedQuery("VoiceForComment.getCount")
                 .iterate()
                 .next();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Long id) {
+        getSession()
+                .getNamedQuery("VoiceForComment.deleteById")
+                .setLong(0, id)
+                .executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(VoiceForComment entity) {
+        getSession().delete(entity);
     }
 
     /**

@@ -50,31 +50,35 @@
                     <table width="100%">
                         <tr>
                             <td>
-                                <span style="font-size: 130%; margin-left: 5%;">
+                                <div class="postTitle">
                                     <c:choose>
-                                        <c:when test="${n.newsImportance.importance eq 'minor'}">
+                                        <c:when test="${n.importance.importance eq 'low'}">
                                             <c:set var="newsColor" value="1dff00" scope="page" />
                                         </c:when>
-                                        <c:when test="${n.newsImportance.importance eq 'intermediate'}">
+                                        <c:when test="${n.importance.importance eq 'middle'}">
                                             <c:set var="newsColor" value="e3e006" scope="page" />
                                         </c:when>
-                                        <c:when test="${n.newsImportance.importance eq 'major'}">
+                                        <c:when test="${n.importance.importance eq 'high'}">
                                             <c:set var="newsColor" value="f31212" scope="page" />
                                         </c:when>
                                     </c:choose>
-                                    <font color="${newsColor}">&#9612;</font>${n.title}
-                                </span>
-                                <br>
-                                <p><c:out value="${n.body}" escapeXml="false" /></p>
-                                <div style="font-weight:bold;text-indent:3%;width:85%;height:25px;background-color:#${newsColor};border-radius:20px;margin-top:5px;margin-bottom:5px;">
-                                    <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
-                                        <c:out value="${n.author.userName}"/>
-                                    </span>
-                                    <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
-                                        <fmt:formatDate value="${n.creationDate}" type="both" timeStyle="short" />
-                                    </span>
+                                    <font color="${newsColor}">&#9612;</font><c:out value="${n.title}" />
+                                    <c:if test="${n.pinned}">
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/pinned-icon.png') 0 2px transparent;padding-left: 35px;" title="pinned"></span>
+                                    </c:if>
                                 </div>
-                                <div style="margin-left: 3%; margin-right: 3%;"><hr></div>
+                                <div style="margin-left: 2%; margin-right: 1%;">
+                                    <c:out value="${n.body}" escapeXml="false" />
+                                    <div style="font-weight:bold;text-indent:3%;width:85%;height:25px;background-color:#${newsColor};border-radius:20px;margin-top:5px;margin-bottom:5px;">
+                                        <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
+                                            <c:out value="${n.author.userName}"/>
+                                        </span>
+                                        <span style="margin-left: 20px; background: url('${pageContext.request.contextPath}/resources/images/date-icon.png') no-repeat scroll 0 3px transparent;padding-left: 20px; margin-right: 20px;" title="date">
+                                            <fmt:formatDate value="${n.creationDate}" type="both" timeStyle="short" />
+                                        </span>
+                                    </div>
+                                </div>
+                                <hr>
                             </td>
                         </tr>
                     </table>
@@ -87,12 +91,16 @@
                     <table width="100%">
                         <tr>
                             <td>
-                                <p>
+                                <div class="postTitle">
                                     <a href="${pageContext.request.contextPath}/display-article/${article.id}">
-                                        <span style="font-size: 130%;">${article.title}</span>
+                                        <c:out value="${article.title}" />
                                     </a>
-                                    <br>
-                                    <c:out value="${article.preview}"/><br>
+                                </div>
+                                <div style="margin-left: 2%; margin-right: 1%;">
+                                    <div style="background: url('${pageContext.request.contextPath}/resources/images/hub-icon.png') no-repeat 0px 0px;padding-left:25px;font-size:11px;padding-top:2px;padding-bottom:2px;color:#999;margin-bottom:5px;" title="hub">
+                                        <c:out value="${article.hub.name}" />
+                                    </div>
+                                    <c:out value="${article.preview}"/>
                                     <div class="articleInfo">
                                         <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
                                             <c:out value="${article.author.userName}"/>
@@ -112,8 +120,8 @@
                                             <c:out value="${fn:length(article.comments)}"/>
                                         </span>
                                     </div>
-                                </p>
-                                <div style="margin-left: 3%; margin-right: 3%;"><hr></div>
+                                </div>
+                                <hr>
                             </td>
                         </tr>
                     </table>

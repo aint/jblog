@@ -6,7 +6,7 @@
 
   <groupId>com.github.aint</groupId>
   <artifactId>jblog</artifactId>
-  <version>0.11.1</version>
+  <version>0.12</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -70,6 +70,17 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>1.1.1</version>
+      </dependency>
+      <!-- JSR-303 Bean Validation -->
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>1.0.0.GA</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>4.3.0.Final</version>
       </dependency>
       <!-- logging -->
       <dependency>

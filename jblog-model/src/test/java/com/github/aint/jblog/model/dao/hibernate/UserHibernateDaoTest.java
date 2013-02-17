@@ -29,10 +29,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.github.aint.jblog.model.EntityFactory;
-import com.github.aint.jblog.model.HibernateUtil;
 import com.github.aint.jblog.model.dao.UserDao;
 import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.model.util.EntityFactory;
+import com.github.aint.jblog.model.util.HibernateUtil;
 
 /**
  * @author Olexandr Tyshkovets

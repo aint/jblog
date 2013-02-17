@@ -51,7 +51,7 @@ public class ArticleHibernateDao implements ArticleDao {
     @Override
     public List<Article> getMostPopularArticles(int minRating, int maxSize) {
         return getSession()
-                .createQuery("from Article where rating >= ?")
+                .getNamedQuery("Article.getMostPopular")
                 .setInteger(0, minRating)
                 .setMaxResults(maxSize).list();
     }
@@ -79,7 +79,7 @@ public class ArticleHibernateDao implements ArticleDao {
     @Override
     public List<Article> getAll() {
         return getSession()
-                .createQuery("from Article")
+                .getNamedQuery("Article.getAll")
                 .list();
     }
 
@@ -89,8 +89,8 @@ public class ArticleHibernateDao implements ArticleDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Article> getAllOnPage(int pageNumber, int pageSize, boolean head) {
-        return getSession().
-                createQuery("from Article order by id " + (head == true ? "asc" : "desc"))
+        return getSession()
+                .getNamedQuery(head == true ? "Article.getAllOnPageAsc" : "Article.getAllOnPageDesc")
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
                 .list();
@@ -102,7 +102,7 @@ public class ArticleHibernateDao implements ArticleDao {
     @Override
     public Long getCount() {
         return (Long) getSession()
-                .createQuery("select count(*) from Article")
+                .getNamedQuery("Article.getCount")
                 .iterate()
                 .next();
     }
@@ -113,7 +113,7 @@ public class ArticleHibernateDao implements ArticleDao {
     @Override
     public void delete(Long id) {
         getSession()
-                .createQuery("delete Article where id = ?")
+                .getNamedQuery("Article.deleteById")
                 .setLong(0, id)
                 .executeUpdate();
     }

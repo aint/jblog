@@ -34,10 +34,11 @@
     <property name="hibernate.hbm2ddl.auto">create</property>
     <property name="show_sql">false</property>
 
+    <mapping class="com.github.aint.jblog.model.entity.AnonymousMessage" />
     <mapping class="com.github.aint.jblog.model.entity.Article" />
     <mapping class="com.github.aint.jblog.model.entity.Comment" />
+    <mapping class="com.github.aint.jblog.model.entity.Hub" />
     <mapping class="com.github.aint.jblog.model.entity.News" />
-    <mapping class="com.github.aint.jblog.model.entity.PublicMessage" />
     <mapping class="com.github.aint.jblog.model.entity.User" />
     <mapping class="com.github.aint.jblog.model.entity.VoiceForArticle" />
     <mapping class="com.github.aint.jblog.model.entity.VoiceForComment" />

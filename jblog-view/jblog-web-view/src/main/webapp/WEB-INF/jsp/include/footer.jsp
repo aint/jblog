@@ -26,6 +26,6 @@
 
 <div class="footer" align="center">
     <a href="${pageContext.request.contextPath}/about-us"><fmt:message key="footer.link.about_us" /></a>
-    | powered by <span style="font-size: 91%; color: white;">jblog</span> | 
+    | powered by <span style="font-size: 91%; color: white;">jblog-0.12</span> | 
     <a href="${pageContext.request.contextPath}/feedback"><fmt:message key="footer.link.feedback" /></a>
 </div>

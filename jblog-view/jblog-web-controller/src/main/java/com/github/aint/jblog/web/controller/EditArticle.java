@@ -18,9 +18,7 @@
 package com.github.aint.jblog.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -28,23 +26,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
-import com.github.aint.jblog.service.exception.validator.ValidationException;
 import com.github.aint.jblog.service.util.HibernateUtil;
 import com.github.aint.jblog.service.util.HtmlTag;
 import com.github.aint.jblog.service.util.StringUtil;
-import com.github.aint.jblog.service.validation.Validator;
-import com.github.aint.jblog.service.validation.dto.ArticleDto;
-import com.github.aint.jblog.service.validation.impl.AnnotationBasedValidator;
+import com.github.aint.jblog.service.validation.Validation;
 import com.github.aint.jblog.web.constant.ConstantHolder;
 import com.github.aint.jblog.web.constant.SessionConstant;
+import com.github.aint.jblog.web.dto.ArticleDto;
 
 /**
  * This servlet edits an article.
@@ -96,20 +95,20 @@ public class EditArticle extends HttpServlet {
         String articleKeywords = request.getParameter(ARTICLE_KEYWORDS_FIELD);
 
         if (request.getParameter(UPDATE_ARTICLE_BUTTON) != null) {
-            ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords);
-            Validator articleValidator = new AnnotationBasedValidator();
-            Map<String, String> errorMsgMap = new HashMap<String, String>();
-            try {
-                errorMsgMap.putAll(articleValidator.validate(articleDto));
-            } catch (ValidationException e) {
-                logger.error("Some error occured in validation", e);
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
-            }
-
-            if (!errorMsgMap.isEmpty()) {
-                logger.debug("The article's validation error messages: {}", errorMsgMap);
-                request.setAttribute("errorMsgMap", errorMsgMap);
+            ArticleDto articleDto = new ArticleDto(
+                    articleTitle,
+                    articlePreview,
+                    articleBody,
+                    articleKeywords,
+                    article.getHub().getName()
+                    );
+            Language language = (Language)
+                    request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
+            Validator validator = Validation.getValidator(language.getLocale());
+            Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
+            if (!validationErrors.isEmpty()) {
+                logger.debug("The article's validation error messages: {}", validationErrors);
+                request.setAttribute("validationErrors", validationErrors);
                 request.setAttribute("articleBody", StringUtil.convertHtmlBRLineDelimitersToLF(article.getBody()));
                 request.setAttribute("article", article);
                 request.getRequestDispatcher(EDIT_ARTICLE_JSP_PATH).forward(request, response);

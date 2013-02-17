@@ -62,9 +62,20 @@ public class NewsServiceImpl implements NewsService {
         return news;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<News> getNewsCreatedSince(Date createdSince) {
         return newsDao.getNewsCreatedSince(createdSince);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<News> getAllPinnedNews() {
+        return newsDao.getAllPinnedNews();
     }
 
     /**

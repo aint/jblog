@@ -26,10 +26,11 @@ import com.github.aint.jblog.service.data.GenericEntityService;
  * @author Olexandr Tyshkovets
  * @see Exception
  * @see Entity
+ * @see AnonymousMessageNotFoundException
  * @see ArticleNotFoundException
  * @see CommentNotFoundException
+ * @see HubNotFoundException
  * @see NewsNotFoundException
- * @see PublicMessageNotFoundException
  * @see UserNotFoundException
  * @see GenericEntityService#get(Long)
  */
