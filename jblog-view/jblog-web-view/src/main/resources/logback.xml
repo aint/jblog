@@ -19,21 +19,50 @@
 
 -->
 <configuration>
+  <!-- for debug only -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n</pattern>
     </encoder>
   </appender>
 
-  <logger name="org.hibernate" level="WARN" additivity="false">
-    <appender-ref ref="STDOUT" />
+  <!-- rollover daily -->
+  <appender name="BULK" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/jblog-bulk.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- rollover by exceeding file size -->
+  <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/jblog-application.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>jblog-application.%i.log.zip</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>10</maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>100MB</maxFileSize>
+    </triggeringPolicy>
+    <encoder>
+      <pattern>%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="com.github.aint.jblog" level="debug">
+    <appender-ref ref="APPLICATION" />
   </logger>
 
-  <logger name="com.github.aint.jblog" level="DEBUG" additivity="false">
-    <appender-ref ref="STDOUT" />
+  <logger name="org.hibernate" level="warn" additivity="false">
+    <appender-ref ref="BULK" />
   </logger>
 
-  <root level="INFO">
+  <root level="warn">
     <appender-ref ref="STDOUT" />
+    <appender-ref ref="BULK" />
   </root>
 </configuration>
