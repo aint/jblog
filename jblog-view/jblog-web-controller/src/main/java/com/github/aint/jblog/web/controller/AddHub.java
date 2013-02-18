@@ -20,7 +20,6 @@ package com.github.aint.jblog.web.controller;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
-import com.github.aint.jblog.model.entity.Language;
-import com.github.aint.jblog.service.data.HubService;
-import com.github.aint.jblog.service.data.UserService;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.DuplicateHubNameException;
@@ -63,14 +60,6 @@ public class AddHub extends HttpServlet {
     private static final String HUB_NAME_FIELD = "hubNameField";
     private static final String HUB_DESCRIPTION_FIELD = "hubDescriptionField";
     private static final String HUB_TYPE_FIELD = "hubTypeField";
-    private HubService hubService;
-    private UserService userService;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        hubService = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()));
-        userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
-    }
 
     /**
      * {@inheritDoc}
@@ -84,12 +73,20 @@ public class AddHub extends HttpServlet {
             return;
         }
 
+        User author = null;
+        try {
+            author = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory())).getByUserName(
+                    (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
+        } catch (UserNotFoundException e) {
+            logger.error("The user not found", e);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         String hubName = request.getParameter(HUB_NAME_FIELD);
         String hubDescription = request.getParameter(HUB_DESCRIPTION_FIELD);
         HubDto hubDto = new HubDto(hubName, hubDescription, request.getParameter(HUB_TYPE_FIELD));
-        Language language = (Language)
-                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-        Validator validator = Validation.getValidator(language.getLocale());
+        Validator validator = Validation.getValidator(author.getLanguage().getLocale());
         Set<ConstraintViolation<HubDto>> validationErrors = validator.validate(hubDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The hub's validation error messages: {}", validationErrors);
@@ -101,15 +98,10 @@ public class AddHub extends HttpServlet {
         }
 
         try {
-            hubService.add(hubDto.createHub(), userService.getByUserName(
-                    (String) request.getSession(true).getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE)));
+            new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory())).add(hubDto.createHub(), author);
         } catch (DuplicateHubNameException e) {
             logger.error("The hub's name was duplicated", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        } catch (UserNotFoundException e) {
-            logger.error("The user not found", e);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 

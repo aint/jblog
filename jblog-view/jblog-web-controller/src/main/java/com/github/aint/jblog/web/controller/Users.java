@@ -67,6 +67,7 @@ public class Users extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         UserService userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
 
         if (request.getParameter(BAN_UNBAN_BUTTON) != null) {
@@ -76,9 +77,7 @@ public class Users extends HttpServlet {
             String banReason = request.getParameter("banReason");
 
             if (BAN_ACTION.equals(action)) {
-                Language language = (Language)
-                        request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-                Validator validator = Validation.getValidator(language.getLocale());
+                Validator validator = Validation.getValidator(Language.ENGLISH.getLocale());
                 Set<ConstraintViolation<BanUserDto>> validationErrors =
                         validator.validate(new BanUserDto(userName, banLength, banReason));
                 if (!validationErrors.isEmpty()) {
