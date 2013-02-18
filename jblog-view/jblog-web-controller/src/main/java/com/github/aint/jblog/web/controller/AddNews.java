@@ -20,7 +20,6 @@ package com.github.aint.jblog.web.controller;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +33,8 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.NewsHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
-import com.github.aint.jblog.model.entity.Language;
+import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.NewsService;
-import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.NewsServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
@@ -63,17 +61,6 @@ public class AddNews extends HttpServlet {
     private static final String NEWS_BODY_FIELD = "newsBodyField";
     private static final String NEWS_IS_PINNED_FIELD = "newsIsPinnedField";
     private static final String NEWS_IMPORTANCE_FIELD = "newsImportanceField";
-    private NewsService newsService;
-    private UserService userService;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        newsService = new NewsServiceImpl(new NewsHibernateDao(HibernateUtil.getSessionFactory()));
-        userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
-    }
 
     /**
      * {@inheritDoc}
@@ -81,8 +68,19 @@ public class AddNews extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (request.getParameter(ADD_NEWS_BUTTON) == null) {
             request.getRequestDispatcher(ADD_NEWS_JSP_PATH).forward(request, response);
+            return;
+        }
+
+        User author = null;
+        try {
+            author = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory())).getByUserName(
+                    (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
+        } catch (UserNotFoundException e) {
+            logger.error("The user not found", e);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
@@ -91,9 +89,7 @@ public class AddNews extends HttpServlet {
         String newsImportance = request.getParameter(NEWS_IMPORTANCE_FIELD);
 
         NewsDto newsDto = new NewsDto(newsTitle, newsBody, request.getParameter(NEWS_IS_PINNED_FIELD), newsImportance);
-        Language language = (Language)
-                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-        Validator validator = Validation.getValidator(language.getLocale());
+        Validator validator = Validation.getValidator(author.getLanguage().getLocale());
         Set<ConstraintViolation<NewsDto>> validationErrors = validator.validate(newsDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The news' validation error messages: {}", validationErrors);
@@ -104,15 +100,11 @@ public class AddNews extends HttpServlet {
             return;
         }
 
-        String userName = (String) request.getSession(true).getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE);
+        NewsService newsService = new NewsServiceImpl(new NewsHibernateDao(HibernateUtil.getSessionFactory()));
         try {
-            newsService.addNews(newsDto.createNews(), userService.getByUserName(userName));
-        } catch (UserNotFoundException e) {
-            logger.error("The user not found", e);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
+            newsService.addNews(newsDto.createNews(), author);
         } catch (AccessException e) {
-            logger.error("The user" + userName + " doesn't have permission to add a news", e);
+            logger.error("The user" + author.getUserName() + " doesn't have permission to add a news", e);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

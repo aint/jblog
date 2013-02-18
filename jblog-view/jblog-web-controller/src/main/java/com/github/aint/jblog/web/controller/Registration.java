@@ -80,6 +80,7 @@ public class Registration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (request.getParameter(REGISTRATION_BUTTON) == null) {
             request.getRequestDispatcher(REGISTRATION_JSP_PATH).forward(request, response);
             return;
@@ -89,19 +90,22 @@ public class Registration extends HttpServlet {
         String lastName = request.getParameter(LAST_NAME_FIELD);
         String userName = request.getParameter(USER_NAME_FIELD);
         String userEmail = request.getParameter(USER_EMAIL_FIELD);
-        String password = request.getParameter(USER_PASSWORD_FIELD);
-        String rePassword = request.getParameter(USER_REPASSWORD_FIELD);
-        String year = request.getParameter(YEAR_FIELD);
-        String month = request.getParameter(MONTH_FIELD);
-        String day = request.getParameter(DAY_FIELD);
+        Language lang = (Language) request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
 
-        RegisterUserDto userDto = new RegisterUserDto(userName, firstName, lastName, userEmail, password, rePassword,
-                day, month, year, request.getParameter(LICENSE_FIELD),
-                (Language) request.getSession(true).getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE));
+        RegisterUserDto userDto = new RegisterUserDto(
+                userName,
+                firstName,
+                lastName,
+                userEmail,
+                request.getParameter(USER_PASSWORD_FIELD),
+                request.getParameter(USER_REPASSWORD_FIELD),
+                request.getParameter(DAY_FIELD),
+                request.getParameter(MONTH_FIELD),
+                request.getParameter(YEAR_FIELD),
+                request.getParameter(LICENSE_FIELD),
+                lang);
 
-        Language language = (Language)
-                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-        Validator validator = Validation.getValidator(language.getLocale());
+        Validator validator = Validation.getValidator(lang != null ? lang.getLocale() : Language.ENGLISH.getLocale());
         Set<ConstraintViolation<RegisterUserDto>> constraintViolations = validator.validate(userDto);
         if (!constraintViolations.isEmpty()) {
             logger.debug("The register user's validation error messages: {}", constraintViolations);

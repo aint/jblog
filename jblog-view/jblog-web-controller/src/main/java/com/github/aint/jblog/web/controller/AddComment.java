@@ -35,11 +35,9 @@ import org.slf4j.LoggerFactory;
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.CommentHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
-import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.CommentService;
-import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.CommentServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
@@ -67,7 +65,6 @@ public class AddComment extends HttpServlet {
     private static final String COMMENT_BODY_FIELD = "commentBodyField";
     private CommentService commentService;
     private ArticleService articleService;
-    private UserService userService;
 
     /**
      * {@inheritDoc}
@@ -76,7 +73,6 @@ public class AddComment extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         commentService = new CommentServiceImpl(new CommentHibernateDao(HibernateUtil.getSessionFactory()));
         articleService = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()));
-        userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
     }
 
     /**
@@ -85,6 +81,7 @@ public class AddComment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (request.getParameter(LEAVE_COMMENT_BUTTON) == null) {
             response.sendRedirect(ARTICLES_URL_PATTERN);
             return;
@@ -92,8 +89,8 @@ public class AddComment extends HttpServlet {
 
         User author = null;
         try {
-            author = userService.getByUserName((String) request.getSession(true).getAttribute(
-                    SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
+            author = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory())).getByUserName(
+                    (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
         } catch (UserNotFoundException e) {
             logger.error("The user was not found", e);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -111,9 +108,7 @@ public class AddComment extends HttpServlet {
 
         String commentBody = request.getParameter(COMMENT_BODY_FIELD);
         CommentDto commentDto = new CommentDto(commentBody);
-        Language language = (Language)
-                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-        Validator validator = Validation.getValidator(language.getLocale());
+        Validator validator = Validation.getValidator(author.getLanguage().getLocale());
         Set<ConstraintViolation<CommentDto>> validationErrors = validator.validate(commentDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The comment's validation error messages: {}", validationErrors);
