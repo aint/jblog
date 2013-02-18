@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.entity.Article;
-import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.exception.data.EntityNotFoundException;
 import com.github.aint.jblog.service.util.HibernateUtil;
@@ -68,6 +67,7 @@ public class EditArticle extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         Article article = null;
         try {
             article = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()))
@@ -102,9 +102,7 @@ public class EditArticle extends HttpServlet {
                     articleKeywords,
                     article.getHub().getName()
                     );
-            Language language = (Language)
-                    request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-            Validator validator = Validation.getValidator(language.getLocale());
+            Validator validator = Validation.getValidator(article.getAuthor().getLanguage().getLocale());
             Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
             if (!validationErrors.isEmpty()) {
                 logger.debug("The article's validation error messages: {}", validationErrors);

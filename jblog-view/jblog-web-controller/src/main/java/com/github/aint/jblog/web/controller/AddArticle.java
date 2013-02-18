@@ -35,11 +35,9 @@ import org.slf4j.LoggerFactory;
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.HubHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
-import com.github.aint.jblog.model.entity.Language;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.ArticleService;
 import com.github.aint.jblog.service.data.HubService;
-import com.github.aint.jblog.service.data.UserService;
 import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.HubServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
@@ -71,13 +69,11 @@ public class AddArticle extends HttpServlet {
     private static final String ARTICLE_KEYWORDS_FIELD = "articleKeywords";
     private ArticleService articleService;
     private HubService hubService;
-    private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         articleService = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()));
         hubService = new HubServiceImpl(new HubHibernateDao(HibernateUtil.getSessionFactory()));
-        userService = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory()));
     }
 
     /**
@@ -87,16 +83,16 @@ public class AddArticle extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        User user = null;
+        User author = null;
         try {
-            user = userService.getByUserName(
+            author = new UserServiceImpl(new UserHibernateDao(HibernateUtil.getSessionFactory())).getByUserName(
                     (String) request.getSession().getAttribute(SessionConstant.USER_NAME_SESSION_ATTRIBUTE));
         } catch (UserNotFoundException e) {
             logger.error("The user not found", e);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        request.setAttribute("HUBS", hubService.getNamesOfHubsAvailableToUser(user));
+        request.setAttribute("HUBS", hubService.getNamesOfHubsAvailableToUser(author));
 
         if (request.getParameter(ADD_ARTICLE_BUTTON) == null) {
             request.getRequestDispatcher(ADD_ARTICLE_JSP_PATH).forward(request, response);
@@ -110,9 +106,7 @@ public class AddArticle extends HttpServlet {
         String artcleHub = request.getParameter(ARTICLE_HUB_FIELD);
 
         ArticleDto articleDto = new ArticleDto(articleTitle, articlePreview, articleBody, articleKeywords, artcleHub);
-        Language language = (Language)
-                request.getSession().getAttribute(SessionConstant.USER_LANGUAGE_SESSION_ATTRIBUTE);
-        Validator validator = Validation.getValidator(language.getLocale());
+        Validator validator = Validation.getValidator(author.getLanguage().getLocale());
         Set<ConstraintViolation<ArticleDto>> validationErrors = validator.validate(articleDto);
         if (!validationErrors.isEmpty()) {
             logger.debug("The article's validation error messages: {}", validationErrors);
@@ -126,7 +120,7 @@ public class AddArticle extends HttpServlet {
         }
 
         try {
-            articleService.add(articleDto.createArticle(), user, hubService.getByHubName(artcleHub));
+            articleService.add(articleDto.createArticle(), author, hubService.getByHubName(artcleHub));
         } catch (HubNotFoundException e) {
             logger.error("The hub not found", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
