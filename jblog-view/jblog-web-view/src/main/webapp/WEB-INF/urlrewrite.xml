@@ -39,4 +39,9 @@
     <from>^/hub/([\d]+)$</from>
     <to>/hub?hubId=$1</to>
   </rule>
+
+  <rule>
+    <from>^/user/([а-яґєіїёА-ЯҐЄІЇЁ\w]+)$</from>
+    <to>/user?username=$1</to>
+  </rule>
 </urlrewrite>

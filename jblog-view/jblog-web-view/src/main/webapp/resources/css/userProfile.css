@@ -1,0 +1,63 @@
+/**
+ * Copyright (C) 2012-2013  Olexandr Tyshkovets
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+@CHARSET "UTF-8";
+.user_header{padding-top:10px;padding-bottom:5px;margin-top:5px;position: relative;}
+.user_header a.avatar{display:block;float:left;margin-right:11px;position: relative;}
+.user_header .avatar img{width:48px;height:48px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
+.user_header h2.username{float:left;margin-right:6px;font-size:36px;line-height:40px;}
+.user_header h2.username a{color:#343434;text-decoration: none;}
+.user_header .karma{float:left;margin-left: 20px;text-align:center;margin-top:-9px;}
+.user_header .karma .label{font-size:10px;color:#ccc;margin:0 auto;}
+.user_header .karma .score{}
+.user_header .karma .score .num{font-size:36px;color:#6C6;line-height:32px;}
+.user_header .karma .votes{clear:left;font-size:10px;color:#ccc;margin:0 auto;padding-top:2px;}
+
+table.menu{width:100%;}
+table.menu tr{}
+table.menu tr td{text-align:center;border-right:1px solid #fff;border-bottom:1px solid #fff;line-height:19px;white-space: nowrap;}
+table.menu tr td span.disabled,
+table.menu tr td a{display:block;padding:0px 15px;padding-top:7px;padding-bottom:0px;height:28px;font-size:16px;background: #EAECEA;color:#666666;
+                                -webkit-border-top-left-radius: 10px;
+                                -webkit-border-top-right-radius: 10px;
+                                -moz-border-radius-topleft: 10px;
+                                -moz-border-radius-topright: 10px;
+                                border-top-left-radius: 10px;
+                                border-top-right-radius: 10px;
+                                text-decoration: none;
+                                }
+table.menu tr td a .name{text-decoration: underline}
+table.menu tr td a:hover{color:#a3a3a3;}
+table.menu tr td.active a{color:#000;background:#D3E2F0;text-decoration:none;}
+table.menu tr td.active a .name{text-decoration: none;}
+table.menu tr td span.disabled{color:#bbb;}
+table.menu tr td span.count{}
+table.menu tr td span.count_new{color:green;}
+
+.tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.user_profile{}
+.user_profile dl{margin-bottom:16px;padding-bottom:1px;overflow: hidden;}
+.user_profile dt{float:left;font-size:13px;color:#666;font-weight:bold;text-align:right;width:145px;}
+.user_profile dd{margin-left:157px;font-size:13px;}
+.user_profile .fullname{margin-left:157px;color:#777;font-size:25px;margin-top:15px;margin-bottom:16px;}
+.user_profile .fullname sup{font-size:12px;vertical-align: super;}
+.user_profile .rating-place{font-size:13px;margin-left:157px;color:#777;margin-bottom:15px;}

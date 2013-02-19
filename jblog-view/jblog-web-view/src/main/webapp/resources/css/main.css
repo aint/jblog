@@ -139,11 +139,6 @@ a:hover, a:active, a:focus { /* эта группа селекторов обе�
 	background-color: grey;
 	border-radius: 20px;
 }
-.userNameInfo {
-	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	text-indent: 3%;
-}
 .hubInfo {
     font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;

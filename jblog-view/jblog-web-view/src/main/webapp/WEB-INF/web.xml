@@ -292,6 +292,15 @@
     <url-pattern>/hub</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>UserProfile</servlet-name>
+    <servlet-class>com.github.aint.jblog.web.controller.UserProfile</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserProfile</servlet-name>
+    <url-pattern>/user</url-pattern>
+  </servlet-mapping>
+
   <!-- error pages -->
 
   <error-page>
