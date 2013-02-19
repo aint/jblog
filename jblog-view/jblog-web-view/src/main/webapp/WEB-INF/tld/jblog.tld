@@ -86,6 +86,17 @@
     </attribute>
   </tag>
 
+  <tag>
+    <name>linkToLatestArticle</name>
+    <tag-class>com.github.aint.jblog.web.view.tag.LinkToLatestArticle</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <name>articles</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
   <tag-file>
     <name>printKeywords</name>
     <path>/WEB-INF/tags/printKeywords.tag</path>
