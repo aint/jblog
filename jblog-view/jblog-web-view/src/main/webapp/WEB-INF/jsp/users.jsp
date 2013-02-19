@@ -54,9 +54,10 @@
                 <c:set var="show" value="true" scope="page" />
             </jblog:ifAuth>
             <c:choose>
+            
                 <c:when test="${not empty requestScope.USERS}">
+                    <jsp:useBean id="currentDate" class="java.util.Date" />
                     <c:forEach items="${requestScope.USERS}" var="user" varStatus="var">
-                        
                         <div class="users">
                             <div class="user">
                                 <div class="karma"><c:out value="${user.rating}" /></div>
@@ -68,6 +69,11 @@
                                         <div class="username">
                                             <a style="color: #6DA3BD;" href="${pageContext.request.contextPath}/user/${user.userName}"><c:out value="${user.userName}" /></a>
                                         </div>
+                                    </div>
+                                    <div class="lifetime">
+                                        <fmt:message key="users.label.experience_in_days" />
+                                        <!-- 1 * 24 * 60 * 60 * 1000 = 86400000 -->
+                                        <fmt:formatNumber maxFractionDigits="0" value="${(currentDate.time - user.registrationDate.time) / 86400000}" />
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +101,6 @@
                                 <hr>
                             </form>
                         </c:if>
-                        
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
