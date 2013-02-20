@@ -72,6 +72,21 @@ public class ArticleHibernateDaoTest {
         assertEquals(articleDao.getMostPopularArticles(10, 3), articleList.subList(0, 3));
     }
 
+    @Test
+    public void getArticlesOfUser() {
+        final User user = EntityFactory.getDefaultUser("troll", "troll@gmail.com");
+        session.save(user);
+        final List<Article> articles = getArticle(5);
+        for (int i = 0; i < articles.size(); i++) {
+            Article article = articles.get(i);
+            article.setAuthor(i < 3 ? user : article.getAuthor());
+            session.save(article);
+        }
+
+        assertEquals(articleDao.getArticlesOfUser(user), articles.subList(0, 3));
+
+    }
+
     /* ----- common methods ----- */
 
     @Test

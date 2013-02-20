@@ -83,4 +83,13 @@ public interface ArticleService extends GenericEntityService<Article> {
      */
     void increaseAmountOfViews(Article article);
 
+    /**
+     * Returns all articles of the specified {@code user}.
+     * 
+     * @param user
+     *            to find articles for
+     * @return all articles of the given {@code user}
+     */
+    List<Article> getArticlesOfUser(User user);
+
 }

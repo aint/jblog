@@ -24,6 +24,7 @@ import org.hibernate.SessionFactory;
 
 import com.github.aint.jblog.model.dao.ArticleDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.User;
 
 /**
  * This class is hibernate implementation of the {@code ArticleDao} interface.
@@ -54,6 +55,18 @@ public class ArticleHibernateDao implements ArticleDao {
                 .getNamedQuery("Article.getMostPopular")
                 .setInteger(0, minRating)
                 .setMaxResults(maxSize).list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Article> getArticlesOfUser(User user) {
+        return getSession()
+                .getNamedQuery("Article.getArticlesOfUser")
+                .setEntity(0, user)
+                .list();
     }
 
     /**

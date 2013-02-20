@@ -104,6 +104,17 @@ public class ArticleServiceImplTest {
         verify(voiceDao).save(new VoiceForArticle(voice, article, author));
     }
 
+    @Test
+    public void getArticlesOfUser() {
+        final User user = new User("username", "user@gmail.com", "password");
+        final List<Article> expected = new ArrayList<Article>(Arrays.asList(getArticle(), getArticle(), getArticle()));
+        when(articleDao.getArticlesOfUser(user)).thenReturn(expected);
+
+        assertEquals(articleService.getArticlesOfUser(user), expected);
+
+        verify(articleDao).getArticlesOfUser(user);
+    }
+
     /* ----- common methods ----- */
 
     @Test
