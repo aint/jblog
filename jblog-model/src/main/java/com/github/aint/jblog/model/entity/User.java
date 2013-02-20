@@ -71,7 +71,7 @@ public class User implements Entity, Comparable<User> {
     private Date lastLoginTime;
     private Language language = DEFAULT_LANGUAGE;
     private Role role = Role.USER;
-    private Set<Article> articles = new HashSet<Article>();
+    private int articleCount;
     private Set<Comment> comments = new HashSet<Comment>();
     private Set<Hub> hubs = new HashSet<Hub>();
 
@@ -438,20 +438,19 @@ public class User implements Entity, Comparable<User> {
     }
 
     /**
-     * @return set articles of user
-     * @see Article
+     * @return the articleCount
      */
-    @OneToMany(mappedBy = "author")
-    public Set<Article> getArticles() {
-        return articles;
+    @Column(name = "ARTICLE_COUNT", nullable = false)
+    public int getArticleCount() {
+        return articleCount;
     }
 
     /**
-     * @param articles
-     *            articles of user
+     * @param articleCount
+     *            the articleCount to set
      */
-    public void setArticles(Set<Article> articles) {
-        this.articles = articles;
+    public void setArticleCount(int articleCount) {
+        this.articleCount = articleCount;
     }
 
     /**
@@ -580,7 +579,6 @@ public class User implements Entity, Comparable<User> {
                 + ",registrationDate=" + registrationDate
                 + ",lastLoginTime=" + lastLoginTime
                 + ",role=" + role
-                + ",articles.size()=" + articles.size()
                 + ",comments.size()=" + comments.size()
                 + ",hubs.size()=" + hubs.size()
                 + "]";
