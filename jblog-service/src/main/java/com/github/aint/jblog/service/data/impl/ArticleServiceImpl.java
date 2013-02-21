@@ -102,6 +102,14 @@ public class ArticleServiceImpl implements ArticleService {
      * {@inheritDoc}
      */
     @Override
+    public Article getLatestArticleOfUser(User user) {
+        return articleDao.getLatestArticleOfUser(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Article get(Long id) throws ArticleNotFoundException {
         Article article = articleDao.get(id);
         if (article == null) {

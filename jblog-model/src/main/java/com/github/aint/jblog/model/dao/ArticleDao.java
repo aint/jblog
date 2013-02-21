@@ -52,4 +52,13 @@ public interface ArticleDao extends GenericDao<Article> {
      */
     List<Article> getArticlesOfUser(User user);
 
+    /**
+     * Returns the latest article of the specified {@code user}.
+     * 
+     * @param user
+     *            to find articles for
+     * @return the latest article of the given {@code user}
+     */
+    Article getLatestArticleOfUser(User user);
+
 }

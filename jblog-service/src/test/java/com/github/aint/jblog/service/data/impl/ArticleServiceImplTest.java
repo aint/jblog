@@ -115,6 +115,17 @@ public class ArticleServiceImplTest {
         verify(articleDao).getArticlesOfUser(user);
     }
 
+    @Test
+    public void getLatestArticleOfUser() {
+        final User user = new User("username", "user@gmail.com", "password");
+        final Article expected = getArticle();
+        when(articleDao.getLatestArticleOfUser(user)).thenReturn(expected);
+
+        assertEquals(articleService.getLatestArticleOfUser(user), expected);
+
+        verify(articleDao).getLatestArticleOfUser(user);
+    }
+
     /* ----- common methods ----- */
 
     @Test

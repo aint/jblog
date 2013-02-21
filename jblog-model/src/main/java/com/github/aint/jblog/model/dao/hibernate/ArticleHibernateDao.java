@@ -73,6 +73,17 @@ public class ArticleHibernateDao implements ArticleDao {
      * {@inheritDoc}
      */
     @Override
+    public Article getLatestArticleOfUser(User user) {
+        return (Article) getSession()
+                .getNamedQuery("Article.getLatestArticleOfUser")
+                .setEntity(0, user)
+                .uniqueResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void save(Article entity) {
         getSession().save(entity);
     }

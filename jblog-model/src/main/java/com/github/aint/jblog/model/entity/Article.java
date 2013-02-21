@@ -41,6 +41,8 @@ import javax.persistence.Table;
 @NamedQueries({
         @NamedQuery(name = "Article.getMostPopular", query = "FROM Article a WHERE a.rating >= ?"),
         @NamedQuery(name = "Article.getArticlesOfUser", query = "FROM Article a WHERE a.author = ?"),
+        @NamedQuery(name = "Article.getLatestArticleOfUser",
+                query = "FROM Article art WHERE art.creationDate = (SELECT MAX(a.creationDate) FROM Article a WHERE a.author = ?)"),
         @NamedQuery(name = "Article.getAll", query = "FROM Article"),
         @NamedQuery(name = "Article.getAllOnPageAsc", query = "FROM Article a ORDER BY a.id ASC"),
         @NamedQuery(name = "Article.getAllOnPageDesc", query = "FROM Article a ORDER BY a.id DESC"),
