@@ -60,8 +60,8 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCreationDate(new Date());
         article.setAuthor(author);
         article.setHub(hub);
+        author.setArticleCount(author.getArticleCount() + 1);
         articleDao.save(article);
-
         return article;
     }
 
@@ -88,6 +88,22 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void increaseAmountOfViews(Article article) {
         article.setViews(article.getViews() + 1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Article> getArticlesOfUser(User user) {
+        return articleDao.getArticlesOfUser(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Article getLatestArticleOfUser(User user) {
+        return articleDao.getLatestArticleOfUser(user);
     }
 
     /**
