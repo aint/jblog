@@ -67,12 +67,15 @@ public class ArticleServiceImplTest {
     public void add() {
         final Article article = getArticle();
         final User author = new User("userName", "user@gmail.com", "password");
+        final int articleCount = 13;
+        author.setArticleCount(articleCount);
         articleService.add(article, author, new Hub("name", "description", false, author));
 
         assertEquals(article.getRating(), 0, "article's rating isn't 0");
         assertNotNull(article.getCreationDate(), "article's creationDate is null");
         assertNotNull(article.getAuthor(), "article's author is null");
         assertNotNull(article.getHub(), "article's hub is null");
+        assertEquals(author.getArticleCount(), articleCount + 1, "author count of articles wasn't increased");
 
         verify(articleDao).save(article);
     }
@@ -102,6 +105,28 @@ public class ArticleServiceImplTest {
         assertEquals(article.getRating(), ARTICLE_RATING - 1);
 
         verify(voiceDao).save(new VoiceForArticle(voice, article, author));
+    }
+
+    @Test
+    public void getArticlesOfUser() {
+        final User user = new User("username", "user@gmail.com", "password");
+        final List<Article> expected = new ArrayList<Article>(Arrays.asList(getArticle(), getArticle(), getArticle()));
+        when(articleDao.getArticlesOfUser(user)).thenReturn(expected);
+
+        assertEquals(articleService.getArticlesOfUser(user), expected);
+
+        verify(articleDao).getArticlesOfUser(user);
+    }
+
+    @Test
+    public void getLatestArticleOfUser() {
+        final User user = new User("username", "user@gmail.com", "password");
+        final Article expected = getArticle();
+        when(articleDao.getLatestArticleOfUser(user)).thenReturn(expected);
+
+        assertEquals(articleService.getLatestArticleOfUser(user), expected);
+
+        verify(articleDao).getLatestArticleOfUser(user);
     }
 
     /* ----- common methods ----- */

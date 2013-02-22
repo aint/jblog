@@ -75,9 +75,9 @@
                                         <!-- 1 * 24 * 60 * 60 * 1000 = 86400000 -->
                                         <fmt:formatNumber maxFractionDigits="0" value="${(currentDate.time - user.registrationDate.time) / 86400000}" />
                                     </div>
-                                    <c:if test="${not empty user.articles}">
+                                    <c:if test="${user.articleCount ne 0}">
                                         <div class="last_post">
-                                            <fmt:message key="users.label.latest_article" /> <jblog:linkToLatestArticle articles="${user.articles}" />
+                                            <fmt:message key="users.label.latest_article" /> <jblog:linkToLatestArticle user="${user}" />
                                         </div>
                                     </c:if>
                                 </div>

@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.User;
 
 /**
  * This interface represents persistence methods for {@link Article} objects.
@@ -41,5 +42,23 @@ public interface ArticleDao extends GenericDao<Article> {
      * @see Article
      */
     List<Article> getMostPopularArticles(int minRating, int maxSize);
+
+    /**
+     * Returns all articles of the specified {@code user}.
+     * 
+     * @param user
+     *            to find articles for
+     * @return all articles of the given {@code user}
+     */
+    List<Article> getArticlesOfUser(User user);
+
+    /**
+     * Returns the latest article of the specified {@code user}.
+     * 
+     * @param user
+     *            to find articles for
+     * @return the latest article of the given {@code user} or {@code null} if the {@code user} has no articles
+     */
+    Article getLatestArticleOfUser(User user);
 
 }

@@ -21,7 +21,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -70,6 +72,40 @@ public class ArticleHibernateDaoTest {
         }
 
         assertEquals(articleDao.getMostPopularArticles(10, 3), articleList.subList(0, 3));
+    }
+
+    @Test
+    public void getArticlesOfUser() {
+        final User user = EntityFactory.getDefaultUser("troll", "troll@gmail.com");
+        session.save(user);
+        final List<Article> articles = getArticle(5);
+        for (int i = 0; i < articles.size(); i++) {
+            Article article = articles.get(i);
+            article.setAuthor(i < 3 ? user : article.getAuthor());
+            session.save(article);
+        }
+
+        assertEquals(articleDao.getArticlesOfUser(user), articles.subList(0, 3));
+    }
+
+    @Test
+    public void getLatestArticleOfUser() {
+        final User user = EntityFactory.getDefaultUser("author", "author@gmail.com");
+        session.save(user);
+
+        final List<Article> articles = getArticle(5);
+        final Random rnd = new Random();
+        for (int i = 0; i < articles.size(); i++) {
+            Article article = articles.get(i);
+            article.setAuthor(user);
+            article.setCreationDate(new Date(System.currentTimeMillis() - rnd.nextInt(1000 * 60 * 60 * 24)));
+            session.save(article);
+        }
+
+        final Article expected = articles.get(rnd.nextInt(5));
+        expected.setCreationDate(new Date());
+
+        assertEquals(articleDao.getLatestArticleOfUser(user), expected);
     }
 
     /* ----- common methods ----- */
