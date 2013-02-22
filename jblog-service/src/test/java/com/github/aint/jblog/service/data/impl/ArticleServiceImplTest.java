@@ -67,12 +67,15 @@ public class ArticleServiceImplTest {
     public void add() {
         final Article article = getArticle();
         final User author = new User("userName", "user@gmail.com", "password");
+        final int articleCount = 13;
+        author.setArticleCount(articleCount);
         articleService.add(article, author, new Hub("name", "description", false, author));
 
         assertEquals(article.getRating(), 0, "article's rating isn't 0");
         assertNotNull(article.getCreationDate(), "article's creationDate is null");
         assertNotNull(article.getAuthor(), "article's author is null");
         assertNotNull(article.getHub(), "article's hub is null");
+        assertEquals(author.getArticleCount(), articleCount + 1, "author count of articles wasn't increased");
 
         verify(articleDao).save(article);
     }

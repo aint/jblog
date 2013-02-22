@@ -97,7 +97,7 @@ public interface ArticleService extends GenericEntityService<Article> {
      * 
      * @param user
      *            to find articles for
-     * @return the latest article of the given {@code user}
+     * @return the latest article of the given {@code user} or {@code null} if the {@code user} has no articles
      */
     Article getLatestArticleOfUser(User user);
 

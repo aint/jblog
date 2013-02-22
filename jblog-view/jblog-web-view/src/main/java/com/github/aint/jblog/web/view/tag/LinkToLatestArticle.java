@@ -18,15 +18,15 @@
 package com.github.aint.jblog.web.view.tag;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.entity.Article;
+import com.github.aint.jblog.model.entity.User;
+import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
+import com.github.aint.jblog.service.util.HibernateUtil;
 
 /**
  * This tag prints a hypertext link to the latest article. </p> The link format:
@@ -35,27 +35,17 @@ import com.github.aint.jblog.model.entity.Article;
  * @author Olexandr Tyshkovets
  */
 public class LinkToLatestArticle extends TagSupport {
-    private static final long serialVersionUID = 7933599011856309417L;
-    private Collection<Article> articles;
+    private static final long serialVersionUID = -2423099276373902775L;
+    private User user;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public int doStartTag() throws JspException {
-        if (articles.isEmpty()) {
-            return SKIP_BODY;
-        }
-
-        Collections.sort(new ArrayList<Article>(articles), new Comparator<Article>() {
-            @Override
-            public int compare(Article a1, Article a2) {
-                return a1.getCreationDate().compareTo(a2.getCreationDate());
-            }
-        });
-
+        Article article = new ArticleServiceImpl(new ArticleHibernateDao(HibernateUtil.getSessionFactory()))
+                .getLatestArticleOfUser(user);
         try {
-            Article article = articles.toArray(new Article[articles.size()])[articles.size() - 1];
             pageContext.getOut()
                     .print("<a href='display-article/" + article.getId() + "'>" + article.getTitle() + "</a>");
             return SKIP_BODY;
@@ -65,11 +55,11 @@ public class LinkToLatestArticle extends TagSupport {
     }
 
     /**
-     * @param articles
-     *            the articles to set
+     * @param user
+     *            the user to set
      */
-    public void setArticles(Collection<Article> articles) {
-        this.articles = articles;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

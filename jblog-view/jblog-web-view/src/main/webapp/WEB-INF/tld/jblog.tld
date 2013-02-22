@@ -91,9 +91,10 @@
     <tag-class>com.github.aint.jblog.web.view.tag.LinkToLatestArticle</tag-class>
     <body-content>empty</body-content>
     <attribute>
-      <name>articles</name>
+      <name>user</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
+      <type>com.github.aint.jblog.model.entity.User</type>
     </attribute>
   </tag>
 

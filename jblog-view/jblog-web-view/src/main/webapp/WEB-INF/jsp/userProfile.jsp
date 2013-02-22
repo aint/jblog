@@ -62,7 +62,7 @@
                             <a href=""><span class="name"><fmt:message key="user_profile.label.profile" /></span></a>
                         </td>
                         <td class="item ">
-                            <a href=""><span class="name"><fmt:message key="user_profile.label.articles" /> (${fn:length(requestScope.USER.articles)})</span></a>
+                            <a href=""><span class="name"><fmt:message key="user_profile.label.articles" /> <c:out value="${requestScope.USER.articleCount}" /></span></a>
                         </td>
                         <td class="item ">
                             <a href=""><span class="name"><fmt:message key="user_profile.label.comments" /> (${fn:length(requestScope.USER.comments)})</span></a>

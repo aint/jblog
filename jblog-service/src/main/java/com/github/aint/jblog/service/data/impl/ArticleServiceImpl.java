@@ -60,8 +60,8 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCreationDate(new Date());
         article.setAuthor(author);
         article.setHub(hub);
+        author.setArticleCount(author.getArticleCount() + 1);
         articleDao.save(article);
-
         return article;
     }
 
