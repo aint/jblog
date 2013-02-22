@@ -44,4 +44,9 @@
     <from>^/user/([а-яґєіїёА-ЯҐЄІЇЁ\w]+)$</from>
     <to>/user?username=$1</to>
   </rule>
+
+  <rule>
+    <from>^/user/([а-яґєіїёА-ЯҐЄІЇЁ\w]+)/articles(|/)$</from>
+    <to>/user?username=$1&amp;articles=show</to>
+  </rule>
 </urlrewrite>

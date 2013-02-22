@@ -30,9 +30,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.aint.jblog.model.dao.hibernate.ArticleHibernateDao;
 import com.github.aint.jblog.model.dao.hibernate.UserHibernateDao;
 import com.github.aint.jblog.model.entity.User;
 import com.github.aint.jblog.service.data.UserService;
+import com.github.aint.jblog.service.data.impl.ArticleServiceImpl;
 import com.github.aint.jblog.service.data.impl.UserServiceImpl;
 import com.github.aint.jblog.service.exception.data.UserNotFoundException;
 import com.github.aint.jblog.service.util.HibernateUtil;
@@ -67,9 +69,17 @@ public class UserProfile extends HttpServlet {
             return;
         }
 
-        List<User> users = userService.getAll();
-        Collections.sort(users, Collections.reverseOrder(new UserComparatorFactory().getRatingComparator()));
-        request.setAttribute("USER_POSITION", users.indexOf(user) + 1);
+        if (request.getParameter("articles") != null) {
+            request.setAttribute("USER_ARTICLES", new ArticleServiceImpl(
+                    new ArticleHibernateDao(HibernateUtil.getSessionFactory())).getArticlesOfUser(user));
+            request.setAttribute("ITEM_ARTICLES", "active");
+        } else {
+            List<User> users = userService.getAll();
+            Collections.sort(users, Collections.reverseOrder(new UserComparatorFactory().getRatingComparator()));
+            request.setAttribute("USER_POSITION", users.indexOf(user) + 1);
+            request.setAttribute("ITEM_PROFILE", "active");
+        }
+
         request.setAttribute("USER", user);
 
         request.getRequestDispatcher(USER_PROFILE_JSP_PATH).forward(request, response);
