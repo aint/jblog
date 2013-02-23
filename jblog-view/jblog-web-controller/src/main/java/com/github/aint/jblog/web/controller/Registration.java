@@ -106,10 +106,10 @@ public class Registration extends HttpServlet {
                 lang);
 
         Validator validator = Validation.getValidator(lang != null ? lang.getLocale() : Language.ENGLISH.getLocale());
-        Set<ConstraintViolation<RegisterUserDto>> constraintViolations = validator.validate(userDto);
-        if (!constraintViolations.isEmpty()) {
-            logger.debug("The register user's validation error messages: {}", constraintViolations);
-            request.setAttribute("errorMsgMap", constraintViolations);
+        Set<ConstraintViolation<RegisterUserDto>> violationErrors = validator.validate(userDto);
+        if (!violationErrors.isEmpty()) {
+            logger.debug("The register user's validation error messages: {}", violationErrors);
+            request.setAttribute("validationErrors", violationErrors);
             request.setAttribute(FIRST_NAME_FIELD, firstName);
             request.setAttribute(LAST_NAME_FIELD, lastName);
             request.setAttribute(USER_NAME_FIELD, userName);
