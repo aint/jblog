@@ -56,7 +56,7 @@ public class News extends AbstractArticle {
     /**
      * The maximum length of the news' body.
      */
-    public static final int NEWS_BODY_MAX_LENGTH = 2000;
+    public static final int NEWS_BODY_MAX_LENGTH = 4000;
 
     /**
      * Default constructor for hibernate.

@@ -72,7 +72,7 @@
                     <span style="color: red;"><jblog:printValidationErrors property="body" /></span><br>
                     <b><fmt:message key="add_news.label.body" /></b><br>
                     <textarea rows="33" cols="85" name="newsBodyField"><c:out value="${requestScope.newsBodyField}" /></textarea><br>
-                    <span style="font-size: 60%; color: grey;">min length: 10, max length: 2000</span><br>
+                    <span style="font-size: 60%; color: grey;">min length: 10, max length: 4000</span><br>
                     
                     <input type="submit" value="<fmt:message key="add_news.button.add_news" />" id="submit" name="addNewsButton">
                 </p>
