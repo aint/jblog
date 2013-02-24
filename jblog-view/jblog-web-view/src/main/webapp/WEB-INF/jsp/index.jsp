@@ -67,7 +67,7 @@
                                         <span style="background: url('${pageContext.request.contextPath}/resources/images/pinned-icon.png') 0 2px transparent;padding-left: 35px;" title="pinned"></span>
                                     </c:if>
                                 </div>
-                                <div style="margin-left: 2%; margin-right: 1%;">
+                                <div style="margin-left: 2%; margin-right: 1%; margin-top: 10px;">
                                     <c:out value="${n.body}" escapeXml="false" />
                                     <div style="font-weight:bold;text-indent:3%;width:85%;height:25px;background-color:#${newsColor};border-radius:20px;margin-top:5px;margin-bottom:5px;">
                                         <span style="background: url('${pageContext.request.contextPath}/resources/images/user-icon.png') no-repeat scroll 0 2px transparent;padding-left: 27px;" title="user">
